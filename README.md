@@ -1,10 +1,10 @@
 # kernel-correctness-checker
 
-A lightweight correctness verification framework for LLM-generated Triton kernels, targeting the **cheating kernel problem**: kernels that pass `torch.allclose` on random inputs while computing something semantically different.
+A lightweight correctness verification framework for LLM-generated Triton kernels, targeting the cheating kernel problem: kernels that pass `torch.allclose` on random inputs while computing something semantically different.
 
 ## Motivation
 
-[AccelOpt](https://arxiv.org/pdf/2511.12638) documents LLMs generating kernels that omit necessary work while staying within numerical tolerances. [robust-kbench](https://arxiv.org/abs/2509.14279) corroborates this empirically — apparent speedups collapse from 3.13x to 1.49x after filtering cheating kernels. The root cause in both cases: random input testing with fixed tolerances is too weak a correctness criterion.
+[AccelOpt](https://arxiv.org/pdf/2511.12638) documents LLMs generating kernels that omit necessary work while staying within numerical tolerances. [robust-kbench](https://arxiv.org/abs/2509.14279) confirms this empirically, where apparent speedups collapse from 3.13x to 1.49x after filtering cheating kernels. The root cause in both cases: random input testing with fixed tolerances is too weak a correctness criterion.
 
 ## What This Does
 
