@@ -23,19 +23,21 @@ def matmul_kernel(
     for k in range(0, K, BLOCK_K):
         k_offsets = k + tl.arange(0, BLOCK_K)
 
-        A_ptrs = A_ptr + row_offsets[:, None] * stride_am + k_offsets[None, :] * stride_ak
+        #Bug: A_ptr is indexed with B's strides - reads from B instead of A
+        A_ptrs = A_ptr + row_offsets[:, None] * stride_bk + k_offsets[None, :] * stride_bn
         A_mask = (row_offsets[:, None] < M) & (k_offsets[None, :] < K)
         A_block = tl.load(A_ptrs, mask=A_mask, other=0.0)
 
-        B_ptrs = B_ptr + k_offsets[:, None] * stride_bk + col_offsets[None, :] * stride_bn
+        #Bug: B_ptr is indexed with A's strides - reads from A instead of B
+        B_ptrs = B_ptr + k_offsets[:, None] * stride_am + col_offsets[None, :] * stride_ak
         B_mask = (k_offsets[:, None] < K) & (col_offsets[None, :] < N)
         B_block = tl.load(B_ptrs, mask=B_mask, other=0.0)
 
         acc += tl.dot(A_block, B_block)
 
     C_ptrs = C_ptr + row_offsets[:, None] * stride_cm + col_offsets[None, :] * stride_cn
-    #Bug: mask omitted, out-of-bounds stores corrupt memory on non-aligned shapes
-    tl.store(C_ptrs, acc)
+    C_mask = (row_offsets[:, None] < M) & (col_offsets[None, :] < N)
+    tl.store(C_ptrs, acc, mask=C_mask)
 
 
 def matmul(A, B):
