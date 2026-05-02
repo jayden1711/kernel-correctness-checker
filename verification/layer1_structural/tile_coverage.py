@@ -12,10 +12,10 @@ def check_all_tiles_visited(kernel_fn, raw_kernel, x):
     # Step 1: wrap the raw kernel with triton-viz tracer
     traced = trace()(raw_kernel)
     
-    # Step 2: run it — triton-viz records every Load during execution
+    # Step 2: run it - triton-viz records every Load during execution
     BLOCK_SIZE = triton_viz.core.patch  # we get this from the launcher
     y = torch.empty_like(x)
-    import triton
+    
     BLOCK_SIZE = triton.next_power_of_2(n_cols)
     traced[(n_rows,)](
         y, x, x.stride(0), y.stride(0), n_rows, n_cols, BLOCK_SIZE=BLOCK_SIZE
@@ -43,4 +43,4 @@ def check_all_tiles_visited(kernel_fn, raw_kernel, x):
         if len(visited) < n_cols:
             return False, row_idx, len(visited)
     
-    return True, -1, n_cols
+    return True, -1, n_colsx
