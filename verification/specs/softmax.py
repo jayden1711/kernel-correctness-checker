@@ -1,64 +1,54 @@
-from dataclasses import dataclass
+"""KernelSpec for softmax — f(x) -> Tensor, x shape (n_rows, n_cols)."""
+
+from dataclasses import dataclass, field
 from typing import List, Tuple, Callable
 import torch
 
-@dataclass  
-class KernelSpec:
-    name: str
-    adversarial_inputs: Callable      # generates targeted failure-mode inputs
-    algebraic_properties: List[Tuple[str, Callable]]  # (name, check_fn) pairs
-    valid_shapes: List[Tuple]         # shapes to test cross-shape generalization
-    requires_backward: bool           # whether to verify gradient correctness
+from verification.specs.base_spec import SingleTensorSpec
+from verification.layer3_properties.softmax_properties import (
+    check_rows_sum_to_one,
+    check_shift_invariance,
+    check_monotonicity,
+    check_precision_coercion,
+)
+from verification.layer2_numeric_oracle.adversarial.softmax_adversarial import (
+    get_adversarial_inputs as _get_adversarial,
+)
 
-# softmax spec
-def get_spec() -> KernelSpec:
-    return KernelSpec(
-        name="softmax",
 
-        adversarial_inputs=lambda x: [
-            ("max_in_last_tile", _max_in_last_tile(x)),
-            ("equal_logits",     _equal_logits(x)),
-            ("extreme_range",    _extreme_range(x)),
-            ("non_power_of_two", _non_power_of_two(x)),
-        ],
+class SoftmaxSpec(SingleTensorSpec):
+    name: str = "softmax"
+    requires_backward: bool = False  # reference softmax kernel has no autograd
 
-        algebraic_properties=[
-            ("rows_sum_to_one",   check_rows_sum_to_one),
-            ("shift_invariance",  check_shift_invariance),
-            ("monotonicity",      check_monotonicity),
-            ("precision_coercion",check_precision_coercion),
-        ],
+    @property
+    def algebraic_properties(self):
+        return [
+            ("rows_sum_to_one",    _wrap_output(check_rows_sum_to_one)),
+            ("shift_invariance",   check_shift_invariance),
+            ("monotonicity",       check_monotonicity),
+            ("precision_coercion", check_precision_coercion),
+        ]
 
-        valid_shapes=[
-            (512, 512),      # base case
-            (256, 1024),     # wide
-            (1, 512),        # batch size 1
-            (1000, 333),     # non-power-of-two
-            (2048, 128),     # tall and narrow
-        ],
+    @property
+    def valid_shapes(self):
+        return [
+            (512, 512),
+            (256, 1024),
+            (1,   512),
+            (1000, 333),
+            (2048, 128),
+        ]
 
-        requires_backward=True,
-    )
+    def get_adversarial_inputs(self, inputs):
+        return _get_adversarial(inputs)
 
-# adversarial input generators
-def _max_in_last_tile(x):
-    """Max value sits in last tile — exposes first-tile-only kernels."""
-    result = torch.zeros_like(x)
-    result[:, -1] = 1e9
-    return result
 
-def _equal_logits(x):
-    """All logits equal — wrong answer is accidentally close to right answer."""
-    return torch.ones_like(x)
+def get_spec() -> SoftmaxSpec:
+    return SoftmaxSpec(name="softmax")
 
-def _extreme_range(x):
-    """Extreme dynamic range — exposes partial accumulation."""
-    result = torch.randn_like(x)
-    result[:, 0] = 1e9
-    result[:, -1] = -1e9
-    return result
 
-def _non_power_of_two(x):
-    """Non-power-of-two columns — exposes tile boundary bugs."""
-    n_rows = x.shape[0]
-    return torch.randn(n_rows, 333, device=x.device, dtype=x.dtype)
+def _wrap_output(check_fn):
+    def wrapped(candidate_fn, inputs):
+        out = candidate_fn(inputs)
+        return check_fn(out)
+    return wrapped
