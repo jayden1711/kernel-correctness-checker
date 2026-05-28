@@ -1,7 +1,7 @@
 """
-Layer 3 – Algebraic properties for flash attention.
+Layer 3  Algebraic properties for flash attention.
 
-All kernels take 2D tensors (N, D) — no batch or head dimensions.
+All kernels take 2D tensors (N, D)  no batch or head dimensions.
 """
 
 import torch

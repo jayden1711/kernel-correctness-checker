@@ -1,5 +1,5 @@
 """
-KernelSpec for layernorm — f(x, gamma, beta) -> Tensor.
+KernelSpec for layernorm  f(x, gamma, beta) -> Tensor.
 
 inputs tuple: (x, gamma, beta)
   x:     (n_rows, n_cols)
@@ -17,6 +17,7 @@ from verification.layer3_properties.layernorm_properties import (
     check_unit_variance,
     check_scale_invariance,
     check_precision_coercion,
+    check_affine_correctness
 )
 from verification.layer2_numeric_oracle.adversarial.layernorm_adversarial import (
     get_adversarial_inputs as _get_adversarial,
@@ -35,6 +36,7 @@ class LayernormSpec(LayernormKernelSpec):
             ("zero_mean",          _wrap_identity(check_zero_mean)),
             ("unit_variance",      _wrap_identity(check_unit_variance)),
             ("scale_invariance",   _wrap_scale(check_scale_invariance)),
+            ("affine_correctness", _wrap_affine(check_affine_correctness)),
             ("precision_coercion", _wrap_precision(check_precision_coercion)),
         ]
 
@@ -60,7 +62,6 @@ def get_spec() -> LayernormSpec:
     return LayernormSpec(name="layernorm")
 
 
-# Property adapters — bridge (candidate_fn, inputs) to each check signature
 
 def _wrap_identity(check_fn):
     """
@@ -77,7 +78,7 @@ def _wrap_identity(check_fn):
 
 
 def _wrap_scale(check_fn):
-    """check_scale_invariance(kernel_fn, x) — pass x only."""
+    """check_scale_invariance(kernel_fn, x)  pass x only."""
     def wrapped(candidate_fn, inputs):
         x, gamma, beta = inputs
         # wrap candidate so it uses the stored gamma/beta
@@ -92,4 +93,10 @@ def _wrap_precision(check_fn):
         x, gamma, beta = inputs
         fn = lambda xi: candidate_fn(xi, gamma.to(xi.dtype), beta.to(xi.dtype))
         return check_fn(fn, x)
+    return wrapped
+
+def _wrap_affine(check_fn):
+    def wrapped(candidate_fn, inputs):
+        x, gamma, beta = inputs
+        return check_fn(candidate_fn, x)
     return wrapped

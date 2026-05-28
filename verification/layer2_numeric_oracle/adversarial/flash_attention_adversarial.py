@@ -1,12 +1,12 @@
 """
-Adversarial inputs for flash attention — all inputs are 2D (N, D).
+Adversarial inputs for flash attention  all inputs are 2D (N, D).
 Matches actual TritonBench kernel signatures.
 
 Targets each cheating kernel directly:
-  approx_denom.py    — incomplete normalizer (first half of tiles only)
-  drop_last_tile.py  — loop stops at N - BLOCK_N, skips last tile
-  skip_rescaling.py  — omits exp(m - m_new) rescaling of acc and l
-  wrong_mask.py      — causal mask off-by-one (q_idx > kv_idx + 1)
+  approx_denom.py     incomplete normalizer (first half of tiles only)
+  drop_last_tile.py   loop stops at N - BLOCK_N, skips last tile
+  skip_rescaling.py   omits exp(m - m_new) rescaling of acc and l
+  wrong_mask.py       causal mask off-by-one (q_idx > kv_idx + 1)
 """
 
 import torch
@@ -43,14 +43,14 @@ def last_tile_dropped(N=65, D=64, device="cpu", dtype=torch.float32) -> tuple:
 def multi_tile_rescaling(N=192, D=64, device="cpu", dtype=torch.float32) -> tuple:
     """
     N = 6 x BLOCK_N=32, forces 6 tile iterations.
-    Max score shifts dramatically between tiles — rescaling error compounds.
+    Max score shifts dramatically between tiles  rescaling error compounds.
     Targets skip_rescaling.py.
     """
     BLOCK = 32
     Q, K, V = _make_qkv(N, D, device, dtype)
     K[:BLOCK, :]       *= 1e-6   # tile 1: near-zero
     K[BLOCK:BLOCK*2, :] *= 1.0   # tile 2: normal
-    K[BLOCK*2:, :]      *= 1e4   # tiles 3-6: very large — running max jumps
+    K[BLOCK*2:, :]      *= 1e4   # tiles 3-6: very large  running max jumps
     return Q, K, V
 
 
@@ -72,7 +72,6 @@ def wrong_causal_mask(N=128, D=64, device="cpu", dtype=torch.float32) -> tuple:
     This makes the off-by-one error large and measurable.
     """
     Q, K, V = _make_qkv(N, D, device, dtype)
-    # Diagonal (self-attention) positions get large values —
     # wrong mask blocks these, correct mask allows them
     for i in range(N):
         K[i, :] = 1e4

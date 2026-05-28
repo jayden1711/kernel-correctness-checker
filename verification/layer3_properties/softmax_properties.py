@@ -1,5 +1,5 @@
 """
-Layer 3 – Algebraic properties for softmax.
+Layer 3  Algebraic properties for softmax.
 
 All checks are mathematical invariants that hold for correct softmax
 regardless of implementation.  They can be verified without a full

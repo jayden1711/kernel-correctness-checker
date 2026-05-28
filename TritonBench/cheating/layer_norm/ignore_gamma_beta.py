@@ -19,8 +19,10 @@ def layernorm_kernel(
 
     row = tl.load(input_ptrs, mask=mask, other=0.0)
 
-    mean     = tl.sum(row, axis=0) / n_cols
-    variance = tl.sum((row - mean) ** 2, axis=0) / n_cols
+    mean = tl.sum(row, axis=0) / n_cols
+    
+    diff = row - mean
+    variance = tl.sum(diff * diff, axis=0) / n_cols
 
     #Bug: gamma and beta are loaded but never used
     #(loading them avoids unused pointer warnings that might hint at the bug)

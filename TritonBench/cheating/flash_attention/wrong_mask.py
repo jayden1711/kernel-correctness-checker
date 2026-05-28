@@ -47,7 +47,6 @@ def flash_attention_kernel_cheat_wrong_mask(
         #Attention scores
         S = tl.dot(Q_block, tl.trans(K_block))
 
-        #CHEAT: apply causal mask off by one — masks one extra position per row
         #correct causal mask would be: q_idx >= kv_idx
         #this masks q_idx == kv_idx as well, preventing self-attention
         q_idx = q_offsets[:, None]

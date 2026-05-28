@@ -1,5 +1,5 @@
 """
-Layer 2 – Shape generalization and backward-pass correctness checks.
+Layer 2  Shape generalization and backward-pass correctness checks.
 
 Tests that the candidate kernel:
   1. Produces the correct output shape.
@@ -75,7 +75,7 @@ def check_cross_shape(
             ref_out = reference_fn(x)
             cand_out = candidate_fn(x)
         except Exception as e:
-            failures.append(f"shape={shape}: exception — {e}")
+            failures.append(f"shape={shape}: exception  {e}")
             continue
 
         if cand_out.shape != ref_out.shape:
@@ -147,7 +147,7 @@ def check_weight_magnitude(
             ref_out = reference_fn(x)
             cand_out = candidate_fn(x)
         except Exception as e:
-            failures.append(f"{variant_name}: exception — {e}")
+            failures.append(f"{variant_name}: exception  {e}")
             continue
 
         if cand_out.shape != ref_out.shape:

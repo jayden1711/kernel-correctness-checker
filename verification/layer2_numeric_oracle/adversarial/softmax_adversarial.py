@@ -23,7 +23,7 @@ def max_in_last_tile(x: torch.Tensor) -> torch.Tensor:
 
 def equal_logits(x: torch.Tensor) -> torch.Tensor:
     """
-    All logits equal — the correct answer is 1/n_cols everywhere.
+    All logits equal  the correct answer is 1/n_cols everywhere.
 
     A kernel that skips normalisation but returns a plausible-looking
     constant output can accidentally pass this case, but combining it

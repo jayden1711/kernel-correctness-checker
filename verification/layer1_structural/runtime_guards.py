@@ -1,5 +1,5 @@
 """
-Layer 1 – Runtime guards.
+Layer 1  Runtime guards.
 
 These checks require actually running the kernel, but are cheaper than
 Layer 2 numeric comparisons.  They catch failure modes that static AST
@@ -87,7 +87,7 @@ def check_determinism(
     are bit-identical.
 
     Non-determinism indicates a race condition that the barrier check
-    missed — e.g. a missing tl.barrier() between a shared-memory write
+    missed  e.g. a missing tl.barrier() between a shared-memory write
     and read in a reduction.
 
     Args:
@@ -147,7 +147,6 @@ def check_kernel_executed(
         (True,  detail)
         (False, detail)
     """
-    # --- Step 1: sentinel pre-fill ----------------------------------------
     # We can't pre-fill the output buffer directly without knowing the
     # kernel's internal allocation, so instead we compare outputs on two
     # inputs that must produce different results.
@@ -166,7 +165,6 @@ def check_kernel_executed(
             "Kernel likely ignores input (hardcoded output or ghost optimization)."
         )
 
-    # --- Step 2: output must not equal reference on the perturbed input ---
     # (catches kernels that just call the reference directly)
     try:
         ref1 = reference_fn(x).detach().clone()

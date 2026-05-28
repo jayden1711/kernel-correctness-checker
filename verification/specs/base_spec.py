@@ -6,13 +6,13 @@ adversarial inputs, list algebraic properties, and build inputs for
 shape-generalisation tests.
 
 Concrete classes:
-  SingleTensorSpec   — f(x) -> Tensor            (softmax)
-  LayernormSpec      — f(x, gamma, beta) -> Tensor
-  MatmulSpec         — f(A, B) -> Tensor
-  AttentionSpec      — f(Q, K, V) -> Tensor       (2D: NxD)
+  SingleTensorSpec    f(x) -> Tensor            (softmax)
+  LayernormSpec       f(x, gamma, beta) -> Tensor
+  MatmulSpec          f(A, B) -> Tensor
+  AttentionSpec       f(Q, K, V) -> Tensor       (2D: NxD)
 """
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import List, Tuple, Callable, Any
 import torch
 
@@ -20,6 +20,7 @@ import torch
 @dataclass
 class KernelSpec:
     name: str
+    requires_backward: bool = True
 
     def run_candidate(self, candidate_fn: Callable, inputs: Any) -> torch.Tensor:
         raise NotImplementedError
@@ -28,23 +29,24 @@ class KernelSpec:
         raise NotImplementedError
 
     def primary_input(self, inputs: Any) -> torch.Tensor:
-        """Return the first/primary tensor for Layer 1 and perturbation checks."""
         raise NotImplementedError
 
     def get_adversarial_inputs(self, inputs: Any) -> List[Tuple[str, Any]]:
         raise NotImplementedError
 
-    algebraic_properties: List[Tuple[str, Callable]] = field(default_factory=list)
-    valid_shapes: List[Any] = field(default_factory=list)
+    @property
+    def algebraic_properties(self) -> List[Tuple[str, Callable]]:
+        return []
+
+    @property
+    def valid_shapes(self) -> List[Any]:
+        return []
 
     def make_inputs(self, shape: Any, device: str, dtype: torch.dtype) -> Any:
         raise NotImplementedError
 
-    requires_backward: bool = True
 
-
-# Softmax: f(x) -> Tensor,  x shape (n_rows, n_cols)
-
+@dataclass
 class SingleTensorSpec(KernelSpec):
     def run_candidate(self, candidate_fn, inputs):
         return candidate_fn(inputs)
@@ -59,8 +61,7 @@ class SingleTensorSpec(KernelSpec):
         return torch.randn(*shape, device=device, dtype=dtype)
 
 
-# Layernorm: f(x, gamma, beta) -> Tensor,  x shape (n_rows, n_cols)
-
+@dataclass
 class LayernormKernelSpec(KernelSpec):
     def run_candidate(self, candidate_fn, inputs):
         x, gamma, beta = inputs
@@ -71,7 +72,7 @@ class LayernormKernelSpec(KernelSpec):
         return reference_fn(x, gamma, beta)
 
     def primary_input(self, inputs):
-        return inputs[0]  # x
+        return inputs[0]
 
     def make_inputs(self, shape, device, dtype):
         n_rows, n_cols = shape
@@ -81,8 +82,7 @@ class LayernormKernelSpec(KernelSpec):
         return x, gamma, beta
 
 
-# Matmul: f(A, B) -> Tensor,  shapes (M,K) and (K,N)
-
+@dataclass
 class MatmulKernelSpec(KernelSpec):
     def run_candidate(self, candidate_fn, inputs):
         A, B = inputs
@@ -93,7 +93,7 @@ class MatmulKernelSpec(KernelSpec):
         return reference_fn(A, B)
 
     def primary_input(self, inputs):
-        return inputs[0]  # A
+        return inputs[0]
 
     def make_inputs(self, shape, device, dtype):
         M, K, N = shape
@@ -102,8 +102,7 @@ class MatmulKernelSpec(KernelSpec):
         return A, B
 
 
-# Flash Attention: f(Q, K, V) -> Tensor,  shapes all (N, D)  [2D, no batch]
-
+@dataclass
 class AttentionKernelSpec(KernelSpec):
     def run_candidate(self, candidate_fn, inputs):
         Q, K, V = inputs
@@ -114,7 +113,7 @@ class AttentionKernelSpec(KernelSpec):
         return reference_fn(Q, K, V)
 
     def primary_input(self, inputs):
-        return inputs[0]  # Q
+        return inputs[0]
 
     def make_inputs(self, shape, device, dtype):
         N, D = shape

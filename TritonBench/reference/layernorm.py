@@ -22,7 +22,8 @@ def layernorm_kernel(output_ptr, input_ptr, gamma_ptr, beta_ptr,input_row_stride
 
     #Numerically stable layernorm
     mean = tl.sum(row, axis=0) / n_cols
-    variance = tl.sum((row - mean) ** 2, axis=0) / n_cols
+    diff = row - mean
+    variance = tl.sum(diff * diff, axis=0) / n_cols
     gamma = tl.load(gamma_ptr + col_offsets, mask=mask, other=1.0)
     beta = tl.load(beta_ptr + col_offsets, mask=mask, other=0.0)
     layernorm_output = (row - mean) / tl.sqrt(variance + eps) * gamma + beta

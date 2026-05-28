@@ -25,7 +25,7 @@ from verification.layer3_properties.flash_attention_properties import (
 from verification.layer2_numeric_oracle.perturbation import check_perturbation_tolerance
 
 
-def run():
+def run_flash_attention():
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
     N, D = 128, 64
@@ -70,7 +70,6 @@ def run():
         err = (ref - out).abs().max().item()
         print(f"  {name:<18} passes={passes}  max_err={err:.6f}")
 
-    # Experiment 2: Adversarial — high scores in last tile
     print("\n" + "=" * 60)
     print("Experiment 2: Adversarial (high scores in last tile)")
     print("=" * 60)
@@ -122,7 +121,3 @@ def run():
             Q,
         )
         print(f"  {name:<18} passed={passed}  {detail}")
-
-
-if __name__ == "__main__":
-    run()

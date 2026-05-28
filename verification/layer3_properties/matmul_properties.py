@@ -1,5 +1,5 @@
 """
-Layer 3 – Algebraic properties for matrix multiplication.
+Layer 3  Algebraic properties for matrix multiplication.
 
 Mathematical invariants that any correct matmul must satisfy.
 """

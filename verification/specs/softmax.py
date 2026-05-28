@@ -1,4 +1,4 @@
-"""KernelSpec for softmax — f(x) -> Tensor, x shape (n_rows, n_cols)."""
+"""KernelSpec for softmax  f(x) -> Tensor, x shape (n_rows, n_cols)."""
 
 from dataclasses import dataclass, field
 from typing import List, Tuple, Callable

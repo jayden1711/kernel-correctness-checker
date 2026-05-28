@@ -1,5 +1,5 @@
 """
-KernelSpec for flash attention — f(Q, K, V) -> Tensor.
+KernelSpec for flash attention  f(Q, K, V) -> Tensor.
 All inputs are 2D: shape (N, D). No batch or head dimensions.
 This matches the actual TritonBench reference and cheating kernels.
 """
@@ -33,7 +33,6 @@ class FlashAttentionSpec(AttentionKernelSpec):
 
     @property
     def valid_shapes(self):
-        # (N, D) — 2D only, matching actual kernel signatures
         return [
             (128,  64),   # base case
             (64,   64),   # small

@@ -50,14 +50,12 @@ def flash_attention_kernel_cheat_skip_rescale(
         #Update running max
         m_new = tl.maximum(m, tl.max(S, axis=1))
 
-        #CHEAT: skip rescaling accumulator — acc should be multiplied by exp(m - m_new)
         #acc = acc * tl.exp(m - m_new)[:, None] - removed
 
         #Add new contribution
         P = tl.exp(S - m_new[:, None])
         acc += tl.dot(P, V_block)
 
-        #CHEAT: skip rescaling normalizer — l should be multiplied by exp(m - m_new)
         l = l + tl.sum(P, axis=1)
 
         m = m_new

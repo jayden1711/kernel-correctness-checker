@@ -20,7 +20,8 @@ def layernorm_kernel(
     row = tl.load(input_ptrs, mask=mask, other=0.0)
 
     mean     = tl.sum(row, axis=0) / n_cols
-    variance = tl.sum((row - mean) ** 2, axis=0) / n_cols
+    diff = row - mean
+    variance = tl.sum(diff * diff, axis=0) / n_cols
 
     gamma = tl.load(gamma_ptr + col_offsets, mask=mask, other=1.0)
     beta  = tl.load(beta_ptr  + col_offsets, mask=mask, other=0.0)

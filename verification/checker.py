@@ -85,12 +85,23 @@ class KernelChecker:
         spec = self.spec
         primary = spec.primary_input(inputs)
 
-        # Thin wrappers so all checks get consistent callables
+        # Thin wrappers that correctly route perturbed primary input
+        # through the spec so multi-input kernels (layernorm, matmul, attn)
+        # still receive all their required tensors.
         def _cand(x):
-            return spec.run_candidate(candidate_fn, inputs)
+            if isinstance(inputs, tuple):
+                # Replace primary input (first element) with perturbed x
+                new_inputs = (x,) + inputs[1:]
+            else:
+                new_inputs = x
+            return spec.run_candidate(candidate_fn, new_inputs)
 
         def _ref(x):
-            return spec.run_reference(reference_fn, inputs)
+            if isinstance(inputs, tuple):
+                new_inputs = (x,) + inputs[1:]
+            else:
+                new_inputs = x
+            return spec.run_reference(reference_fn, new_inputs)
 
         # Sentinel guards — run first, abort immediately on failure
         results.append(self._run_check(1, "nan_inf",
@@ -103,22 +114,23 @@ class KernelChecker:
 
         # Layer 1: Structural
         results.append(self._run_check(1, "ghost_optimization",
-            lambda: check_ghost_optimization(raw_kernel)))
-        results.append(self._run_check(1, "missing_barriers",
-            lambda: check_missing_barriers(raw_kernel)))
+            lambda: check_ghost_optimization(candidate_fn)))
         results.append(self._run_check(1, "timing_manipulation",
-            lambda: check_timing_manipulation(raw_kernel)))
+            lambda: check_timing_manipulation(candidate_fn)))
         results.append(self._run_check(1, "partial_computation",
-            lambda: check_partial_computation(raw_kernel)))
+            lambda: check_partial_computation(candidate_fn)))
         results.append(self._run_check(1, "determinism",
             lambda: check_determinism(_cand, primary)))
         results.append(self._run_check(1, "kernel_executed",
             lambda: check_kernel_executed(_cand, primary, _ref)))
 
-        # Tile coverage: only meaningful for 2D single-tensor kernels (softmax)
         if primary.dim() == 2 and not isinstance(inputs, tuple):
             results.append(self._run_check(1, "tile_coverage",
-                lambda: check_all_tiles_visited(candidate_fn, raw_kernel, primary)))
+                lambda rk=raw_kernel: check_all_tiles_visited(candidate_fn, rk, primary)))
+             # Reset CUDA context after triton-viz tracing to prevent state corruption
+            if torch.cuda.is_available():
+                torch.cuda.synchronize()
+                torch.cuda.empty_cache()
 
         if any(not r.passed for r in results):
             return results

@@ -1,5 +1,5 @@
 """
-Layer 3 – Algebraic properties for layernorm.
+Layer 3  Algebraic properties for layernorm.
 
 Invariants that any correct layernorm implementation must satisfy,
 checkable without a full reference run.

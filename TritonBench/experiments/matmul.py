@@ -21,7 +21,7 @@ from verification.layer2_numeric_oracle.perturbation import check_perturbation_t
 from verification.layer1_structural.runtime_guards import check_dtype_preserved
 
 
-def run():
+def run_matmul():
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
     # Standard square inputs
@@ -70,7 +70,7 @@ def run():
 
     # Experiment 3: Non-aligned shape (exposes skip_boundary_tiles)
     print("\n" + "=" * 60)
-    print("Experiment 3: Non-aligned shape (33x33 — not multiple of BLOCK=32)")
+    print("Experiment 3: Non-aligned shape (33x33  not multiple of BLOCK=32)")
     print("=" * 60)
     A33 = torch.randn(33, 33, device=device)
     B33 = torch.randn(33, 33, device=device)
@@ -86,7 +86,7 @@ def run():
 
     # Experiment 4: Rectangular input (exposes swapped_strides)
     print("\n" + "=" * 60)
-    print("Experiment 4: Rectangular input (64x128 x 128x32) — all strides differ")
+    print("Experiment 4: Rectangular input (64x128 x 128x32)  all strides differ")
     print("=" * 60)
     A_rect = torch.randn(64, 128, device=device)
     B_rect = torch.randn(128, 32, device=device)
@@ -128,6 +128,3 @@ def run():
         except Exception as e:
             print(f"  {name:<20} exception: {e}")
 
-
-if __name__ == "__main__":
-    run()

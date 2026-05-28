@@ -23,7 +23,7 @@ from verification.layer3_properties.layernorm_properties import (
 from verification.layer2_numeric_oracle.perturbation import check_perturbation_tolerance
 
 
-def run():
+def run_layernorm():
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
     n_rows, n_cols = 512, 512
@@ -69,7 +69,6 @@ def run():
         scale_inv,  d3 = check_scale_invariance(lambda xi: fn(xi, ones, zeros), x)
         print(f"  {name:<22} zero_mean={zero_mean}  unit_var={unit_var}  scale_inv={scale_inv}")
 
-    # Experiment 3: Adversarial input — large mean (targets wrong_variance)
     print("\n" + "=" * 60)
     print("Experiment 3: Adversarial input (x + 1000 mean shift)")
     print("=" * 60)
@@ -103,7 +102,3 @@ def run():
         passes = torch.allclose(ref2, out, atol=1e-4, rtol=1e-2)
         err = (ref2 - out).abs().max().item()
         print(f"  {name:<22} passes={passes}  max_err={err:.6f}")
-
-
-if __name__ == "__main__":
-    run()

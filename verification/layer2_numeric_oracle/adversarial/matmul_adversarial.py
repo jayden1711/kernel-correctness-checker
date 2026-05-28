@@ -1,11 +1,11 @@
 """
-Adversarial inputs for matmul — returns (A, B) pairs.
+Adversarial inputs for matmul  returns (A, B) pairs.
 
 Targets each cheating kernel:
-  partial_k_reduct.py    — only accumulates first half of K dimension
-  skip_boundary_tiles.py — missing output mask, corrupts non-aligned shapes
-  swapped_strides.py     — A indexed with B's strides and vice versa
-  wrong_dtype.py         — accumulates in fp16 instead of fp32
+  partial_k_reduct.py     only accumulates first half of K dimension
+  skip_boundary_tiles.py  missing output mask, corrupts non-aligned shapes
+  swapped_strides.py      A indexed with B's strides and vice versa
+  wrong_dtype.py          accumulates in fp16 instead of fp32
 """
 
 import torch
@@ -28,7 +28,7 @@ def k_dim_accumulation(x: torch.Tensor, weight: torch.Tensor) -> tuple:
 def non_aligned_shape(x: torch.Tensor, weight: torch.Tensor) -> tuple:
     """
     M, N not multiples of BLOCK_M/BLOCK_N=32.
-    skip_boundary_tiles.py omits the output mask — stores corrupt the last tile.
+    skip_boundary_tiles.py omits the output mask  stores corrupt the last tile.
     """
     A = torch.randn(33, 33, device=x.device, dtype=x.dtype)
     B = torch.randn(33, 33, device=x.device, dtype=x.dtype)
@@ -74,7 +74,7 @@ def identity_weight(x: torch.Tensor, weight: torch.Tensor) -> tuple:
 
 
 def non_power_of_two(x: torch.Tensor, weight: torch.Tensor) -> tuple:
-    """Non-power-of-two dims — exposes tile boundary issues."""
+    """Non-power-of-two dims  exposes tile boundary issues."""
     A = torch.randn(333, 257, device=x.device, dtype=x.dtype)
     B = torch.randn(257, 129, device=x.device, dtype=x.dtype)
     return A, B

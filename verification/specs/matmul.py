@@ -1,4 +1,4 @@
-"""KernelSpec for matmul — f(A, B) -> Tensor, A:(M,K), B:(K,N)."""
+"""KernelSpec for matmul  f(A, B) -> Tensor, A:(M,K), B:(K,N)."""
 
 from dataclasses import dataclass, field
 from typing import List, Tuple, Callable

@@ -1,5 +1,5 @@
 """
-Layer 1 – Structural checks via static AST analysis.
+Layer 1  Structural checks via static AST analysis.
 
 All functions accept a raw kernel source string or callable and return
 (passed: bool, detail: str).
@@ -12,11 +12,11 @@ from typing import Union
 
 
 def _get_source(kernel) -> str:
-    """Extract and dedent source from a string or callable."""
-    if callable(kernel):
-        src = inspect.getsource(kernel)
-    else:
-        src = kernel
+    if isinstance(kernel, str):
+        return textwrap.dedent(kernel)
+    # Unwrap triton.jit decorated functions
+    fn = getattr(kernel, 'fn', kernel)
+    src = inspect.getsource(fn)
     return textwrap.dedent(src)
 
 
@@ -26,12 +26,12 @@ class _GhostOptimizationVisitor(ast.NodeVisitor):
     """
     Detects two ghost-optimization patterns:
 
-    Pattern A – Conditional kernel bypass:
+    Pattern A  Conditional kernel bypass:
         if <condition>:
             return reference(x)     # kernel never runs
         custom_kernel[grid](...)
 
-    Pattern B – Dead-branch kernel call:
+    Pattern B  Dead-branch kernel call:
         if False:
             custom_kernel[grid](...)
 
@@ -45,7 +45,6 @@ class _GhostOptimizationVisitor(ast.NodeVisitor):
         self.kernel_launches = []        # list of (lineno, in_dead_branch)
         self._dead_branch = False
 
-    # ---- branch tracking ------------------------------------------------
     def visit_If(self, node: ast.If):
         # Detect statically-false branches: `if False:` / `if 0:`
         is_dead = isinstance(node.test, ast.Constant) and not node.test.value
@@ -55,7 +54,6 @@ class _GhostOptimizationVisitor(ast.NodeVisitor):
         self.generic_visit(node)
         self._dead_branch = old
 
-    # ---- kernel-launch detection ----------------------------------------
     def visit_Call(self, node: ast.Call):
         """
         A Triton kernel launch looks like:  kernel[grid](*args)
@@ -175,11 +173,11 @@ class _TimingVisitor(ast.NodeVisitor):
     """
     Detects two timing-manipulation patterns:
 
-    Pattern A – Missing torch.cuda.synchronize() around timing code.
+    Pattern A  Missing torch.cuda.synchronize() around timing code.
         We look for time.time() / time.perf_counter() / torch.cuda.Event
         usage without a synchronize() call in the same scope.
 
-    Pattern B – Separate CUDA streams for timing vs compute.
+    Pattern B  Separate CUDA streams for timing vs compute.
         If the kernel is launched on a non-default stream but timing
         uses the default stream, results are artificially fast.
     """
@@ -302,7 +300,7 @@ def check_partial_computation(kernel, max_torch_ratio: float = 0.5) -> tuple:
     Args:
         kernel: source string or callable.
         max_torch_ratio: fraction threshold above which we flag delegation.
-                         Default 0.5 — more than half the ops delegated.
+                         Default 0.5  more than half the ops delegated.
     """
     try:
         src = _get_source(kernel)
@@ -318,7 +316,6 @@ def check_partial_computation(kernel, max_torch_ratio: float = 0.5) -> tuple:
     total = n_torch + n_triton
 
     if total == 0:
-        # Can't tell — don't flag as failure
         return True, "No compute ops detected; skipping partial-computation check."
 
     ratio = n_torch / total

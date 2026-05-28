@@ -25,7 +25,7 @@ from verification.layer1_structural.tile_coverage import check_all_tiles_visited
 from verification.layer2_numeric_oracle.perturbation import check_perturbation_tolerance
 
 
-def run():
+def run_softmax():
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
     x       = torch.randn(512, 2048, device=device)
@@ -41,7 +41,6 @@ def run():
         ("wrong_reduction", wrong_fn),
     ]
 
-    # Experiment 1: Naive allclose — do cheats pass?
     print("=" * 60)
     print("Experiment 1: Naive allclose on random inputs")
     print("=" * 60)
@@ -73,14 +72,13 @@ def run():
         print(f"  reference      all_tiles_visited={passed}")
 
         passed, fail_row, cols = check_all_tiles_visited(
-            cheat_first_tile, softmax_kernel_cheat_first_tile, x_small
+            cheat_first_tile, softmax_kernel_cheat_first_tile, x_small, block_size=1024
         )
         print(f"  first_tile     all_tiles_visited={passed}  "
               f"fail_row={fail_row}  cols_visited={cols}/2048")
     except Exception as e:
         print(f"  (triton-viz not available: {e})")
 
-    # Experiment 4: Adversarial oracle — max value in last tile
     print("\n" + "=" * 60)
     print("Experiment 4: Adversarial oracle (max value in last tile)")
     print("=" * 60)
@@ -98,7 +96,3 @@ def run():
     for name, fn in cheats:
         passed, detail = check_perturbation_tolerance(fn, ref_softmax, x)
         print(f"  {name:<20} passed={passed}  {detail}")
-
-
-if __name__ == "__main__":
-    run()

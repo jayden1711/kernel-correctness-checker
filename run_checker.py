@@ -1,5 +1,5 @@
 """
-run_checker.py — run the KernelChecker against every cheating kernel
+run_checker.py  run the KernelChecker against every cheating kernel
 in TritonBench and print a summary table.
 
 Run from project root:
@@ -50,7 +50,7 @@ DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 # Test cases
 
 def make_softmax_inputs():
-    return torch.randn(512, 512, device=DEVICE)
+    return torch.randn(512, 2048, device=DEVICE)
 
 def make_layernorm_inputs():
     n_rows, n_cols = 512, 512
@@ -86,10 +86,9 @@ def build_test_cases():
 
     return [
         # Softmax
-        ("softmax/first_tile",      cheat_softmax_first_tile,    cheat_softmax_first_tile,   ref_softmax,          softmax_inputs,    s_spec),
-        ("softmax/wrong_reduction", cheat_softmax_wrong_reduction, cheat_softmax_wrong_reduction, ref_softmax,     softmax_inputs,    s_spec),
+        ("softmax/first_tile", cheat_softmax_first_tile, softmax_kernel_cheat_first_tile, ref_softmax, softmax_inputs, s_spec),
+        ("softmax/wrong_reduction", cheat_softmax_wrong_reduction, None, ref_softmax, softmax_inputs, s_spec),
 
-        # Layernorm — candidate takes (x, gamma, beta)
         ("layernorm/ignore_gamma_beta", cheat_ln_ignore_gamma_beta, cheat_ln_ignore_gamma_beta_kernel, ref_layernorm, layernorm_inputs, l_spec),
         ("layernorm/skip_mean_subtract", cheat_ln_skip_mean,       cheat_ln_skip_mean_kernel,         ref_layernorm, layernorm_inputs, l_spec),
         ("layernorm/wrong_variance",     cheat_ln_wrong_var,       cheat_ln_wrong_var_kernel,         ref_layernorm, layernorm_inputs, l_spec),
