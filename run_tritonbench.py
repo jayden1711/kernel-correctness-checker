@@ -1,5 +1,5 @@
 """
-run_tritonbench.py  Run your checker against TritonBench's existing
+run_tritonbench.py — Run your checker against TritonBench's existing
 LLM-generated Triton kernels for softmax, layernorm, matmul, and
 flash attention.
 
@@ -19,9 +19,7 @@ import torch
 
 
 # Locate kernel-correctness-checker
-
-
-CHECKER_ROOT = "/content/drive/MyDrive/kernel-correctness-checker"
+CHECKER_ROOT = os.path.dirname(os.path.abspath(__file__))
 if CHECKER_ROOT not in sys.path:
     sys.path.insert(0, CHECKER_ROOT)
 
@@ -44,7 +42,11 @@ TIMEOUT_SECONDS   = 20
 
 OPERATOR_KEYWORDS = {
     "softmax":         ["softmax", "soft_max"],
-    "layernorm":       ["layernorm", "layer_norm", "ln"],
+    # FIX: removed bare "ln" — it's a substring of unrelated filenames like
+    # "gammaln.py" (the log-gamma function, nothing to do with layer norm),
+    # which was silently mis-categorizing files into the layernorm bucket.
+    # "layernorm" and "layer_norm" are specific enough on their own.
+    "layernorm":       ["layernorm", "layer_norm"],
     "matmul":          ["matmul", "mat_mul", "gemm", "matrix_mult"],
     "flash_attention": ["flash", "attention", "flash_attn", "flashattn"],
 }
@@ -63,13 +65,14 @@ FUNC_CANDIDATES = {
 }
 
 
-# Subprocess worker  runs in an isolated process so hung GPU kernels
+# Subprocess worker — runs in an isolated process so hung GPU kernels
 # can be killed cleanly with p.kill()
 
 
 def _worker(path, operator, func_candidates, checker_root, q):
-    import sys, torch, importlib.util, io, contextlib
+    import sys, torch, importlib.util, io, contextlib, inspect
     sys.modules['triton_viz'] = None  # prevent hang in subprocess
+    torch.manual_seed(42)
     sys.path.insert(0, checker_root)
 
     from verification.checker import KernelChecker
@@ -85,7 +88,6 @@ def _worker(path, operator, func_candidates, checker_root, q):
         "flash_attention": FlashAttentionSpec,
     }
 
-    
     spec = importlib.util.spec_from_file_location("_km", path)
     mod  = importlib.util.module_from_spec(spec)
     try:
@@ -102,7 +104,7 @@ def _worker(path, operator, func_candidates, checker_root, q):
             fn = f
             break
     if fn is None:
-    # fallback: first non-private callable that isn't a class
+        # fallback: first non-private callable that isn't a class
         for attr in dir(mod):
             if attr.startswith("_"):
                 continue
@@ -111,7 +113,6 @@ def _worker(path, operator, func_candidates, checker_root, q):
                 fn = obj
                 break
 
-    
     try:
         if operator == "softmax":
             x   = torch.rand(512, 512, device="cuda")
@@ -119,27 +120,55 @@ def _worker(path, operator, func_candidates, checker_root, q):
             out = fn(x)
             ac  = bool(torch.allclose(out, ref, atol=1e-3, rtol=1e-3))
             ac_detail = f"max_err={float((out-ref).abs().max()):.6f}"
+
         elif operator == "layernorm":
             x = torch.rand(512, 512, device="cuda")
             w = torch.ones(512, device="cuda")
             b = torch.zeros(512, device="cuda")
             ref = torch.nn.functional.layer_norm(x, [512])
-            # try multiple calling conventions
+
+            # Logs the real signature plus the specific failure reason for
+            # every attempted convention, surfaced through ac_detail instead
+            # of vanishing into a bare `except: continue`.
+            try:
+                sig_str = str(inspect.signature(fn))
+            except (TypeError, ValueError):
+                sig_str = "<signature unavailable — likely a C/triton-wrapped callable>"
+
+            conventions = [
+                ("(x)",                    lambda: fn(x)),
+                ("(x, w, b)",               lambda: fn(x, w, b)),
+                ("(x, w, b, eps)",          lambda: fn(x, w, b, 1e-5)),
+                ("(x, w, eps)",             lambda: fn(x, w, 1e-5)),
+                ("(x, shape, w, b)",        lambda: fn(x, [512], w, b)),
+                ("(x, eps=1e-5)",           lambda: fn(x, eps=1e-5)),
+                ("(x, weight=w, bias=b)",   lambda: fn(x, weight=w, bias=b)),
+            ]
+
             out = None
-            for call in [lambda: fn(x), lambda: fn(x, w, b),
-                        lambda: fn(x, w, b, 1e-5),
-                        lambda: fn(x, [512], w, b)]:
+            attempt_log = []
+            for label, call in conventions:
                 try:
                     r = call()
                     if r is not None and hasattr(r, "shape") and r.shape == x.shape:
                         out = r
                         break
-                except:
-                    continue
+                    elif r is not None and hasattr(r, "shape"):
+                        attempt_log.append(f"{label} -> wrong shape {tuple(r.shape)}")
+                    else:
+                        attempt_log.append(f"{label} -> returned {type(r).__name__}")
+                except Exception as e:
+                    attempt_log.append(f"{label} -> {type(e).__name__}: {e}")
+
             if out is None:
-                raise RuntimeError("no convention worked")
+                raise RuntimeError(
+                    f"no calling convention worked for fn='{fn.__name__}' "
+                    f"signature={sig_str}. Attempts: " + " | ".join(attempt_log)
+                )
+
             ac = bool(torch.allclose(out.float(), ref.float(), atol=1e-3, rtol=1e-3))
             ac_detail = f"max_err={float((out.float()-ref.float()).abs().max()):.6f}"
+
         elif operator == "matmul":
             A   = torch.rand(256, 256, device="cuda")
             B   = torch.rand(256, 256, device="cuda")
@@ -147,6 +176,7 @@ def _worker(path, operator, func_candidates, checker_root, q):
             out = fn(A, B)
             ac  = bool(torch.allclose(out, ref, atol=1e-3, rtol=1e-3))
             ac_detail = f"max_err={float((out-ref).abs().max()):.6f}"
+
         elif operator == "flash_attention":
             Q   = torch.rand(128, 64, device="cuda")
             K   = torch.rand(128, 64, device="cuda")
@@ -161,7 +191,6 @@ def _worker(path, operator, func_candidates, checker_root, q):
     except Exception as e:
         ac, ac_detail = False, str(e)
 
-    
     try:
         kspec   = SPEC[operator](name=operator, requires_backward=False)
         checker = KernelChecker(kspec)
@@ -246,7 +275,7 @@ def find_kernels(repo_path, operators):
             for fname in files:
                 if not fname.endswith(".py"):
                     continue
-                if fname in SKIP_FILES:        #  moved here
+                if fname in SKIP_FILES:
                     continue
                 full = os.path.join(root, fname)
                 op   = detect_operator(fname) or detect_operator(root)

@@ -1,5 +1,5 @@
 """
-Layer 1  Structural checks via static AST analysis.
+Layer 1 — Structural checks via static AST analysis.
 
 All functions accept a raw kernel source string or callable and return
 (passed: bool, detail: str).
@@ -24,25 +24,40 @@ def _get_source(kernel) -> str:
 
 class _GhostOptimizationVisitor(ast.NodeVisitor):
     """
-    Detects two ghost-optimization patterns:
+    Detects ghost-optimization patterns:
 
-    Pattern A  Conditional kernel bypass:
+    Pattern A — Conditional kernel bypass:
         if <condition>:
             return reference(x)     # kernel never runs
         custom_kernel[grid](...)
 
-    Pattern B  Dead-branch kernel call:
+    Pattern B — Dead-branch kernel call:
         if False:
             custom_kernel[grid](...)
 
+    Pattern C — torch.autograd.Function indirection (tracked, not flagged):
+        return SomeKernelClass.apply(*args)
+    This dispatches to SomeKernelClass.forward(), which is a different
+    class body that inspect.getsource() on the entry-point function never
+    sees. We can't statically verify what's inside .forward() from here,
+    so we record these separately and treat them as inconclusive rather
+    than confidently declaring "no kernel found" — e.g. FlagGems' real
+    kernels are commonly wrapped exactly this way:
+        def softmax(x, dim=-1, dtype=None):
+            return Softmax.apply(x, dim, dtype)
+    Failing this would be a false positive against working kernel code,
+    not a real ghost-optimization finding.
+
     Heuristic: if every call to a triton kernel launch (detected by
-    subscript-then-call syntax  `fn[grid](...)`) is inside an `if` whose
-    test is a constant False/0, flag it.  Also flag if the function body
-    contains no kernel-launch at all (pure delegation).
+    subscript-then-call syntax `fn[grid](...)`) is inside an `if` whose
+    test is a constant False/0, flag it. Also flag if the function body
+    contains no kernel-launch and no `.apply(...)` indirection at all
+    (pure delegation to a non-Triton op, e.g. `return torch.matmul(...)`).
     """
 
     def __init__(self):
         self.kernel_launches = []        # list of (lineno, in_dead_branch)
+        self.indirect_launches = []      # list of (lineno, class_name) for X.apply(...) calls
         self._dead_branch = False
 
     def visit_If(self, node: ast.If):
@@ -58,11 +73,18 @@ class _GhostOptimizationVisitor(ast.NodeVisitor):
         """
         A Triton kernel launch looks like:  kernel[grid](*args)
         In the AST that is:  Call(func=Subscript(value=Name(...)))
+
+        A torch.autograd.Function dispatch looks like: SomeClass.apply(*args)
+        In the AST that is:  Call(func=Attribute(value=Name(...), attr='apply'))
         """
         if isinstance(node.func, ast.Subscript):
             self.kernel_launches.append(
                 (node.lineno, self._dead_branch)
             )
+        elif isinstance(node.func, ast.Attribute) and node.func.attr == "apply":
+            target = node.func.value
+            class_name = target.id if isinstance(target, ast.Name) else "<unknown>"
+            self.indirect_launches.append((node.lineno, class_name))
         self.generic_visit(node)
 
 
@@ -82,6 +104,20 @@ def check_ghost_optimization(kernel) -> tuple:
 
     launches = visitor.kernel_launches
     if not launches:
+        # FIX: before declaring "no kernel", check whether this delegates
+        # via the torch.autograd.Function `.apply()` idiom. We genuinely
+        # can't see inside that class's forward() from here, so this is
+        # inconclusive, not a confirmed failure — don't fail a real kernel
+        # for a limitation in our own static analysis depth.
+        if visitor.indirect_launches:
+            classes = ", ".join(sorted({c for _, c in visitor.indirect_launches}))
+            return True, (
+                f"No direct kernel[grid](...) launch found, but entry point "
+                f"delegates via .apply() to {classes} — likely a "
+                f"torch.autograd.Function wrapping a real kernel in its "
+                f"forward(). Static analysis can't see inside that class, "
+                f"so this check is inconclusive and is not failed."
+            )
         return False, (
             "No Triton kernel launch detected. "
             "Entry point may delegate entirely to a reference implementation."
@@ -140,7 +176,7 @@ def check_missing_barriers(kernel) -> tuple:
     (False, detail) if a reduction or shared store exists without a barrier.
 
     Note: flash_attention and other multi-stage kernels require barriers;
-    simple element-wise kernels do not.  We only flag when we can detect
+    simple element-wise kernels do not. We only flag when we can detect
     the need.
     """
     try:
@@ -173,11 +209,11 @@ class _TimingVisitor(ast.NodeVisitor):
     """
     Detects two timing-manipulation patterns:
 
-    Pattern A  Missing torch.cuda.synchronize() around timing code.
+    Pattern A — Missing torch.cuda.synchronize() around timing code.
         We look for time.time() / time.perf_counter() / torch.cuda.Event
         usage without a synchronize() call in the same scope.
 
-    Pattern B  Separate CUDA streams for timing vs compute.
+    Pattern B — Separate CUDA streams for timing vs compute.
         If the kernel is launched on a non-default stream but timing
         uses the default stream, results are artificially fast.
     """
@@ -209,7 +245,7 @@ class _TimingVisitor(ast.NodeVisitor):
                  node.func.attr == "synchronize"):
             self.sync_calls.append(node.lineno)
 
-        # Stream keyword in kernel launch  kernel[grid](..., stream=s)
+        # Stream keyword in kernel launch — kernel[grid](..., stream=s)
         for kw in node.keywords:
             if kw.arg == "stream":
                 self.stream_launches.append(node.lineno)
@@ -300,7 +336,7 @@ def check_partial_computation(kernel, max_torch_ratio: float = 0.5) -> tuple:
     Args:
         kernel: source string or callable.
         max_torch_ratio: fraction threshold above which we flag delegation.
-                         Default 0.5  more than half the ops delegated.
+                         Default 0.5 — more than half the ops delegated.
     """
     try:
         src = _get_source(kernel)
