@@ -240,6 +240,50 @@ def check_api_key(model: str):
             if not os.environ.get(env_var):
                 print(f"WARNING: {env_var} not set  {model} calls will likely fail.")
             return
+        
+def _verify_reference_consistency():
+    """
+    Sanity check: the plain-PyTorch pytorch_ref text shown to the LLM must
+    numerically match TritonBench's actual reference implementation.
+    If this ever fails, PROBLEM_SPECS has drifted from ground truth and
+    every generated kernel is being scored against the wrong target.
+    """
+    import torch
+    from TritonBench.reference.softmax import softmax as ref_softmax
+    from TritonBench.reference.layernorm import layernorm as ref_layernorm
+    from TritonBench.reference.mat_mult import matmul as ref_matmul
+    from TritonBench.reference.flash_attention import flash_attention as ref_flash_attention
+
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    torch.manual_seed(0)
+
+    x = torch.rand(4096, 2048, device=device)
+    assert torch.allclose(torch.softmax(x, dim=1), ref_softmax(x), atol=1e-4), \
+        "softmax pytorch_ref no longer matches TritonBench.reference.softmax"
+
+    x = torch.rand(512, 512, device=device)
+    gamma = torch.ones(512, device=device)
+    beta = torch.zeros(512, device=device)
+    assert torch.allclose(
+        torch.nn.functional.layer_norm(x, [512]),
+        ref_layernorm(x, gamma, beta), atol=1e-4
+    ), "layernorm pytorch_ref no longer matches TritonBench.reference.layernorm"
+
+    A = torch.rand(512, 512, device=device)
+    B = torch.rand(512, 512, device=device)
+    assert torch.allclose(torch.matmul(A, B), ref_matmul(A, B), atol=1e-2), \
+        "matmul pytorch_ref no longer matches TritonBench.reference.mat_mult"
+
+    Q = torch.rand(128, 64, device=device)
+    K = torch.rand(128, 64, device=device)
+    V = torch.rand(128, 64, device=device)
+    d = Q.shape[-1]
+    scores = Q @ K.T / (d ** 0.5)
+    ref_attn = torch.softmax(scores, dim=-1) @ V
+    assert torch.allclose(ref_attn, ref_flash_attention(Q, K, V), atol=1e-3), \
+        "flash_attention pytorch_ref no longer matches TritonBench.reference.flash_attention"
+
+    print("Reference consistency check passed: PROBLEM_SPECS matches TritonBench ground truth.")
 
 # Main
 
@@ -266,7 +310,7 @@ def main():
     parser.add_argument("--out",             type=str, default="generated",
                         help="Output root directory (default: generated/).")
     args = parser.parse_args()
-
+    _verify_reference_consistency()
     if args.all:
         operators = list(PROBLEM_SPECS.keys())
     else:

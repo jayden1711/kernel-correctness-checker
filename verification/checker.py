@@ -90,7 +90,6 @@ class KernelChecker:
         # still receive all their required tensors.
         def _cand(x):
             if isinstance(inputs, tuple):
-                # Replace primary input (first element) with perturbed x
                 new_inputs = (x,) + inputs[1:]
             else:
                 new_inputs = x
@@ -160,12 +159,18 @@ class KernelChecker:
 
         for name, adv_inputs in adversarial_pairs:
             adv_primary = spec.primary_input(adv_inputs)
+
+            def _adv_cand(x, ai=adv_inputs):
+                new_inputs = (x,) + ai[1:] if isinstance(ai, tuple) else x
+                return spec.run_candidate(candidate_fn, new_inputs)
+
+            def _adv_ref(x, ai=adv_inputs):
+                new_inputs = (x,) + ai[1:] if isinstance(ai, tuple) else x
+                return spec.run_reference(reference_fn, new_inputs)
+
             results.append(self._run_check(2, f"adversarial_{name}",
-                lambda ai=adv_inputs, ap=adv_primary: check_perturbation_tolerance(
-                    lambda x: spec.run_candidate(candidate_fn, ai),
-                    lambda x: spec.run_reference(reference_fn, ai),
-                    ap,
-                )))
+                lambda c=_adv_cand, r=_adv_ref, ap=adv_primary:
+                    check_perturbation_tolerance(c, r, ap)))
 
         if any(not r.passed for r in results):
             return results

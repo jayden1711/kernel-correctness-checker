@@ -37,10 +37,8 @@ import torch
 
 # Locate kernel-correctness-checker
 
-CHECKER_ROOT = os.path.expanduser(
-    "~/Library/CloudStorage/GoogleDrive-jaydenvasquez1711@gmail.com"
-    "/My Drive/kernel-correctness-checker"
-)
+CHECKER_ROOT = os.path.dirname(os.path.abspath(__file__))
+
 if CHECKER_ROOT not in sys.path:
     sys.path.insert(0, CHECKER_ROOT)
 
