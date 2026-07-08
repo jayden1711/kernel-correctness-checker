@@ -25,26 +25,10 @@ def check_perturbation_tolerance(
     ref_base = reference_fn(x)
 
     if x.numel() < 2:
-        # Sample std of a single-element tensor is undefined (no variance
-        # to estimate from one point) -- PyTorch returns NaN, which then
-        # propagates through the whole sensitivity/tolerance computation
-        # and silently makes every subsequent comparison vacuously pass
-        # (any comparison against NaN is False, including max_err > NaN).
-        # Return None explicitly rather than True/False so callers can
-        # distinguish "skipped, not validated" from "passed" or "failed" --
-        # confirmed necessary: a candidate could be completely wrong on a
-        # single-element input and still silently report PASS here if this
-        # guard isn't in place.
+   
         return None, "skipped -- perturbation tolerance undefined for single-element input"
 
     if not torch.is_floating_point(x):
-        # Confirmed necessary via dequantize_rowwise.py: this operator's
-        # primary input is itself quantized (int8), and torch.randn_like
-        # cannot write normal-distributed floats into an integer tensor
-        # ("normal_kernel_cuda" not implemented for 'Char'). Not a
-        # candidate defect -- this check's premise (small Gaussian
-        # perturbation) doesn't apply to integer-coded inputs. Skip
-        # explicitly rather than let the caller catch a raw exception.
         return None, f"skipped -- perturbation tolerance not meaningful for non-floating-point input (dtype={x.dtype})"
 
     x_std = x.float().std().item()

@@ -38,7 +38,10 @@ from verification.layer1_structural.ast_analysis import (
     check_timing_manipulation,
     check_partial_computation,
 )
-from verification.layer1_structural.tile_coverage import check_all_tiles_visited
+from verification.layer1_structural.tile_coverage import (
+    check_all_tiles_visited,
+    check_all_tiles_visited_generic,
+)
 from verification.layer1_structural.runtime_guards import (
     check_nan_inf,
     check_dtype_preserved,
@@ -123,13 +126,15 @@ class KernelChecker:
         results.append(self._run_check(1, "kernel_executed",
             lambda: check_kernel_executed(_cand, primary, _ref)))
 
+
+        results.append(self._run_check(1, "tile_coverage_structural",
+            lambda: check_all_tiles_visited_generic(spec, candidate_fn, inputs)))
         if primary.dim() == 2 and not isinstance(inputs, tuple):
-            results.append(self._run_check(1, "tile_coverage",
+            results.append(self._run_check(1, "tile_coverage_softmax_positivity",
                 lambda rk=raw_kernel: check_all_tiles_visited(candidate_fn, rk, primary)))
-             # Reset CUDA context after triton-viz tracing to prevent state corruption
-            if torch.cuda.is_available():
-                torch.cuda.synchronize()
-                torch.cuda.empty_cache()
+        if torch.cuda.is_available():
+            torch.cuda.synchronize()
+            torch.cuda.empty_cache()
 
         if any(not r.passed for r in results):
             return results

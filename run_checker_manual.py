@@ -19,6 +19,9 @@ Examples of valid kernel files:
     def softmax_forward(x): ...
     def forward(x): ...
 
+    # layernorm:
+    def layernorm(x, gamma, beta): ...
+
     # matmul:
     def matmul(A, B): ...
 
@@ -48,6 +51,11 @@ from verification.specs.layernorm import LayernormSpec
 from verification.specs.matmul import MatmulSpec
 from verification.specs.flash_attention import FlashAttentionSpec
 
+from TritonBench.reference.softmax import softmax as ref_softmax
+from TritonBench.reference.layernorm import layernorm as ref_layernorm
+from TritonBench.reference.mat_mult import matmul as ref_matmul
+from TritonBench.reference.flash_attention import flash_attention as ref_flash_attention
+
 # Config
 
 SPEC_MAP = {
@@ -74,7 +82,14 @@ def make_test_inputs(operator: str) -> tuple:
     if operator == "softmax":
         return (torch.rand(512, 512, device="cuda"),)
     elif operator == "layernorm":
-        return (torch.rand(512, 512, device="cuda"),)
+        # FIXED: was (x,) alone -- LayernormKernelSpec.run_candidate does
+        # `x, gamma, beta = inputs`, which crashed (ValueError: too many
+        # values to unpack) on a bare (512,512) tensor, and any real
+        # layernorm kernel's signature (x, gamma, beta[, eps]) requires
+        # all three arguments regardless.
+        return (torch.rand(512, 512, device="cuda"),
+                torch.ones(512, device="cuda"),
+                torch.zeros(512, device="cuda"))
     elif operator == "matmul":
         return (torch.rand(256, 256, device="cuda"),
                 torch.rand(256, 256, device="cuda"))
@@ -86,19 +101,18 @@ def make_test_inputs(operator: str) -> tuple:
 
 
 def reference_output(operator: str, inputs: tuple) -> torch.Tensor:
+    """Ground truth via TritonBench.reference.* -- see module docstring
+    for why this is imported rather than re-derived inline."""
     if operator == "softmax":
-        return torch.softmax(inputs[0], dim=1)
+        return ref_softmax(inputs[0])
     elif operator == "layernorm":
-        x = inputs[0]
-        return torch.nn.functional.layer_norm(x, [x.shape[-1]])
+        x, gamma, beta = inputs
+        return ref_layernorm(x, gamma, beta)
     elif operator == "matmul":
-        return torch.matmul(inputs[0], inputs[1])
+        return ref_matmul(inputs[0], inputs[1])
     elif operator == "flash_attention":
         Q, K, V = inputs
-        d = Q.shape[-1]
-        scores = Q @ K.T / (d ** 0.5)
-        weights = torch.softmax(scores, dim=-1)
-        return weights @ V
+        return ref_flash_attention(Q, K, V)
     raise ValueError(f"Unknown operator: {operator}")
 
 # Load kernel
@@ -180,23 +194,25 @@ def run_full_checker(kernel_fn, operator: str):
 
     if operator == "softmax":
         x = torch.rand(512, 512, device="cuda")
-        ref = lambda inp: torch.softmax(inp, dim=1)
-        return checker.run(kernel_fn, None, ref, x)
+        return checker.run(kernel_fn, None, lambda inp: ref_softmax(inp), x)
     elif operator == "layernorm":
+        # FIXED: now passes (x, gamma, beta) as a 3-tuple, matching what
+        # LayernormKernelSpec actually expects, instead of a bare tensor.
         x = torch.rand(512, 512, device="cuda")
-        ref = lambda inp: torch.nn.functional.layer_norm(inp, [inp.shape[-1]])
-        return checker.run(kernel_fn, None, ref, x)
+        gamma = torch.ones(512, device="cuda")
+        beta = torch.zeros(512, device="cuda")
+        ref = lambda inp, g, b: ref_layernorm(inp, g, b)
+        return checker.run(kernel_fn, None, ref, (x, gamma, beta))
     elif operator == "matmul":
         A = torch.rand(256, 256, device="cuda")
         B = torch.rand(256, 256, device="cuda")
-        ref = lambda a, b: torch.matmul(a, b)
+        ref = lambda a, b: ref_matmul(a, b)
         return checker.run(kernel_fn, None, ref, (A, B))
     elif operator == "flash_attention":
         Q = torch.rand(128, 64, device="cuda")
         K = torch.rand(128, 64, device="cuda")
         V = torch.rand(128, 64, device="cuda")
-        d = Q.shape[-1]
-        ref = lambda q, k, v: torch.softmax(q @ k.T / (d**0.5), dim=-1) @ v
+        ref = lambda q, k, v: ref_flash_attention(q, k, v)
         return checker.run(kernel_fn, None, ref, (Q, K, V))
     else:
         raise ValueError(f"Unknown operator: {operator}")
@@ -248,7 +264,7 @@ def print_report(path: str, operator: str, func_name_used: str,
     # Extra note for the interesting case
     if allclose_pass and failed:
         print("\n  ⚠  This kernel PASSED naive allclose but FAILED deeper")
-        print("     verification  exactly the class of subtle bug this")
+        print("     verification exactly the class of subtle bug this")
         print("     checker is designed to catch.")
 
     print("=" * 65 + "\n")

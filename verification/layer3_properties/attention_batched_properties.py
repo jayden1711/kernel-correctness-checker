@@ -6,25 +6,6 @@ bounded-by-values) to real-world kernels with (batch, heads, seq, dim)
 4D inputs and an optional `causal` flag -- confirmed necessary by
 TritonBench_G_v1/flash_attn.py, which the existing FlashAttentionSpec
 (2D, non-causal only) cannot represent.
-
-KEY CLAIM, stated explicitly so it can be checked rather than trusted:
-Both properties survive causal masking WITHOUT modification to the
-invariant itself:
-  - sum-to-one: a correct causal softmax normalizes over exactly the
-    positions it's allowed to attend to. Whatever that visible set is,
-    the weights over it still sum to 1 for every query row. The
-    invariant doesn't change; only which V=ones probe input counts as
-    "correct" changes (it still does -- V=ones is unaffected by which
-    subset of V a row's weights are drawn from, since every value is 1).
-  - bounded-by-values: output is still a convex combination of whichever
-    V rows a query is allowed to see, so it's still within the global
-    min/max of V. The visible subset only shrinks the combination's
-    support, never pushes it outside V's range.
-
-This claim is NOT independently verified against a real causal
-reference implementation run end-to-end here -- it's a mathematical
-argument, not an empirical confirmation. Treat the first real run
-against flash_attn.py as the test of this claim, not this docstring.
 """
 
 from typing import Any, Callable, Optional
@@ -181,14 +162,6 @@ def try_attention_layer3(
     look like attention. Returns a dict of {check_name: (bool, detail)}
     if it does.
 
-    IMPORTANT CAVEAT, stated rather than hidden: the V=ones and
-    bounds-check probes here call `candidate_fn` a SECOND and THIRD time
-    with substituted arguments. If the candidate has side effects, non-
-    determinism beyond floating point (e.g. dropout without a fixed
-    seed), or mutates its input tensors in place, these extra calls can
-    give misleading results. None of the 4 reference files checked so
-    far do this, but it hasn't been verified as a general absence across
-    TritonBench-G.
     """
     qkv_info = _looks_like_qkv(args, kwargs)
     if qkv_info is None:

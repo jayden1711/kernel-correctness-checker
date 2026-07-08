@@ -44,7 +44,7 @@ def flash_attention_kernel(
         V_block = tl.load(V_ptrs, mask=V_mask, other=0.0)
 
         #Attention scores for this tile: [BLOCK_M, BLOCK_N]
-        S = tl.dot(Q_block, tl.trans(K_block))
+        S = tl.dot(Q_block, tl.trans(K_block)) * (1.0 / (D ** 0.5))
 
         #Update running max
         m_new = tl.maximum(m, tl.max(S, axis=1))

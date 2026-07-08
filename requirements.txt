@@ -2,3 +2,4 @@ triton
 triton-viz
 torch
 hypothesis
+litellm

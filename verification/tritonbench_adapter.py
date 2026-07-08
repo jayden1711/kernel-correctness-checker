@@ -6,7 +6,7 @@ reference/test file pairs, where the candidate is an LLM-generated kernel
 that must expose the same top-level callable name as the reference.
 
 Confirmed against 4 real TritonBench_G_v1 files (softmax_optimize.py,
-layer_norm_triton.py, matmul_tma.py, flash_attn.py) -- NOT the full ~140.
+layer_norm_triton.py, matmul_tma.py, flash_attn.py), NOT the full ~140.
 Treat this as validated for those four shapes, not the whole benchmark.
 
 Core idea:
@@ -16,14 +16,14 @@ Core idea:
     is NOT reliably a top-level `def` in kernel_src (layer_norm_triton.py
     binds it via `layer_norm = LayerNorm.apply`, not a `def`). So the name
     is extracted from the CALL SITE in test_src, not from kernel_src's
-    definitions -- usage is the more reliable source of the contract.
+    definitions, usage is the more reliable source of the contract.
   - The candidate is required (matching TritonBench's own EVAL/*/0_call_acc.py
     convention) to define a callable of that same name.
   - We monkeypatch that name in a candidate namespace with a spy, execute
     test_src once, and capture the real (args, kwargs) used for every
     call. This sidesteps needing to understand the test body's control
     flow or return-value shape (test_layer_norm_with_backward returns a
-    dict of floats, not a tensor -- capturing at the call site works
+    dict of floats, not a tensor, capturing at the call site works
     regardless of what the test does with the result afterward).
 
 KNOWN LIMITATIONS (confirmed gaps, not hidden ones):
@@ -35,7 +35,7 @@ KNOWN LIMITATIONS (confirmed gaps, not hidden ones):
     if that assumption doesn't hold for a given file.
   - Layer-3 algebraic properties only run when the captured call matches
     a known shape convention (see run_layer3_if_applicable below). Real
-    kernels that don't match -- there will be some -- legitimately skip
+    kernels that don't match, legitimately skip
     Layer 3, and that skip is logged, not silent.
 """
 
@@ -62,13 +62,13 @@ from verification.layer3_properties.layernorm_generic_properties import (
 from verification.layer3_properties.matmul_generic_properties import (
     try_matmul_layer3,
 )
+from verification.layer3_properties.softmax_generic_properties import (
+    try_softmax_layer3,
+)
 
 SEPARATOR = "#" * 146
 
-
-# ---------------------------------------------------------------------------
 # Reference-file parsing
-# ---------------------------------------------------------------------------
 
 def split_reference_file(path: str) -> tuple[str, str]:
     """Split a TritonBench_G_v1 reference file into (kernel_src, test_src)."""
@@ -138,14 +138,6 @@ def _load_module_from_source(src: str, tag: str) -> dict:
     """
     Write `src` to a REAL temp .py file and import it via importlib.
 
-    This is not optional cleanliness -- it's required. @triton.jit calls
-    inspect.getsource() on the decorated function at compile time, and
-    that raises `ValueError: @jit functions should be defined in a Python
-    file` if the function's code object doesn't point at a real file on
-    disk. exec(compile(src, filename="<synthetic>")) produces exactly
-    that failure mode. This was verified the hard way: the original
-    version of this function used exec-into-namespace and failed on the
-    first real run against every one of the 4 files checked so far.
 
     Each call gets a unique filename so the reference and candidate
     (which likely define same-named functions/kernels) don't collide as
@@ -164,9 +156,7 @@ def _load_module_from_source(src: str, tag: str) -> dict:
     return module.__dict__
 
 
-# ---------------------------------------------------------------------------
 # Call capture
-# ---------------------------------------------------------------------------
 
 @dataclass
 class CapturedCall:
@@ -187,9 +177,8 @@ class _CallSpy:
         return self.fn(*args, **kwargs)
 
 
-# ---------------------------------------------------------------------------
 # Result types
-# ---------------------------------------------------------------------------
+
 
 @dataclass
 class AdapterResult:
@@ -200,9 +189,7 @@ class AdapterResult:
     per_call_checks: list = field(default_factory=list)
 
 
-# ---------------------------------------------------------------------------
 # Main entry point
-# ---------------------------------------------------------------------------
 
 def run_candidate_against_reference(
     reference_path: str,
@@ -263,13 +250,7 @@ def run_candidate_against_reference(
 
     # test_src is exec'd from a REAL temp file, not a synthetic filename,
     # for the same reason kernel_src/candidate_src are (see
-    # _load_module_from_source). Originally assumed unnecessary -- the
-    # assumption was "test bodies just call already-defined kernels, they
-    # don't define @triton.jit themselves" -- and that assumption held for
-    # every file checked until quantize_kv_copy.py, whose test body DOES
-    # define an inline @triton.jit kernel directly, which then failed with
-    # the same "@jit functions should be defined in a Python file" error
-    # this same fix already solved once for kernel_src/candidate_src.
+    # _load_module_from_source). 
     test_tmp_path = os.path.join(tempfile.gettempdir(), f"_tb_test_{uuid.uuid4().hex}.py")
     with open(test_tmp_path, "w", encoding="utf-8") as f:
         f.write(textwrap.dedent(test_src))
@@ -291,11 +272,11 @@ def run_candidate_against_reference(
 
     if cand_ns.get(entry_point) is not spy:
         # CONFIRMED via quantize_kv_copy.py: test_src can contain its own
-        # top-level `def <entry_point>(...)` (a full second copy of the
+        # top-level 'def <entry_point>(...)' (a full second copy of the
         # reference implementation, embedded in what should be the
         # isolated test section). Executing that def statement REBINDS
         # cand_ns[entry_point] away from the spy, silently. The test then
-        # calls the just-redefined REFERENCE code, not the candidate --
+        # calls the just-redefined REFERENCE code, not the candidate,
         # zero exception, zero indication anything is wrong, and
         # (elsewhere) potentially a hybrid candidate-wrapper/leaked-
         # reference-kernel execution that could produce a false PASS.
@@ -321,10 +302,7 @@ def run_candidate_against_reference(
 
     return result
 
-
-# ---------------------------------------------------------------------------
 # Per-call universal checks (signature-agnostic)
-# ---------------------------------------------------------------------------
 
 def _first_tensor(args: tuple, kwargs: dict) -> Optional[torch.Tensor]:
     for a in args:
@@ -383,17 +361,7 @@ def _check_one_call(
         dtype_ok = cand_out.dtype == ref_out.dtype
         out["checks"]["dtype_match"] = (dtype_ok, f"{cand_out.dtype} vs {ref_out.dtype}")
         if not dtype_ok:
-            # CONFIRMED BUG, not a new addition: this line was previously
-            # missing entirely. dtype_match was computed and displayed but
-            # never affected the overall verdict -- discovered via
-            # dequantize_rowwise.py, where a candidate returning int8
-            # instead of float16 (i.e. never actually dequantizing) showed
-            # dtype_match=FAIL but overall passed=True, because nothing
-            # gated on it. Not an early return (unlike shape_ok) since some
-            # legitimately-correct kernels may differ in dtype by benign
-            # design (e.g. internal fp32 accumulation surfaced as fp16) --
-            # allclose is still computed below for that case's sake, but
-            # a dtype mismatch on its own is now sufficient to fail the call.
+
             out["passed"] = False
 
         finite_input = all(
@@ -405,19 +373,6 @@ def _check_one_call(
         )
 
         if not finite_input:
-            # Input itself is non-finite (e.g. inf/-inf/nan test cases in
-            # the reference's own test suite). Non-finite output is then
-            # the mathematically expected result, not a defect -- but the
-            # DOWNSTREAM checks (allclose, perturbation_tolerance,
-            # determinism) all break on this in a way that looks like a
-            # real failure but isn't: NaN != NaN under IEEE 754, so
-            # torch.allclose (default equal_nan=False) and torch.equal
-            # (used by check_determinism) both report "mismatch" even
-            # when candidate and reference are byte-identical. Confirmed
-            # by direct observation on softmax_flaggems.py: a self-check
-            # (candidate == reference) reported FAIL allclose / FAIL
-            # determinism purely from this comparison artifact, not from
-            # any real discrepancy.
             cand_nan_mask = torch.isnan(cand_out) | torch.isinf(cand_out)
             ref_nan_mask = torch.isnan(ref_out) | torch.isinf(ref_out)
             pattern_matches = torch.equal(cand_nan_mask, ref_nan_mask)
@@ -431,7 +386,7 @@ def _check_one_call(
                 return out
 
             # NaN-aware allclose: equal_nan=True treats matching NaNs as
-            # equal instead of automatically failing. Still meaningful --
+            # equal instead of automatically failing. Still meaningful,
             # it will correctly catch a candidate that gets the FINITE
             # elements of a mixed finite/non-finite tensor wrong, it just
             # stops incorrectly failing on the non-finite elements.
@@ -447,7 +402,7 @@ def _check_one_call(
                 out["passed"] = False
 
             # perturbation_tolerance and determinism are not well-defined
-            # on non-finite input -- perturbing an already-inf/nan value
+            # on non-finite input: perturbing an already-inf/nan value
             # with small Gaussian noise doesn't measure anything
             # meaningful, and determinism's torch.equal has the same
             # NaN!=NaN problem as above. Skip explicitly rather than
@@ -491,15 +446,7 @@ def _check_one_call(
                     if p_ok is False:
                         out["passed"] = False
                 except Exception as e:
-                    # CONFIRMED BUG, not new: this branch logged (False, ...)
-                    # for display but never touched out["passed"], so a
-                    # check that visibly errored still contributed nothing
-                    # to the aggregate verdict. Discovered via
-                    # dequantize_rowwise.py: torch.randn_like fails on an
-                    # int8 primary input ("normal_kernel_cuda" not
-                    # implemented for 'Char'), the exception was caught and
-                    # displayed as FAIL, and the overall call still read
-                    # PASS regardless.
+     
                     out["checks"]["perturbation_tolerance"] = (False, f"check errored: {e}")
                     out["passed"] = False
 
@@ -517,7 +464,7 @@ def _check_one_call(
                 )
 
         # Optional Layer-3: only fires if this call looks like attention
-        # (Q, K, V [,causal]) -- see attention_batched_properties.py.
+        # (Q, K, V [,causal]), see attention_batched_properties.py.
         attn_result = try_attention_layer3(candidate_fn, args, kwargs)
         if attn_result is not None:
             out["checks"].update(attn_result)
@@ -525,7 +472,7 @@ def _check_one_call(
                 out["passed"] = False
 
         # Optional Layer-3: only fires if this call looks like layernorm
-        # (x plus two 1-D tensors matching x's trailing dim) -- see
+        # (x plus two 1-D tensors matching x's trailing dim), see
         # layernorm_generic_properties.py. Needs reference_fn (unlike the
         # attention check) since it diffs candidate against reference
         # directly at non-identity affine params, rather than checking a
@@ -537,7 +484,7 @@ def _check_one_call(
                 out["passed"] = False
 
         # Optional Layer-3: only fires if this call looks like matmul
-        # (2+ tensors, A.shape[-1]==B.shape[-2]) -- see
+        # (2+ tensors, A.shape[-1]==B.shape[-2]), see
         # matmul_generic_properties.py. Probes a shape deliberately NOT
         # aligned to common block sizes, since the confirmed blind spot
         # here is boundary-mask bugs invisible on block-aligned test
@@ -547,6 +494,17 @@ def _check_one_call(
         if mm_result is not None:
             out["checks"].update(mm_result)
             if any(v[0] is False for k, v in mm_result.items()):
+                out["passed"] = False
+
+        # Optional Layer-3: only fires if this call looks like softmax
+        # (exactly one tensor argument, >=2D), see
+        # softmax_generic_properties.py. Closes the asymmetry where
+        # softmax's only confirmed catch depended on one file's own test
+        # happening to include an adversarial shape.
+        sm_result = try_softmax_layer3(candidate_fn, args, kwargs)
+        if sm_result is not None:
+            out["checks"].update(sm_result)
+            if any(v[0] is False for k, v in sm_result.items()):
                 out["passed"] = False
 
     else:
@@ -581,14 +539,6 @@ def summarize(result: AdapterResult) -> str:
     return "\n".join(lines)
 
 
-# ---------------------------------------------------------------------------
-# Timeout isolation -- required before running this over more than a
-# handful of hand-picked files. A hung Triton compile (TMA/autotuning on
-# unsupported hardware, an infinite kernel loop, etc.) blocks forever with
-# no isolation. This mirrors the multiprocessing + hard-kill pattern your
-# original run_tritonbench.py already used for exactly this reason.
-# ---------------------------------------------------------------------------
-
 import multiprocessing as mp
 
 
@@ -609,18 +559,6 @@ def run_with_timeout(
     Run run_candidate_against_reference in a subprocess with a hard
     timeout. Returns an AdapterResult with load_error='TIMEOUT' if the
     process doesn't finish in time -- never blocks indefinitely.
-
-    IMPORTANT: uses an explicit 'spawn' context, not the platform default
-    (fork on Linux). Forking a process that has already initialized CUDA
-    (true for basically any notebook that's called .cuda() earlier in the
-    session) hands the child a CUDA context copied from the parent's
-    memory that does not actually work in the child -- this can hang
-    indefinitely rather than erroring, often silently, mid-kernel-compile.
-    'spawn' launches a genuinely fresh interpreter with no inherited CUDA
-    state. This is why the original run_tritonbench.py called
-    mp.set_start_method("spawn", force=True) -- using get_context() here
-    instead of the global set_start_method so this doesn't have side
-    effects on multiprocessing elsewhere in the notebook.
     """
     ctx = mp.get_context("spawn")
     queue = ctx.Queue()

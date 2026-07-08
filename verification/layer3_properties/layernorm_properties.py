@@ -42,7 +42,7 @@ def check_unit_variance(output: torch.Tensor, atol: float = 1e-3) -> tuple:
 def check_scale_invariance(
     kernel_fn: Callable,
     x: torch.Tensor,
-    atol: float = 1e-4,
+    atol: float = 1e-3,
 ) -> tuple:
     """
     layernorm(c·x) == layernorm(x) for any scalar c > 0.

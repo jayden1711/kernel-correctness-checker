@@ -8,9 +8,10 @@ Usage:
     python run_generation.py --all --n 10                           # override count
     python run_generation.py --all --model gpt-4o                   # use GPT-4o
     python run_generation.py --all --model deepseek/deepseek-coder  # use DeepSeek
+    python run_generation.py --all --api-key sk-...                 # pass key directly
 
-Supported models (set the corresponding env var):
-    claude-sonnet-4-20250514    export ANTHROPIC_API_KEY=...
+Supported models (set the corresponding env var, or use --api-key):
+    claude-sonnet-5             export ANTHROPIC_API_KEY=...
     gpt-4o                      export OPENAI_API_KEY=...
     deepseek/deepseek-coder     export DEEPSEEK_API_KEY=...
     gemini/gemini-2.5-flash     export GEMINI_API_KEY=...
@@ -240,7 +241,31 @@ def check_api_key(model: str):
             if not os.environ.get(env_var):
                 print(f"WARNING: {env_var} not set  {model} calls will likely fail.")
             return
-        
+
+
+def apply_api_key_arg(model: str, api_key: str):
+    """
+    If --api-key was passed on the command line, set the appropriate
+    provider env var from it before any litellm calls are made. Uses the
+    same prefix-matching table as check_api_key so the two stay in sync.
+    """
+    key_map = {
+        "claude":   "ANTHROPIC_API_KEY",
+        "gpt":      "OPENAI_API_KEY",
+        "openai":   "OPENAI_API_KEY",
+        "deepseek": "DEEPSEEK_API_KEY",
+        "gemini":   "GEMINI_API_KEY",
+        "mistral":  "MISTRAL_API_KEY",
+    }
+    model_lower = model.lower()
+    for prefix, env_var in key_map.items():
+        if prefix in model_lower:
+            os.environ[env_var] = api_key
+            return
+    print(f"WARNING: couldn't infer provider env var from model '{model}' -- "
+          f"--api-key was not applied. Set the relevant env var manually instead.")
+
+
 def _verify_reference_consistency():
     """
     Sanity check: the plain-PyTorch pytorch_ref text shown to the LLM must
@@ -285,9 +310,94 @@ def _verify_reference_consistency():
 
     print("Reference consistency check passed: PROBLEM_SPECS matches TritonBench ground truth.")
 
+def verify_generated_kernel(operator: str, kernel_path: str) -> str:
+    """
+    Load and run the just-generated kernel through the original 2D
+    KernelChecker, immediately after generation, using the SAME operator
+    context already known from the loop -- avoids re-inferring which spec
+    applies from a file path (fragile) the way a separate post-hoc pass
+    over generated/*/*/*.py would have to.
+
+    Returns a short human-readable verdict string; never raises past its
+    own boundary so one bad kernel doesn't kill the generation loop.
+    """
+    import importlib.util
+    import torch
+
+    try:
+        from verification.checker import KernelChecker
+        from verification.specs.softmax import SoftmaxSpec
+        from verification.specs.layernorm import LayernormSpec
+        from verification.specs.matmul import MatmulSpec
+        from verification.specs.flash_attention import FlashAttentionSpec
+        from TritonBench.reference.softmax import softmax as ref_softmax
+        from TritonBench.reference.layernorm import layernorm as ref_layernorm
+        from TritonBench.reference.mat_mult import matmul as ref_matmul
+        from TritonBench.reference.flash_attention import flash_attention as ref_flash_attention
+    except Exception as e:
+        return f"VERIFY_SKIP (checker imports unavailable: {e})"
+
+    spec_map = {
+        "softmax":         (SoftmaxSpec, ref_softmax),
+        "layernorm":       (LayernormSpec, ref_layernorm),
+        "matmul":          (MatmulSpec, ref_matmul),
+        "flash_attention": (FlashAttentionSpec, ref_flash_attention),
+    }
+    if operator not in spec_map:
+        return "VERIFY_SKIP (no spec for this operator)"
+
+    spec_cls, ref_fn = spec_map[operator]
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+
+    try:
+        mspec = importlib.util.spec_from_file_location("_gen_candidate", kernel_path)
+        mod = importlib.util.module_from_spec(mspec)
+        mspec.loader.exec_module(mod)
+    except Exception as e:
+        return f"VERIFY_FAIL (candidate did not load: {type(e).__name__}: {e})"
+
+    candidate_fn = getattr(mod, FUNC_NAMES.get(operator, ""), None)
+    if candidate_fn is None or not callable(candidate_fn):
+        # looks up the exact expected name via
+        # FUNC_NAMES first (already defined above for the generation
+        # prompt), and the fallback scan explicitly excludes classes.
+        for name in dir(mod):
+            if name.startswith("_"):
+                continue
+            obj = getattr(mod, name)
+            if callable(obj) and not isinstance(obj, type):
+                candidate_fn = obj
+                break
+    if candidate_fn is None:
+        return "VERIFY_FAIL (no callable found in candidate file)"
+
+    if operator == "softmax":
+        inputs = torch.rand(512, 512, device=device)
+        run_ref = lambda x: ref_fn(x)
+    elif operator == "layernorm":
+        inputs = (torch.rand(512, 512, device=device),
+                   torch.ones(512, device=device), torch.zeros(512, device=device))
+        run_ref = lambda x, w, b: ref_fn(x, w, b)
+    elif operator == "matmul":
+        inputs = (torch.rand(256, 256, device=device), torch.rand(256, 256, device=device))
+        run_ref = lambda a, b: ref_fn(a, b)
+    else:  # flash_attention
+        inputs = (torch.rand(128, 64, device=device), torch.rand(128, 64, device=device),
+                   torch.rand(128, 64, device=device))
+        run_ref = lambda q, k, v: ref_fn(q, k, v)
+
+    try:
+        spec = spec_cls(name=operator)
+        checker = KernelChecker(spec)
+        results = checker.run(candidate_fn, None, run_ref, inputs)
+        return checker.verdict(results)
+    except Exception as e:
+        return f"VERIFY_ERROR ({type(e).__name__}: {e})"
+
+
 # Main
 
-DEFAULT_MODEL = "claude-sonnet-4-20250514"
+DEFAULT_MODEL = "claude-sonnet-5"
 
 def main():
     parser = argparse.ArgumentParser(
@@ -309,7 +419,17 @@ def main():
                         ))
     parser.add_argument("--out",             type=str, default="generated",
                         help="Output root directory (default: generated/).")
+    parser.add_argument("--api-key",         type=str, default=None,
+                        help=(
+                            "API key for the selected model's provider. If omitted, "
+                            "falls back to the relevant environment variable "
+                            "(ANTHROPIC_API_KEY, OPENAI_API_KEY, etc)."
+                        ))
     args = parser.parse_args()
+
+    if args.api_key:
+        apply_api_key_arg(args.model, args.api_key)
+
     _verify_reference_consistency()
     if args.all:
         operators = list(PROBLEM_SPECS.keys())
@@ -340,14 +460,15 @@ def main():
                 code = generate_kernel(args.model, operator)
                 path = save_kernel(args.model, operator, i, code, args.out)
                 done += 1
+                verdict = verify_generated_kernel(operator, path)
                 print(f"   [{done}/{total}] saved  {path}")
+                print(f"              {verdict}")
             except Exception as e:
                 print(f"   [{done}/{total}] ERROR on {operator} kernel {i}: {e}")
             if i < args.n:
                 time.sleep(0.5)
 
     print(f"\nDone. {done}/{total} kernels saved under {args.out}/{short}/")
-    print("Run `python run_checker.py` to verify all generated kernels.")
 
 
 if __name__ == "__main__":

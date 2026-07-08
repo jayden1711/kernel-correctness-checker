@@ -3,32 +3,6 @@ verification/layer3_properties/layernorm_generic_properties.py
 
 Generic (signature-agnostic) affine-correctness probe for layernorm-shaped
 calls captured by the TritonBench adapter.
-
-CONFIRMED NECESSARY, not speculative: layer_norm_triton.py's own test body
-constructs gamma=ones, beta=zeros (identity affine transform). At those
-values, `x_hat * gamma + beta` is mathematically identical to `x_hat` alone
--- so a candidate that DROPS the affine transform entirely produces
-max_err=0.000000 against the reference on that file's own test input. This
-was confirmed directly: injecting exactly that bug into layer_norm_triton.py
-and running it through the adapter's normal per-call checks produced a
-clean PASS across the board. Only probing with non-identity gamma/beta
-(gamma=2, beta=3) exposed the bug, with max_err=6.5.
-
-DESIGN CHOICE (stated so it isn't rediscovered as a surprise later): this
-probes by calling the REAL reference_fn and candidate_fn directly at
-adversarial affine params and diffing them against EACH OTHER -- not by
-reimplementing layernorm's reference math from scratch (the way
-verification/layer3_properties/layernorm_properties.py's
-check_affine_correctness does for the original 2D checker). Trade-off:
-this makes no assumption about eps conventions or exact formula, so it
-generalizes across arbitrary real-world kernels -- but it also means if
-the reference implementation itself were subtly wrong, this check would
-not catch it, since it only checks candidate-vs-reference agreement, not
-candidate-vs-mathematical-ground-truth. Given the confirmed failure mode
-here (candidate silently agrees with reference due to benign test input,
-not reference incorrectness), that trade-off is the right one for this
-use case, but it is a real limitation, not a strict upgrade over the
-original check_affine_correctness.
 """
 
 from typing import Any, Optional, Callable

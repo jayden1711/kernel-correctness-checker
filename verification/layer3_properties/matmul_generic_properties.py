@@ -3,24 +3,6 @@ verification/layer3_properties/matmul_generic_properties.py
 
 Generic (signature-agnostic) non-aligned-shape probe for matmul-shaped
 calls captured by the TritonBench adapter.
-
-CONFIRMED NECESSARY: matmul_leakyrelu.py's own test body calls with A, B
-of shape (64,64) -- exactly divisible by this kernel's BLOCK_SIZE_M=
-BLOCK_SIZE_N=32. A candidate with the output-store boundary mask removed
-entirely produced max_err=0.000000 against the reference on that test's
-own input, because every write happens to be in-bounds anyway at that
-shape. The bug is real and severe (verified separately: the same removed
-mask produces large errors at non-aligned shapes) but invisible to every
-check that only ever sees the reference test's own block-aligned input.
-
-DESIGN: rather than trying to infer this kernel's internal block size
-(not observable from outside), pad A and B to a shape with a large ODD
-prime added to each dimension (89, chosen arbitrarily but deliberately not
-a multiple of any common block size: 16/32/64/128), which defeats
-alignment with essentially any block-size convention without needing to
-know it. Compare candidate against reference directly at that shape,
-mirroring the layernorm approach of diffing real reference_fn vs
-candidate_fn rather than reimplementing matmul from scratch.
 """
 
 from typing import Any, Optional, Callable
@@ -62,7 +44,7 @@ def _looks_like_matmul(args: tuple, kwargs: dict) -> Optional[dict]:
 
     NOT yet verified against matmul-shaped files using non-standard
     argument order (e.g. C passed in as an output buffer, alpha/beta
-    scalars mixed into positional args) -- only checked against
+    scalars mixed into positional args), only checked against
     matmul_leakyrelu.py's (A, B, activation) convention.
     """
     slots = _tensor_slots(args, kwargs)
