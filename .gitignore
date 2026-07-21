@@ -39,3 +39,26 @@ __pycache__/
 
 # Cloned
 TritonBench_G_repo/
+
+# Environment
+.env
+
+# Adversarial search outputs
+adversarial_results/
+
+# Test artifacts
+.pytest_cache/
+htmlcov/
+.coverage
+coverage.xml
+
+# Logs
+triton_kernel_logs/
+*.log
+
+# LLM / litellm cache
+.litellm_cache/
+litellm_cache/
+
+# SQLite history DB (runtime artifact, not source)
+search_history.db

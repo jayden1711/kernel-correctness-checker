@@ -65,6 +65,10 @@ from verification.layer3_properties.matmul_generic_properties import (
 from verification.layer3_properties.softmax_generic_properties import (
     try_softmax_layer3,
 )
+from verification.layer3_properties.rmsnorm_generic_properties import (
+    try_rmsnorm_layer3,
+)
+
 
 SEPARATOR = "#" * 146
 
@@ -506,6 +510,15 @@ def _check_one_call(
             out["checks"].update(sm_result)
             if any(v[0] is False for k, v in sm_result.items()):
                 out["passed"] = False
+         # Optional Layer-3: only fires if this call looks like rmsnorm
+        # (exactly two tensor args, second is 1-D matching first's trailing
+        # dim), see rmsnorm_generic_properties.py.
+        rn_result = try_rmsnorm_layer3(candidate_fn, reference_fn, args, kwargs)
+        if rn_result is not None:
+            out["checks"].update(rn_result)
+            if any(v[0] is False for k, v in rn_result.items()):
+                out["passed"] = False
+
 
     else:
         out["checks"]["note"] = (

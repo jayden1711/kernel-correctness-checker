@@ -121,3 +121,24 @@ class AttentionKernelSpec(KernelSpec):
         K = torch.randn(N, D, device=device, dtype=dtype)
         V = torch.randn(N, D, device=device, dtype=dtype)
         return Q, K, V
+    
+@dataclass
+class RMSNormKernelSpec(KernelSpec):
+    """f(x, gamma) -> Tensor.  No beta — RMSNorm is bias-free."""
+ 
+    def run_candidate(self, candidate_fn, inputs):
+        x, gamma = inputs
+        return candidate_fn(x, gamma)
+ 
+    def run_reference(self, reference_fn, inputs):
+        x, gamma = inputs
+        return reference_fn(x, gamma)
+ 
+    def primary_input(self, inputs):
+        return inputs[0]
+ 
+    def make_inputs(self, shape, device, dtype):
+        n_rows, n_cols = shape
+        x = torch.randn(n_rows, n_cols, device=device, dtype=dtype)
+        gamma = torch.ones(n_cols, device=device, dtype=dtype)
+        return x, gamma

@@ -146,6 +146,9 @@ class KernelChecker:
             lambda: check_perturbation_tolerance(_cand, _ref, primary)))
         results.append(self._run_check(2, "cross_shape",
             lambda: _check_cross_shape(candidate_fn, reference_fn, spec)))
+        results.append(self._run_check(2, "weight_magnitude",
+            lambda: check_weight_magnitude(candidate_fn, reference_fn, spec)))
+
 
         if spec.requires_backward:
             results.append(self._run_check(2, "backward_pass",

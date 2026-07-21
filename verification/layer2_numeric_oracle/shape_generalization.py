@@ -103,6 +103,43 @@ def check_cross_shape(
 
 # check_weight_magnitude
 
+def _make_weight_variants(primary: torch.Tensor) -> dict:
+    """
+    Build adversarial primary-input variants at the same shape/device/dtype
+    as the captured primary tensor.
+ 
+    Each variant targets a specific failure mode:
+      large_uniform    — fp16 accumulator overflow (all values identical and huge)
+      large_random     — fp16 overflow with variance (exposes rounding instability)
+      monotone_rows    — values climb across columns; catches kernels that only
+                         process the first tile (output misses the large tail)
+      alternating_sign — catastrophic cancellation in reductions (+1, -1, +1, ...)
+    """
+    shape = primary.shape
+    device = primary.device
+    dtype = primary.dtype
+    n_cols = shape[-1]
+ 
+    variants = {
+        "large_uniform": torch.full(shape, 1e4, device=device, dtype=dtype),
+        "large_random": torch.randn(*shape, device=device, dtype=dtype) * 1e4,
+        "monotone_rows": (
+            torch.arange(n_cols, device=device, dtype=dtype)
+            .unsqueeze(0)
+            .expand(*shape)
+            .contiguous() * 100.0
+        ),
+    }
+ 
+    # Fixed: old version used a fragile repeat/slice that broke on odd
+    # column counts and non-2D shapes.  Ellipsis handles any leading dims.
+    alt = torch.ones(*shape, device=device, dtype=dtype)
+    alt[..., 1::2] = -1.0
+    variants["alternating_sign"] = alt
+ 
+    return variants
+ 
+ 
 def check_weight_magnitude(
     candidate_fn: Callable,
     reference_fn: Callable,
@@ -111,59 +148,53 @@ def check_weight_magnitude(
     rtol: float = 1e-3,
 ) -> tuple:
     """
-    Test with adversarially large weight magnitudes and structured patterns.
-
-    Large magnitudes expose kernels that use fp16 accumulators where fp32
-    is required, or that skip rescaling steps.  Structured patterns (e.g.
-    monotonically increasing) expose kernels that only process the first or
-    last tile.
-
-    We use the first shape from spec.valid_shapes as the canonical shape.
-
+    Test with adversarially large / structured primary-input values.
+ 
+    Uses spec.make_inputs so gamma/beta/B (non-primary tensors) are
+    correctly shaped for each variant — the old version called
+    candidate_fn(x) directly, which broke for multi-input operators
+    whose non-primary args had shape constraints tied to x.
+ 
     Returns:
         (True,  detail)    all weight-magnitude variants pass
         (False, detail)    list of failing variants
     """
     shape = spec.valid_shapes[0]
     device = "cuda" if torch.cuda.is_available() else "cpu"
+    dtype = torch.float32
     failures = []
-
-    weight_variants = {
-        "large_uniform":    torch.full(shape, 1e4, device=device, dtype=torch.float32),
-        "large_random":     torch.randn(*shape, device=device) * 1e4,
-        "monotone_rows":    torch.arange(shape[-1], dtype=torch.float32,
-                                         device=device).unsqueeze(0)
-                                 .expand(*shape).contiguous() * 100.0,
-        "alternating_sign": torch.ones(*shape, device=device) *
-                            torch.tensor([1.0, -1.0] * (shape[-1] // 2),
-                                          device=device).repeat(
-                                              *shape[:-1], 1)[:shape[0], :shape[-1]]
-                            if len(shape) == 2 else
-                            torch.randn(*shape, device=device) * 1e3,
-    }
-
-    for variant_name, x in weight_variants.items():
+ 
+    base_inputs = spec.make_inputs(shape, device, dtype)
+    primary = spec.primary_input(base_inputs)
+    variants = _make_weight_variants(primary)
+ 
+    for variant_name, adv_primary in variants.items():
         try:
-            ref_out = reference_fn(x)
-            cand_out = candidate_fn(x)
+            if isinstance(base_inputs, tuple):
+                adv_inputs = (adv_primary,) + base_inputs[1:]
+            else:
+                adv_inputs = adv_primary
+ 
+            ref_out = spec.run_reference(reference_fn, adv_inputs)
+            cand_out = spec.run_candidate(candidate_fn, adv_inputs)
         except Exception as e:
-            failures.append(f"{variant_name}: exception  {e}")
+            failures.append(f"{variant_name}: exception — {e}")
             continue
-
+ 
         if cand_out.shape != ref_out.shape:
             failures.append(f"{variant_name}: shape mismatch")
             continue
-
+ 
         if not torch.allclose(cand_out.float(), ref_out.float(),
                               atol=atol, rtol=rtol):
             max_err = (cand_out.float() - ref_out.float()).abs().max().item()
             failures.append(
                 f"{variant_name}: numeric mismatch, max_err={max_err:.6f}"
             )
-
+ 
     if failures:
         return False, "Weight-magnitude failures: " + "; ".join(failures)
-
+ 
     return True, "Weight-magnitude check passed on all variants."
 
 
