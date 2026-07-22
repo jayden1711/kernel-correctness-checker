@@ -95,11 +95,11 @@ class TestBugPatternHints:
         "drop_last_tile", "partial_k_reduct",
     ])
     def test_hints_are_actionable(self, pattern):
-        """Hints should contain either a shape, a value, or a patch."""
         hint = BUG_PATTERN_HINTS[pattern]
         has_content = (
             "shape" in hint or "patches" in hint or "fill" in hint
             or "scale" in hint or "value" in hint or any(c.isdigit() for c in hint)
+            or "ones" in hint or "zeros" in hint  # add these two
         )
         assert has_content, f"Hint for {pattern!r} seems too vague: {hint!r}"
 

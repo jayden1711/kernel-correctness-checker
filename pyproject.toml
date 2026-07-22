@@ -1,6 +1,6 @@
 [build-system]
-requires = ["setuptools>=68", "wheel"]
-build-backend = "setuptools.backends.legacy:build"
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "kernelchecker"
@@ -9,15 +9,10 @@ description = "Three-layer correctness verification and adversarial input search
 requires-python = ">=3.10"
 
 dependencies = [
-    # Core
     "torch>=2.3.0",
-    "triton>=3.0.0",          # pulled in by torch on Linux; explicit for clarity
-
-    # Adversarial search
+    "triton>=3.0.0; sys_platform == 'linux'",
     "litellm>=1.40.0",
     "python-dotenv>=1.0.0",
-
-    # Utilities
     "numpy>=1.26.0",
 ]
 
@@ -26,7 +21,7 @@ dev = [
     "pytest>=8.0.0",
     "pytest-cov>=5.0.0",
     "hypothesis>=6.100.0",
-    "triton-viz>=0.3.0",
+    "triton-viz>=0.3.0; sys_platform == 'linux'",
 ]
 
 [project.scripts]

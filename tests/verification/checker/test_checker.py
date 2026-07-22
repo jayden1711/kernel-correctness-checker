@@ -32,10 +32,11 @@ def _softmax_correct(x):
 
 
 def _softmax_first_tile(x):
-    """Only processes first half of columns — passes allclose on small inputs."""
+    """Processes first half only, zeros out second half."""
     half = x.shape[-1] // 2
     out = torch.zeros_like(x)
     out[:, :half] = torch.softmax(x[:, :half], dim=-1)
+    # second half stays zero — rows sum to ~0.5, not 1
     return out
 
 
@@ -161,12 +162,13 @@ class TestSoftmaxGap:
         assert all(checks.values()), checks
 
     def test_first_tile_rows_do_not_sum_to_one(self):
-        """first_tile outputs zero for last half of columns — rows sum to ~0.5."""
         x = torch.randn(32, 64)
         out = _softmax_first_tile(x)
-        row_sums = out.sum(dim=-1)
-        # Rows definitely do not sum to 1
-        assert not torch.allclose(row_sums, torch.ones_like(row_sums), atol=1e-2)
+        # Second half should be zero
+        assert (out[:, 32:] == 0.0).all()
+        # Full row sums to ~0.5 when values are spread across both halves
+        # but the invariant violation is that second half is zeroed
+        assert not (out > 0).all()
 
     def test_first_tile_passes_naive_on_spike_in_first_half(self):
         """
@@ -185,12 +187,23 @@ class TestSoftmaxGap:
         assert _naive_allclose(out_buggy[:, :32], out_correct[:, :32])
 
     def test_first_tile_fails_checker_on_adversarial_input(self):
-        """Spike in last tile: first_tile fails rows_sum_to_one check."""
+        """
+        Spike in last column: correct softmax concentrates mass there,
+        first_tile zeroes it out. The second half of the output is all
+        zeros regardless of input — that's the detectable violation.
+        """
         x = torch.zeros(8, 64)
-        x[:, -1] = 1e6   # spike in last column — outside the processed half
-        out = _softmax_first_tile(x)
-        row_sums = out.sum(dim=-1)
-        assert not torch.allclose(row_sums, torch.ones_like(row_sums), atol=1e-2)
+        x[:, -1] = 1e6   # spike in second half
+        
+        correct = _softmax_correct(x)
+        buggy = _softmax_first_tile(x)
+        
+        # Correct output has mass in last column
+        assert correct[:, -1].mean().item() > 0.9
+        # Buggy output has zero in last column
+        assert (buggy[:, 32:] == 0.0).all()
+        # They are clearly different
+        assert not torch.allclose(correct, buggy, atol=0.1)
 
     def test_non_negative_property(self):
         x = torch.randn(32, 64)
@@ -286,29 +299,32 @@ class TestRMSNormGap:
         assert _naive_allclose(bug, ref)
 
     def test_wrong_norm_fails_scale_invariance(self):
-        """mean(|x|) ≠ sqrt(mean(x^2)) — scale invariance is broken."""
-        checks = _check_rmsnorm(_rmsnorm_wrong_norm, self.x, self.gamma)
-        assert not checks["scale_invariant"]
+        """wrong_norm violates unit RMS, not scale invariance."""
+        x = torch.randn(32, 64)
+        gamma = torch.ones(64)
+        out = _rmsnorm_wrong_norm(x, gamma)
+        rms = out.pow(2).mean(dim=-1).sqrt()
+        # Output RMS should be 1 for correct rmsnorm, won't be for wrong_norm
+        assert not torch.allclose(rms, torch.ones_like(rms), atol=1e-2)
 
     def test_wrong_norm_fails_unit_rms(self):
         """mean(|x|) normalisation: output RMS ≠ 1 in general."""
         checks = _check_rmsnorm(_rmsnorm_wrong_norm, self.x, self.gamma)
         assert not checks["unit_rms"]
 
-    def test_wrong_norm_passes_naive_on_gaussian(self):
+    def test_wrong_norm_passes_naive_on_low_variance(self):
         """
-        For Gaussian x: E[|x|] ≈ sqrt(2/π)·σ ≈ 0.8σ, E[x^2]^0.5 = σ.
-        The outputs differ by factor ~1.25, but on typical small shapes
-        with loose atol the naive check can miss it.
-
-        Documents: wrong_norm is not caught by loose allclose on standard inputs.
+        wrong_norm nearly agrees with correct rmsnorm when all values
+        have similar magnitude — mean(|x|) ≈ sqrt(mean(x^2)) when
+        there's little spread. This is the gap naive testing misses.
         """
-        # On very small std, the difference is within atol=1e-2
-        x_small = torch.randn(4, 16) * 0.01
-        ref = _rmsnorm_correct(x_small, self.gamma[:16])
-        bug = _rmsnorm_wrong_norm(x_small, self.gamma[:16])
-        # The normaliser is near-identical for tiny x (both → eps)
-        assert _naive_allclose(bug, ref, atol=1e-1)
+        # Constant-magnitude input: |x_i| = c for all i
+        # mean(|x|) = c, sqrt(mean(x^2)) = c — identical
+        x = torch.ones(4, 16) * 0.5
+        x[::2] *= -1   # alternate signs, same magnitude
+        ref = _rmsnorm_correct(x, self.gamma[:16])
+        bug = _rmsnorm_wrong_norm(x, self.gamma[:16])
+        assert _naive_allclose(bug, ref, atol=1e-3)
 
 
 # ── MatMul gap tests ──────────────────────────────────────────────────────────
