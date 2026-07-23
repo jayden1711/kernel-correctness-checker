@@ -21,11 +21,13 @@ from verification.specs.softmax import get_spec as softmax_spec
 from verification.specs.layernorm import get_spec as layernorm_spec
 from verification.specs.matmul import get_spec as matmul_spec
 from verification.specs.flash_attention import get_spec as flash_attention_spec
+from verification.specs.rmsnorm import get_spec as rmsnorm_get_spec
 
 from TritonBench.reference.softmax import softmax as ref_softmax, softmax_kernel as ref_softmax_kernel
 from TritonBench.reference.layernorm import layernorm as ref_layernorm, layernorm_kernel as ref_layernorm_kernel
 from TritonBench.reference.mat_mult import matmul as ref_matmul, matmul_kernel as ref_matmul_kernel
 from TritonBench.reference.flash_attention import flash_attention as ref_flash_attention, flash_attention_kernel as ref_flash_attention_kernel
+from TritonBench.reference.rmsnorm import rmsnorm as ref_rmsnorm, rmsnorm_kernel as ref_rmsnorm_kernel
 
 from TritonBench.cheating.softmax.first_tile import softmax as cheat_softmax_first_tile, softmax_kernel_cheat_first_tile
 from TritonBench.cheating.softmax.wrong_reduction import softmax as cheat_softmax_wrong_reduction
@@ -43,6 +45,10 @@ from TritonBench.cheating.flash_attention.approx_denom import flash_attention as
 from TritonBench.cheating.flash_attention.drop_last_tile import flash_attention as cheat_fa_drop, flash_attention_kernel_cheat_drop_last_tile as cheat_fa_drop_kernel
 from TritonBench.cheating.flash_attention.skip_rescaling import flash_attention as cheat_fa_skip, flash_attention_kernel_cheat_skip_rescale as cheat_fa_skip_kernel
 from TritonBench.cheating.flash_attention.wrong_mask import flash_attention as cheat_fa_mask, flash_attention_kernel_cheat_wrong_mask as cheat_fa_mask_kernel
+
+from TritonBench.cheating.rmsnorm.ignore_gamma import rmsnorm as rmsnorm_ignore_gamma, rmsnorm_kernel as rmsnorm_ignore_gamma_kernel
+from TritonBench.cheating.rmsnorm.wrong_norm import rmsnorm as rmsnorm_wrong_norm, rmsnorm_kernel as rmsnorm_wrong_norm_kernel
+from TritonBench.cheating.rmsnorm.partial_reduction import rmsnorm as rmsnorm_partial_reduction, rmsnorm_kernel as rmsnorm_partial_reduction_kernel
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -70,19 +76,30 @@ def make_flash_attention_inputs():
         torch.randn(N, D, device=DEVICE),
     )
 
+def make_rmsnorm_inputs():
+    n_rows, n_cols = 512, 512
+    x     = torch.randn(n_rows, n_cols, device=DEVICE)
+    # Nonzero, non-uniform gamma -- torch.ones() would make ignore_gamma
+    # numerically indistinguishable from the reference (scaling by 1 is a no-op),
+    # guaranteeing a missed mutant regardless of checker quality.
+    gamma = torch.randn(n_cols, device=DEVICE).abs() + 0.1
+    return x, gamma
+
 
 # (kernel_name, candidate_fn, raw_kernel, reference_fn, inputs, spec)
 
 def build_test_cases():
-    softmax_inputs  = make_softmax_inputs()
+    softmax_inputs   = make_softmax_inputs()
     layernorm_inputs = make_layernorm_inputs()
-    matmul_inputs   = make_matmul_inputs()
-    fa_inputs       = make_flash_attention_inputs()
+    matmul_inputs    = make_matmul_inputs()
+    fa_inputs        = make_flash_attention_inputs()
+    rmsnorm_inputs   = make_rmsnorm_inputs()
 
     s_spec = softmax_spec()
     l_spec = layernorm_spec()
     m_spec = matmul_spec()
     f_spec = flash_attention_spec()
+    r_spec = rmsnorm_get_spec()
 
     return [
         # Softmax
@@ -104,6 +121,11 @@ def build_test_cases():
         ("flash_attn/drop_last_tile", cheat_fa_drop,  cheat_fa_drop_kernel,   ref_flash_attention, fa_inputs, f_spec),
         ("flash_attn/skip_rescaling", cheat_fa_skip,  cheat_fa_skip_kernel,   ref_flash_attention, fa_inputs, f_spec),
         ("flash_attn/wrong_mask",     cheat_fa_mask,  cheat_fa_mask_kernel,   ref_flash_attention, fa_inputs, f_spec),
+
+        # RMSNorm
+        ("rmsnorm/ignore_gamma",      rmsnorm_ignore_gamma,      rmsnorm_ignore_gamma_kernel,      ref_rmsnorm, rmsnorm_inputs, r_spec),
+        ("rmsnorm/wrong_norm",        rmsnorm_wrong_norm,        rmsnorm_wrong_norm_kernel,        ref_rmsnorm, rmsnorm_inputs, r_spec),
+        ("rmsnorm/partial_reduction", rmsnorm_partial_reduction, rmsnorm_partial_reduction_kernel, ref_rmsnorm, rmsnorm_inputs, r_spec),
     ]
 
 
