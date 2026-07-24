@@ -105,17 +105,56 @@ def materialize_proposal(
     return tensors
 
 
+# operator -> ordered tuple of tensor-dict keys, matching each operator's
+# actual Python wrapper signature exactly. Single-tensor operators return
+# the bare tensor (not a 1-tuple) to match the ORIGINAL softmax/rmsnorm
+# convention already relied on elsewhere (spec.primary_input, checker.run's
+# isinstance(inputs, tuple) branching) -- returning a 1-tuple instead would
+# silently break that convention for every new single-tensor operator.
+_OPERATOR_TENSOR_KEYS = {
+    # Original 5 -- UNCHANGED, verbatim from before this edit.
+    "softmax":         ("x",),
+    "layernorm":       ("x", "gamma", "beta"),
+    "matmul":          ("A", "B"),
+    "flash_attention": ("Q", "K", "V"),
+    "rmsnorm":         ("x", "gamma"),
+
+    # 16 new operators with a valid InputProposal representation --
+    # key order matches each reference/cheating wrapper's actual
+    # positional signature (I wrote every one of these this conversation).
+    "log_softmax":                  ("x",),
+    "swish":                        ("x",),
+    "gelu":                         ("x",),
+    "sum_reduction":                ("x",),
+    "mean_reduction":               ("x",),
+    "max_reduction":                ("x",),
+    "min_reduction":                ("x",),
+    "l1norm":                       ("x",),
+    "l2norm":                       ("x",),
+    "frobenius_norm":               ("x",),
+    "argmax":                       ("x",),
+    "argmin":                       ("x",),
+    "instancenorm":                 ("x", "weight", "bias"),
+    "batchnorm":                    ("x", "running_mean", "running_var", "weight", "bias"),
+    "scaled_dot_product_attention": ("Q", "K", "V"),
+    "causal_flash_attention":       ("Q", "K", "V"),
+
+    # Deliberately NOT here: cross_entropy (targets needs uniform bounded
+    # int64 class indices; the randn-then-cast fill path in
+    # _materialize_one produces a clustered, possibly out-of-bounds
+    # distribution instead -- confirmed by reading this file, not just
+    # suspected), groupnorm and the 6 pooling operators (need a scalar
+    # hyperparameter -- num_groups / kernel_size / stride / padding --
+    # that InputProposal/TensorDescriptor has no field for at all).
+}
+
+
 def tensors_to_inputs(operator: str, tensors: Dict[str, torch.Tensor]):
     """Convert materialized tensor dict to the calling convention for each operator."""
-    if operator == "softmax":
-        return tensors["x"]
-    elif operator == "layernorm":
-        return (tensors["x"], tensors["gamma"], tensors["beta"])
-    elif operator == "matmul":
-        return (tensors["A"], tensors["B"])
-    elif operator == "flash_attention":
-        return (tensors["Q"], tensors["K"], tensors["V"])
-    elif operator == "rmsnorm":
-        return (tensors["x"], tensors["gamma"])
-    else:
+    keys = _OPERATOR_TENSOR_KEYS.get(operator)
+    if keys is None:
         raise ValueError(f"Unknown operator: {operator!r}")
+
+    if len(keys) == 1:
+        return tensors[keys[0]]
+    return tuple(tensors[k] for k in keys)

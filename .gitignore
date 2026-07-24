@@ -57,6 +57,7 @@ coverage.xml
 # Logs
 triton_kernel_logs/
 *.log
+random_baseline_report.json
 
 # LLM / litellm cache
 .litellm_cache/

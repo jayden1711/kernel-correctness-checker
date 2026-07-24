@@ -17,6 +17,18 @@ Worker is pure from the coordinator's perspective:
 All prompt content is in prompts/base.py.
 All schema validation is in schemas.py.
 No tensor construction here — that's the materializer's job.
+
+FIXED: litellm used to be imported at module level. litellm's own
+import chain pulls in fastapi -> pydantic -> the full Anthropic SDK
+transitively -- a genuinely heavy, multi-second cold import. Every
+executor.py subprocess spawn does `from
+verification.adversarial_search.schemas import InputProposal`, which
+(via this module being imported along the same package chain) paid that
+full cost EVERY SINGLE SUBPROCESS, thousands of times across a full
+search or random-baseline run, even though neither the random baseline
+nor most executor subprocess work ever calls an LLM at all. litellm is
+now imported lazily, inside _llm_call, only on the path that actually
+needs it.
 """
 
 from __future__ import annotations
@@ -24,8 +36,6 @@ import json
 import re
 import uuid
 from typing import Optional
-
-import litellm
 
 from verification.adversarial_search.schemas import (
     InputProposal,
@@ -114,6 +124,7 @@ class AdversarialWorker:
         )
 
     def _llm_call(self, messages: list[dict]) -> str:
+        import litellm  # lazy -- see module docstring
         response = litellm.completion(
             model=self.model,
             messages=messages,
