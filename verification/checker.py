@@ -109,7 +109,7 @@ class KernelChecker:
         results.append(self._run_check(1, "nan_inf",
             lambda: check_nan_inf(_cand, primary)))
         results.append(self._run_check(1, "dtype_preserved",
-            lambda: check_dtype_preserved(_cand, primary)))
+            lambda: check_dtype_preserved(_cand, primary, expected_dtype=spec.output_dtype)))
 
         if any(not r.passed for r in results):
             return results
@@ -129,7 +129,23 @@ class KernelChecker:
 
         results.append(self._run_check(1, "tile_coverage_structural",
             lambda: check_all_tiles_visited_generic(spec, candidate_fn, inputs)))
-        if primary.dim() == 2 and not isinstance(inputs, tuple):
+        # GATED to spec.name == "softmax": this check was built and
+        # validated for softmax's output semantics specifically (its own
+        # name says "positivity"). The old trigger condition
+        # (primary.dim() == 2 and not tuple) fires on ANY 2D single-tensor
+        # operator -- which now also includes log_softmax, sum/mean/max/
+        # min_reduction, l1norm, l2norm, argmax, argmin -- none of which
+        # share softmax's invariants (reductions collapse a dimension
+        # entirely; l1norm/l2norm output is signed, not positive-summing).
+        # Confirmed via a real run_checker.py run: this produced a garbage
+        # "-1" sentinel FAIL for the four reduction operators and a
+        # plausible-looking but almost certainly wrong "columns written"
+        # FAIL for l1norm/l2norm -- neither related to any injected bug,
+        # both would fire identically on a CORRECT kernel for those
+        # operators. Same root cause as the Layer-3 shape-guessing
+        # collision fixed via kernelbench_operator_registry -- shape alone
+        # doesn't identify the operator, so use identity instead of shape.
+        if primary.dim() == 2 and not isinstance(inputs, tuple) and spec.name == "softmax":
             results.append(self._run_check(1, "tile_coverage_softmax_positivity",
                 lambda rk=raw_kernel: check_all_tiles_visited(candidate_fn, rk, primary)))
         if torch.cuda.is_available():
@@ -176,9 +192,23 @@ class KernelChecker:
                 new_inputs = (x,) + ai[1:] if isinstance(ai, tuple) else x
                 return spec.run_reference(reference_fn, new_inputs)
 
-            results.append(self._run_check(2, f"adversarial_{name}",
-                lambda c=_adv_cand, r=_adv_ref, ap=adv_primary:
-                    check_perturbation_tolerance(c, r, ap)))
+            # Discrete/index outputs (argmax, argmin -- spec.output_dtype
+            # declared) route through exact equality, not adaptive
+            # perturbation tolerance. CONFIRMED via a real run: adaptive
+            # tolerance is self-defeating here -- it scales with how much
+            # the REFERENCE itself wobbles under tiny perturbation, which
+            # is exactly what's large near a tie, so a stronger tie-break
+            # trigger simultaneously makes the tolerance looser in lockstep
+            # and never actually catches a wrong tie-break convention. An
+            # index is either right or wrong; there's no "close enough."
+            if spec.output_dtype is not None:
+                results.append(self._run_check(2, f"adversarial_{name}",
+                    lambda c=_adv_cand, r=_adv_ref, ap=adv_primary:
+                        _check_exact_match(c, r, ap)))
+            else:
+                results.append(self._run_check(2, f"adversarial_{name}",
+                    lambda c=_adv_cand, r=_adv_ref, ap=adv_primary:
+                        check_perturbation_tolerance(c, r, ap)))
 
         if any(not r.passed for r in results):
             return results
@@ -266,3 +296,32 @@ def _check_cross_shape(
     if failures:
         return False, "Cross-shape failures: " + "; ".join(failures)
     return True, f"Cross-shape passed on {len(spec.valid_shapes)} shapes."
+
+
+def _check_exact_match(
+    candidate_fn: Callable,
+    reference_fn: Callable,
+    x: torch.Tensor,
+) -> tuple:
+    """
+    For discrete/index-valued outputs (spec.output_dtype declared) --
+    exact equality, no tolerance. An index is either right or wrong;
+    "close" has no meaning the way it does for a continuous value, and
+    (confirmed via a real run) adaptive perturbation tolerance actively
+    fails here since it scales with the reference's own instability near
+    ties, which defeats any adversarial trigger that leans into a tie.
+    """
+    try:
+        cand_out = candidate_fn(x)
+        ref_out = reference_fn(x)
+    except Exception as e:
+        return False, f"Exception during exact-match check: {e}"
+
+    if cand_out.shape != ref_out.shape:
+        return False, f"Shape mismatch: {tuple(cand_out.shape)} vs {tuple(ref_out.shape)}"
+
+    if torch.equal(cand_out, ref_out):
+        return True, "Exact match with reference."
+
+    n_diff = (cand_out != ref_out).sum().item()
+    return False, f"{n_diff}/{cand_out.numel()} element(s) differ from reference exactly."

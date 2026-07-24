@@ -1,5 +1,5 @@
 """
-KernelSpec for layernorm  f(x, gamma, beta) -> Tensor.
+KernelSpec for layernorm — f(x, gamma, beta) -> Tensor.
 
 inputs tuple: (x, gamma, beta)
   x:     (n_rows, n_cols)
@@ -19,9 +19,59 @@ from verification.layer3_properties.layernorm_properties import (
     check_precision_coercion,
     check_affine_correctness
 )
-from verification.layer2_numeric_oracle.adversarial.layernorm_adversarial import (
-    get_adversarial_inputs as _get_adversarial,
-)
+
+
+# Adversarial input generators -- inlined verbatim from the former
+# verification/layer2_numeric_oracle/adversarial/layernorm_adversarial.py
+# (logic unchanged, only relocated). Return adversarial x tensors only;
+# get_adversarial_inputs below wraps each with the captured gamma/beta.
+
+def _skip_mean_subtract(x: torch.Tensor) -> torch.Tensor:
+    """
+    Large per-row mean shift.
+    skip_mean_subtract.py divides raw x by std -- output mean won't be
+    zero. wrong_variance_estimate.py also diverges when mean >> 0.
+    """
+    shifts = torch.linspace(100.0, 1000.0, x.shape[0],
+                             device=x.device, dtype=x.dtype).unsqueeze(1)
+    return torch.randn_like(x) + shifts
+
+
+def _zero_variance_rows(x: torch.Tensor) -> torch.Tensor:
+    """
+    Half the rows are constant (zero variance).
+    Exposes division-by-zero handling and wrong eps placement.
+    """
+    result = torch.zeros_like(x)
+    n_zero = x.shape[0] // 2
+    result[n_zero:] = torch.randn(
+        x.shape[0] - n_zero, x.shape[-1], device=x.device, dtype=x.dtype
+    )
+    return result
+
+
+def _large_variance(x: torch.Tensor) -> torch.Tensor:
+    """
+    Very large values -- exposes fp16 overflow in the squaring step of
+    wrong_variance_estimate.py (x^2 overflows fp16 when x ~ 1e4).
+    """
+    return torch.randn_like(x) * 1e4
+
+
+def _wrong_variance_trigger(x: torch.Tensor) -> torch.Tensor:
+    """
+    Large mean with moderate variance -- maximises the numerical
+    difference between E[(x-mean)^2] and E[x^2] - mean^2. This is the
+    exact condition under which wrong_variance_estimate.py fails.
+    """
+    mean_val = 1000.0
+    return torch.randn_like(x) + mean_val
+
+
+def _non_power_of_two(x: torch.Tensor) -> torch.Tensor:
+    """Non-power-of-two hidden dimension -- exposes tile-boundary bugs."""
+    n_rows = x.shape[0]
+    return torch.randn(n_rows, 333, device=x.device, dtype=x.dtype)
 
 
 class LayernormSpec(LayernormKernelSpec):
@@ -31,8 +81,6 @@ class LayernormSpec(LayernormKernelSpec):
     @property
     def algebraic_properties(self):
         return [
-            # zero_mean and unit_variance only hold when gamma=1, beta=0
-            # We run them on the normalised output with identity affine params
             ("zero_mean",          _wrap_identity(check_zero_mean)),
             ("unit_variance",      _wrap_identity(check_unit_variance)),
             ("scale_invariance",   _wrap_scale(check_scale_invariance)),
@@ -42,7 +90,6 @@ class LayernormSpec(LayernormKernelSpec):
 
     @property
     def valid_shapes(self):
-        # shapes are (n_rows, n_cols); make_inputs builds gamma/beta automatically
         return [
             (512,  512),
             (256,  1024),
@@ -52,9 +99,16 @@ class LayernormSpec(LayernormKernelSpec):
         ]
 
     def get_adversarial_inputs(self, inputs):
+        """Return (name, (adv_x, gamma, beta)) pairs -- gamma/beta held
+        fixed at whatever was captured, only x varies."""
         x, gamma, beta = inputs
-        # adversarial generators vary x; keep same gamma/beta
-        adv_xs = _get_adversarial(x)
+        adv_xs = [
+            ("skip_mean_subtract",     _skip_mean_subtract(x)),
+            ("zero_variance_rows",     _zero_variance_rows(x)),
+            ("large_variance",         _large_variance(x)),
+            ("wrong_variance_trigger", _wrong_variance_trigger(x)),
+            ("non_power_of_two",       _non_power_of_two(x)),
+        ]
         return [(name, (adv_x, gamma, beta)) for name, adv_x in adv_xs]
 
 
@@ -62,12 +116,7 @@ def get_spec() -> LayernormSpec:
     return LayernormSpec(name="layernorm")
 
 
-
 def _wrap_identity(check_fn):
-    """
-    Run with gamma=1, beta=0 so output == normalised x.
-    zero_mean and unit_variance only hold for identity affine.
-    """
     def wrapped(candidate_fn, inputs):
         x, gamma, beta = inputs
         ones  = torch.ones_like(gamma)
@@ -78,22 +127,20 @@ def _wrap_identity(check_fn):
 
 
 def _wrap_scale(check_fn):
-    """check_scale_invariance(kernel_fn, x)  pass x only."""
     def wrapped(candidate_fn, inputs):
         x, gamma, beta = inputs
-        # wrap candidate so it uses the stored gamma/beta
         fn = lambda xi: candidate_fn(xi, gamma, beta)
         return check_fn(fn, x)
     return wrapped
 
 
 def _wrap_precision(check_fn):
-    """check_precision_coercion(kernel_fn, x)."""
     def wrapped(candidate_fn, inputs):
         x, gamma, beta = inputs
         fn = lambda xi: candidate_fn(xi, gamma.to(xi.dtype), beta.to(xi.dtype))
         return check_fn(fn, x)
     return wrapped
+
 
 def _wrap_affine(check_fn):
     def wrapped(candidate_fn, inputs):

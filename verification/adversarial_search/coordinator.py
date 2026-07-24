@@ -29,6 +29,7 @@ from __future__ import annotations
 import os
 import threading
 import time
+import traceback
 import uuid
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
@@ -177,6 +178,7 @@ class SearchCoordinator:
                     fut.result()
                 except Exception as e:
                     print(f"[coordinator] Worker raised: {e}")
+                    print(traceback.format_exc())
 
         wall_s = time.perf_counter() - t_start
 

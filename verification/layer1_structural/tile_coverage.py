@@ -1,5 +1,5 @@
 """
-Layer 1  Runtime tile-coverage check.
+Layer 1 — Runtime tile-coverage check.
 
 Instruments the kernel wrapper and asserts that every output column
 has been written, catching first-tile-only and other partial-computation
@@ -62,7 +62,7 @@ def check_all_tiles_visited(
         for row_idx in range(n_rows):
             row_cols = (y[row_idx] > 0).sum().item()
             if row_cols < n_cols:
-                return False, f"Row {row_idx} only has {int(row_cols)}/{n_cols} columns written  partial tile coverage detected.", int(row_cols)
+                return False, f"Row {row_idx} only has {int(row_cols)}/{n_cols} columns written — partial tile coverage detected.", int(row_cols)
 
     return True, -1, n_cols
 
@@ -83,13 +83,26 @@ def check_all_tiles_visited_generic(spec, candidate_fn, inputs, sentinel: float 
     Returns:
         (True,  detail)   every output element was overwritten
         (False, detail)   at least one element still holds the sentinel
+
+    FIXED: previously also patched torch.zeros/torch.zeros_like, not just
+    torch.empty/torch.empty_like. zeros() exists specifically to guarantee
+    a real, meaningful initial value (0) -- patching it to NaN instead
+    breaks any kernel that legitimately depends on that guarantee, which
+    is exactly what an atomic-add accumulator does (frobenius_norm's
+    sum-of-squares buffer: torch.zeros(1, ...) then tl.atomic_add into
+    it). NaN + anything = NaN, so the accumulator stays NaN through the
+    whole reduction regardless of correctness -- this broke the
+    REFERENCE kernel too, not just the mutant, and had nothing to do
+    with tile coverage. empty()/empty_like() have genuinely undefined
+    initial content by design, so replacing "undefined" with "a
+    detectable sentinel" is safe and doesn't change kernel correctness --
+    confirmed sufficient on its own for the demonstrated catches (e.g.
+    softmax's reference allocates its output via torch.empty_like(x)).
     """
     import torch as _torch
 
     orig_empty_like = _torch.empty_like
     orig_empty = _torch.empty
-    orig_zeros_like = _torch.zeros_like
-    orig_zeros = _torch.zeros
 
     def _patched_empty_like(*args, **kwargs):
         t = orig_empty_like(*args, **kwargs)
@@ -103,22 +116,8 @@ def check_all_tiles_visited_generic(spec, candidate_fn, inputs, sentinel: float 
             t.fill_(sentinel)
         return t
 
-    def _patched_zeros_like(*args, **kwargs):
-        t = orig_zeros_like(*args, **kwargs)
-        if t.is_floating_point():
-            t.fill_(sentinel)
-        return t
-
-    def _patched_zeros(*args, **kwargs):
-        t = orig_zeros(*args, **kwargs)
-        if t.is_floating_point():
-            t.fill_(sentinel)
-        return t
-
     _torch.empty_like = _patched_empty_like
     _torch.empty = _patched_empty
-    _torch.zeros_like = _patched_zeros_like
-    _torch.zeros = _patched_zeros
     try:
         y = spec.run_candidate(candidate_fn, inputs)
     except Exception as e:
@@ -126,8 +125,6 @@ def check_all_tiles_visited_generic(spec, candidate_fn, inputs, sentinel: float 
     finally:
         _torch.empty_like = orig_empty_like
         _torch.empty = orig_empty
-        _torch.zeros_like = orig_zeros_like
-        _torch.zeros = orig_zeros
 
     if y is None or not _torch.is_tensor(y):
         return False, f"Kernel did not return a tensor (got {type(y).__name__}); cannot check tile coverage."

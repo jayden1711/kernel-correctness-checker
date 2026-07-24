@@ -1,5 +1,5 @@
 """
-Layer 1  Runtime guards.
+Layer 1 — Runtime guards.
 
 These checks require actually running the kernel, but are cheaper than
 Layer 2 numeric comparisons.  They catch failure modes that static AST
@@ -7,13 +7,14 @@ analysis cannot.
 
 Checks:
   - check_nan_inf:          output must be fully finite before any numeric test
-  - check_dtype_preserved:  output dtype must match input dtype
+  - check_dtype_preserved:  output dtype must match input dtype (or a spec-declared
+                             expected dtype, for index-returning operators)
   - check_determinism:      two runs on identical inputs must produce identical output
   - check_kernel_executed:  kernel must actually run (runtime ghost-opt detection)
 """
 
 import torch
-from typing import Callable
+from typing import Callable, Optional
 
 
 # check_nan_inf
@@ -49,13 +50,30 @@ def check_nan_inf(candidate_fn: Callable, x: torch.Tensor) -> tuple:
 
 # check_dtype_preserved
 
-def check_dtype_preserved(candidate_fn: Callable, x: torch.Tensor) -> tuple:
+def check_dtype_preserved(
+    candidate_fn: Callable,
+    x: torch.Tensor,
+    expected_dtype: Optional[torch.dtype] = None,
+) -> tuple:
     """
-    Assert that the output dtype matches the input dtype.
+    Assert that the output dtype matches the input dtype -- OR, if the
+    operator's spec declares an expected_dtype (e.g. torch.int64 for
+    argmax/argmin, which legitimately return indices rather than values
+    in the input's dtype), assert against that instead.
+
+    FIXED: this check used to unconditionally require out.dtype ==
+    x.dtype with no override, which meant argmax/argmin could never pass
+    it -- correct or not -- since returning an index tensor is the whole
+    point of those operators, not a bug. Confirmed via a real
+    run_checker.py run: both failed this sentinel before Layer 2/3 ever
+    ran, on the reference kernel as much as any mutant. expected_dtype=None
+    (the default) preserves the exact old behavior for every operator that
+    doesn't explicitly declare otherwise.
 
     A kernel that upcasts fp16 -> fp32 internally and returns fp32 will
     pass all numeric checks but break mixed-precision training pipelines
-    that expect dtype consistency.
+    that expect dtype consistency -- that's still the failure mode this
+    guards against for every operator where output_dtype isn't declared.
 
     Returns:
         (True,  detail)   dtypes match
@@ -66,12 +84,21 @@ def check_dtype_preserved(candidate_fn: Callable, x: torch.Tensor) -> tuple:
     except Exception as e:
         return False, f"Kernel raised an exception: {e}"
 
-    if out.dtype != x.dtype:
+    target_dtype = expected_dtype if expected_dtype is not None else x.dtype
+
+    if out.dtype != target_dtype:
+        if expected_dtype is not None:
+            return False, (
+                f"Dtype mismatch: expected declared output dtype {target_dtype}, "
+                f"got {out.dtype}."
+            )
         return False, (
             f"Dtype mismatch: input {x.dtype}, output {out.dtype}. "
             "Kernel may be silently upcasting."
         )
 
+    if expected_dtype is not None:
+        return True, f"Dtype matches declared output dtype: {target_dtype}."
     return True, f"Dtype preserved: {x.dtype}."
 
 
@@ -87,7 +114,7 @@ def check_determinism(
     are bit-identical.
 
     Non-determinism indicates a race condition that the barrier check
-    missed  e.g. a missing tl.barrier() between a shared-memory write
+    missed — e.g. a missing tl.barrier() between a shared-memory write
     and read in a reduction.
 
     Args:

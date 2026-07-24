@@ -1,4 +1,4 @@
-"""KernelSpec for softmax  f(x) -> Tensor, x shape (n_rows, n_cols)."""
+"""KernelSpec for softmax — f(x) -> Tensor, x shape (n_rows, n_cols)."""
 
 from dataclasses import dataclass, field
 from typing import List, Tuple, Callable
@@ -11,9 +11,73 @@ from verification.layer3_properties.softmax_properties import (
     check_monotonicity,
     check_precision_coercion,
 )
-from verification.layer2_numeric_oracle.adversarial.softmax_adversarial import (
-    get_adversarial_inputs as _get_adversarial,
-)
+
+
+# Adversarial input generators -- inlined verbatim from the former
+# verification/layer2_numeric_oracle/adversarial/softmax_adversarial.py
+# (logic unchanged, only relocated) for consistency with every spec added
+# after softmax's own. Each generator targets a specific known failure
+# mode so a cheating kernel is exposed even if it passes on benign
+# random inputs.
+
+def _max_in_last_tile(x: torch.Tensor) -> torch.Tensor:
+    """
+    Place the maximum value in the last column tile.
+
+    Exposes first-tile-only kernels: they compute max/normalisation from
+    the first tile only, so the global max is never seen and the output
+    is numerically wrong.
+    """
+    result = torch.zeros_like(x)
+    result[:, -1] = 1e9
+    return result
+
+
+def _equal_logits(x: torch.Tensor) -> torch.Tensor:
+    """
+    All logits equal -- the correct answer is 1/n_cols everywhere.
+
+    A kernel that skips normalisation but returns a plausible-looking
+    constant output can accidentally pass this case, but combining it
+    with shift-invariance and row-sum checks closes that loophole.
+    """
+    return torch.ones_like(x)
+
+
+def _extreme_range(x: torch.Tensor) -> torch.Tensor:
+    """
+    Extreme dynamic range: first column 1e9, last column -1e9.
+
+    Exposes partial-accumulation bugs and fp16 overflow in kernels
+    that accumulate the exp-sum in low precision.
+    """
+    result = torch.randn_like(x)
+    result[:, 0] = 1e9
+    result[:, -1] = -1e9
+    return result
+
+
+def _non_power_of_two(x: torch.Tensor) -> torch.Tensor:
+    """
+    Input with a non-power-of-two number of columns (333).
+
+    Exposes tile-boundary bugs where the kernel writes garbage to the
+    padding region and the output length is wrong, or the last partial
+    tile is silently dropped.
+    """
+    n_rows = x.shape[0]
+    return torch.randn(n_rows, 333, device=x.device, dtype=x.dtype)
+
+
+def _near_zero_variance(x: torch.Tensor) -> torch.Tensor:
+    """
+    All logits near-zero with tiny variance.
+
+    Exposes kernels that skip the subtraction of the row-maximum for
+    numerical stability: near-zero inputs produce outputs close to 1/n
+    regardless, masking the omission on random data.
+    """
+    return torch.randn_like(x) * 1e-6
 
 
 class SoftmaxSpec(SingleTensorSpec):
@@ -40,7 +104,18 @@ class SoftmaxSpec(SingleTensorSpec):
         ]
 
     def get_adversarial_inputs(self, inputs):
-        return _get_adversarial(inputs)
+        """
+        Return all adversarial variants as (name, tensor) pairs. Called
+        by the KernelSpec and the KernelChecker.
+        """
+        x = inputs
+        return [
+            ("max_in_last_tile",   _max_in_last_tile(x)),
+            ("equal_logits",       _equal_logits(x)),
+            ("extreme_range",      _extreme_range(x)),
+            ("non_power_of_two",   _non_power_of_two(x)),
+            ("near_zero_variance", _near_zero_variance(x)),
+        ]
 
 
 def get_spec() -> SoftmaxSpec:

@@ -18,10 +18,11 @@ Design decisions:
   - Schema is append-only: no updates, no deletes
     (immutable audit trail, safe to resume)
   - Memory items are stored separately and survive across runs
-  - threading.Lock() serialises all writes — the Python sqlite3 module
-    is not safe for concurrent writes on a shared connection even with
-    check_same_thread=False; WAL handles concurrent readers, the lock
-    handles concurrent writers
+  - threading.Lock() serialises ALL operations (reads and writes).
+    The Python sqlite3 module is not safe for concurrent access on a
+    shared connection object even with check_same_thread=False.
+    WAL mode is kept for future multi-process access but within this
+    process all access goes through the lock.
 """
 
 from __future__ import annotations
@@ -55,27 +56,27 @@ CREATE TABLE IF NOT EXISTS runs (
 );
 
 CREATE TABLE IF NOT EXISTS proposals (
-    proposal_id TEXT PRIMARY KEY,
-    run_id      TEXT NOT NULL,
-    operator    TEXT NOT NULL,
-    worker_id   TEXT NOT NULL,
-    iteration   INTEGER NOT NULL,
-    created_at  REAL NOT NULL,
+    proposal_id   TEXT PRIMARY KEY,
+    run_id        TEXT NOT NULL,
+    operator      TEXT NOT NULL,
+    worker_id     TEXT NOT NULL,
+    iteration     INTEGER NOT NULL,
+    created_at    REAL NOT NULL,
     proposal_json TEXT NOT NULL,
     FOREIGN KEY (run_id) REFERENCES runs(run_id)
 );
 
 CREATE TABLE IF NOT EXISTS verdicts (
-    proposal_id     TEXT PRIMARY KEY,
-    run_id          TEXT NOT NULL,
-    operator        TEXT NOT NULL,
-    is_hit          INTEGER NOT NULL,
-    gap_confirmed   INTEGER NOT NULL,
-    hit_mutants     TEXT NOT NULL,
-    missed_mutants  TEXT NOT NULL,
-    beam_score      REAL NOT NULL DEFAULT 0.0,
-    verdict_json    TEXT NOT NULL,
-    created_at      REAL NOT NULL,
+    proposal_id    TEXT PRIMARY KEY,
+    run_id         TEXT NOT NULL,
+    operator       TEXT NOT NULL,
+    is_hit         INTEGER NOT NULL,
+    gap_confirmed  INTEGER NOT NULL,
+    hit_mutants    TEXT NOT NULL,
+    missed_mutants TEXT NOT NULL,
+    beam_score     REAL NOT NULL DEFAULT 0.0,
+    verdict_json   TEXT NOT NULL,
+    created_at     REAL NOT NULL,
     FOREIGN KEY (run_id) REFERENCES runs(run_id)
 );
 
@@ -88,10 +89,10 @@ CREATE TABLE IF NOT EXISTS memory_items (
     created_at  REAL NOT NULL
 );
 
-CREATE INDEX IF NOT EXISTS idx_proposals_run     ON proposals(run_id);
-CREATE INDEX IF NOT EXISTS idx_verdicts_run      ON verdicts(run_id);
-CREATE INDEX IF NOT EXISTS idx_verdicts_operator ON verdicts(operator);
-CREATE INDEX IF NOT EXISTS idx_memory_operator   ON memory_items(operator);
+CREATE INDEX IF NOT EXISTS idx_proposals_run      ON proposals(run_id);
+CREATE INDEX IF NOT EXISTS idx_verdicts_run       ON verdicts(run_id);
+CREATE INDEX IF NOT EXISTS idx_verdicts_operator  ON verdicts(operator);
+CREATE INDEX IF NOT EXISTS idx_memory_operator    ON memory_items(operator);
 """
 
 
@@ -99,21 +100,24 @@ class SearchHistoryStore:
     """
     Thread-safe SQLite-backed history store.
     One instance per search session; safe to share across worker threads.
-    All writes are serialised via a threading.Lock(); reads are lock-free.
+    All database operations (reads and writes) are serialised via a
+    single threading.Lock() to prevent sqlite3 InterfaceError on
+    concurrent access to a shared connection object.
     """
 
     def __init__(self, db_path: str):
         self.db_path = str(db_path)
-        self._write_lock = threading.Lock()
+        self._lock = threading.Lock()
         self._conn = sqlite3.connect(
             self.db_path,
             check_same_thread=False,
-            timeout=10.0,
+            timeout=30.0,
         )
-        self._conn.execute("PRAGMA journal_mode=WAL")
-        self._conn.execute("PRAGMA synchronous=NORMAL")
-        self._conn.executescript(_SCHEMA)
-        self._conn.commit()
+        with self._lock:
+            self._conn.execute("PRAGMA journal_mode=WAL")
+            self._conn.execute("PRAGMA synchronous=NORMAL")
+            self._conn.executescript(_SCHEMA)
+            self._conn.commit()
 
     # ── Run lifecycle ─────────────────────────────────────────────────────────
 
@@ -126,7 +130,7 @@ class SearchHistoryStore:
         n_workers: int,
         max_iter: int,
     ) -> str:
-        with self._write_lock:
+        with self._lock:
             self._conn.execute(
                 "INSERT INTO runs (run_id, operator, strategy, model, n_workers, "
                 "max_iter, started_at) VALUES (?,?,?,?,?,?,?)",
@@ -137,46 +141,48 @@ class SearchHistoryStore:
 
     def finish_run(self, run_id: str, result: SearchResult):
         status = "hit" if result.winning_proposal else "no_hit"
-        with self._write_lock:
+        result_json = result.to_json()
+        with self._lock:
             self._conn.execute(
                 "UPDATE runs SET finished_at=?, status=?, result_json=? WHERE run_id=?",
-                (time.time(), status, result.to_json(), run_id),
+                (time.time(), status, result_json, run_id),
             )
             self._conn.commit()
 
     def get_run(self, run_id: str) -> Optional[dict]:
-        cur = self._conn.execute(
-            "SELECT run_id, operator, strategy, model, n_workers, max_iter, "
-            "started_at, finished_at, status, result_json "
-            "FROM runs WHERE run_id=?", (run_id,)
-        )
-        row = cur.fetchone()
-        if row is None:
-            return None
         cols = ["run_id", "operator", "strategy", "model", "n_workers", "max_iter",
                 "started_at", "finished_at", "status", "result_json"]
+        with self._lock:
+            row = self._conn.execute(
+                f"SELECT {', '.join(cols)} FROM runs WHERE run_id=?",
+                (run_id,),
+            ).fetchone()
+        if row is None:
+            return None
         return dict(zip(cols, row))
 
     def list_runs(self, operator: Optional[str] = None) -> List[dict]:
         cols = ["run_id", "operator", "strategy", "model", "status",
                 "started_at", "finished_at"]
         col_str = ", ".join(cols)
-        if operator:
-            rows = self._conn.execute(
-                f"SELECT {col_str} FROM runs WHERE operator=? ORDER BY started_at DESC",
-                (operator,),
-            ).fetchall()
-        else:
-            rows = self._conn.execute(
-                f"SELECT {col_str} FROM runs ORDER BY started_at DESC"
-            ).fetchall()
+        with self._lock:
+            if operator:
+                rows = self._conn.execute(
+                    f"SELECT {col_str} FROM runs WHERE operator=? "
+                    f"ORDER BY started_at DESC",
+                    (operator,),
+                ).fetchall()
+            else:
+                rows = self._conn.execute(
+                    f"SELECT {col_str} FROM runs ORDER BY started_at DESC"
+                ).fetchall()
         return [dict(zip(cols, r)) for r in rows]
 
     # ── Proposals ─────────────────────────────────────────────────────────────
 
     def save_proposal(self, run_id: str, proposal: InputProposal):
         proposal_json = proposal.to_json()
-        with self._write_lock:
+        with self._lock:
             self._conn.execute(
                 "INSERT OR IGNORE INTO proposals "
                 "(proposal_id, run_id, operator, worker_id, iteration, "
@@ -194,20 +200,22 @@ class SearchHistoryStore:
             self._conn.commit()
 
     def get_proposals_for_run(self, run_id: str) -> List[InputProposal]:
-        rows = self._conn.execute(
-            "SELECT proposal_json FROM proposals WHERE run_id=? ORDER BY created_at",
-            (run_id,),
-        ).fetchall()
+        with self._lock:
+            rows = self._conn.execute(
+                "SELECT proposal_json FROM proposals "
+                "WHERE run_id=? ORDER BY created_at",
+                (run_id,),
+            ).fetchall()
         return [InputProposal.from_dict(json.loads(r[0])) for r in rows]
 
     # ── Verdicts ──────────────────────────────────────────────────────────────
 
     def save_verdict(self, run_id: str, verdict: ProposalVerdict):
-        verdict_json = json.dumps(verdict.to_dict())
-        hit_mutants_json = json.dumps(verdict.hit_mutants)
-        missed_mutants_json = json.dumps(verdict.missed_mutants)
-        operator = self._operator_for_run(run_id)
-        with self._write_lock:
+        verdict_json   = json.dumps(verdict.to_dict())
+        hit_json       = json.dumps(verdict.hit_mutants)
+        missed_json    = json.dumps(verdict.missed_mutants)
+        operator       = self._operator_for_run_unlocked(run_id)
+        with self._lock:
             self._conn.execute(
                 "INSERT OR IGNORE INTO verdicts "
                 "(proposal_id, run_id, operator, is_hit, gap_confirmed, "
@@ -219,8 +227,8 @@ class SearchHistoryStore:
                     operator,
                     int(verdict.is_hit),
                     int(verdict.gap_confirmed),
-                    hit_mutants_json,
-                    missed_mutants_json,
+                    hit_json,
+                    missed_json,
                     verdict.beam_score,
                     verdict_json,
                     time.time(),
@@ -229,28 +237,32 @@ class SearchHistoryStore:
             self._conn.commit()
 
     def get_verdicts_for_run(self, run_id: str) -> List[ProposalVerdict]:
-        rows = self._conn.execute(
-            "SELECT verdict_json FROM verdicts WHERE run_id=? ORDER BY created_at",
-            (run_id,),
-        ).fetchall()
+        with self._lock:
+            rows = self._conn.execute(
+                "SELECT verdict_json FROM verdicts "
+                "WHERE run_id=? ORDER BY created_at",
+                (run_id,),
+            ).fetchall()
         return [ProposalVerdict.from_dict(json.loads(r[0])) for r in rows]
 
     def get_hits_for_operator(self, operator: str) -> List[ProposalVerdict]:
-        rows = self._conn.execute(
-            "SELECT verdict_json FROM verdicts "
-            "WHERE operator=? AND is_hit=1 ORDER BY beam_score DESC",
-            (operator,),
-        ).fetchall()
+        with self._lock:
+            rows = self._conn.execute(
+                "SELECT verdict_json FROM verdicts "
+                "WHERE operator=? AND is_hit=1 ORDER BY beam_score DESC",
+                (operator,),
+            ).fetchall()
         return [ProposalVerdict.from_dict(json.loads(r[0])) for r in rows]
 
     def top_beam_candidates(
         self, run_id: str, beam_width: int
     ) -> List[ProposalVerdict]:
-        rows = self._conn.execute(
-            "SELECT verdict_json FROM verdicts WHERE run_id=? "
-            "ORDER BY beam_score DESC LIMIT ?",
-            (run_id, beam_width),
-        ).fetchall()
+        with self._lock:
+            rows = self._conn.execute(
+                "SELECT verdict_json FROM verdicts WHERE run_id=? "
+                "ORDER BY beam_score DESC LIMIT ?",
+                (run_id, beam_width),
+            ).fetchall()
         return [ProposalVerdict.from_dict(json.loads(r[0])) for r in rows]
 
     # ── Memory items ──────────────────────────────────────────────────────────
@@ -263,10 +275,11 @@ class SearchHistoryStore:
         source_run: str,
     ) -> str:
         item_id = str(uuid.uuid4())
-        with self._write_lock:
+        with self._lock:
             self._conn.execute(
-                "INSERT INTO memory_items (item_id, operator, bug_pattern, summary, "
-                "source_run, created_at) VALUES (?,?,?,?,?,?)",
+                "INSERT INTO memory_items "
+                "(item_id, operator, bug_pattern, summary, source_run, created_at) "
+                "VALUES (?,?,?,?,?,?)",
                 (item_id, operator, bug_pattern, summary, source_run, time.time()),
             )
             self._conn.commit()
@@ -275,11 +288,12 @@ class SearchHistoryStore:
     def get_memory_items(
         self, operator: str, limit: int = 5
     ) -> List[Dict]:
-        rows = self._conn.execute(
-            "SELECT bug_pattern, summary FROM memory_items "
-            "WHERE operator=? ORDER BY created_at DESC LIMIT ?",
-            (operator, limit),
-        ).fetchall()
+        with self._lock:
+            rows = self._conn.execute(
+                "SELECT bug_pattern, summary FROM memory_items "
+                "WHERE operator=? ORDER BY created_at DESC LIMIT ?",
+                (operator, limit),
+            ).fetchall()
         return [{"bug_pattern": r[0], "summary": r[1]} for r in rows]
 
     # ── Resume support ────────────────────────────────────────────────────────
@@ -299,20 +313,22 @@ class SearchHistoryStore:
                 last_per_worker[p.worker_id] = p
 
         return {
-            "run":              run,
-            "last_per_worker":  last_per_worker,
-            "verdicts":         verdicts,
-            "n_proposals":      len(proposals),
+            "run":             run,
+            "last_per_worker": last_per_worker,
+            "verdicts":        verdicts,
+            "n_proposals":     len(proposals),
         }
 
     # ── Coverage report ───────────────────────────────────────────────────────
 
     def coverage_report(self) -> Dict:
-        rows = self._conn.execute(
-            "SELECT v.operator, p.proposal_json, v.hit_mutants "
-            "FROM verdicts v JOIN proposals p ON v.proposal_id=p.proposal_id "
-            "WHERE v.is_hit=1 AND v.gap_confirmed=1"
-        ).fetchall()
+        with self._lock:
+            rows = self._conn.execute(
+                "SELECT v.operator, p.proposal_json, v.hit_mutants "
+                "FROM verdicts v "
+                "JOIN proposals p ON v.proposal_id = p.proposal_id "
+                "WHERE v.is_hit=1 AND v.gap_confirmed=1"
+            ).fetchall()
 
         report: Dict[str, Dict] = {}
         for operator, prop_json, hit_json in rows:
@@ -325,14 +341,21 @@ class SearchHistoryStore:
 
     # ── Helpers ───────────────────────────────────────────────────────────────
 
-    def _operator_for_run(self, run_id: str) -> str:
+    def _operator_for_run_unlocked(self, run_id: str) -> str:
+        """Read operator without acquiring lock — caller must hold lock or
+        call before any concurrent access begins."""
         row = self._conn.execute(
             "SELECT operator FROM runs WHERE run_id=?", (run_id,)
         ).fetchone()
         return row[0] if row else "unknown"
 
+    def _operator_for_run(self, run_id: str) -> str:
+        with self._lock:
+            return self._operator_for_run_unlocked(run_id)
+
     def close(self):
-        self._conn.close()
+        with self._lock:
+            self._conn.close()
 
     def __enter__(self):
         return self
