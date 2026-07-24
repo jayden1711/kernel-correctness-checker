@@ -55,6 +55,22 @@ def _run_in_subprocess(
         from verification.specs.matmul import get_spec as matmul_spec
         from verification.specs.flash_attention import get_spec as flash_attention_spec
         from verification.specs.rmsnorm import get_spec as rmsnorm_spec
+        from verification.specs.log_softmax import get_spec as log_softmax_spec
+        from verification.specs.swish import get_spec as swish_spec
+        from verification.specs.gelu import get_spec as gelu_spec
+        from verification.specs.sum_reduction import get_spec as sum_reduction_spec
+        from verification.specs.mean_reduction import get_spec as mean_reduction_spec
+        from verification.specs.max_reduction import get_spec as max_reduction_spec
+        from verification.specs.min_reduction import get_spec as min_reduction_spec
+        from verification.specs.l1norm import get_spec as l1norm_spec
+        from verification.specs.l2norm import get_spec as l2norm_spec
+        from verification.specs.frobenius_norm import get_spec as frobenius_norm_spec
+        from verification.specs.argmax import get_spec as argmax_spec
+        from verification.specs.argmin import get_spec as argmin_spec
+        from verification.specs.instancenorm import get_spec as instancenorm_spec
+        from verification.specs.batchnorm import get_spec as batchnorm_spec
+        from verification.specs.scaled_dot_product_attention import get_spec as sdpa_spec
+        from verification.specs.causal_flash_attention import get_spec as causal_flash_attention_spec
 
         SPEC_MAP = {
             "softmax":         softmax_spec,
@@ -62,6 +78,22 @@ def _run_in_subprocess(
             "matmul":          matmul_spec,
             "flash_attention": flash_attention_spec,
             "rmsnorm":         rmsnorm_spec,
+            "log_softmax":                    log_softmax_spec,
+            "swish":                          swish_spec,
+            "gelu":                           gelu_spec,
+            "sum_reduction":                  sum_reduction_spec,
+            "mean_reduction":                 mean_reduction_spec,
+            "max_reduction":                  max_reduction_spec,
+            "min_reduction":                  min_reduction_spec,
+            "l1norm":                         l1norm_spec,
+            "l2norm":                         l2norm_spec,
+            "frobenius_norm":                 frobenius_norm_spec,
+            "argmax":                         argmax_spec,
+            "argmin":                         argmin_spec,
+            "instancenorm":                   instancenorm_spec,
+            "batchnorm":                      batchnorm_spec,
+            "scaled_dot_product_attention":   sdpa_spec,
+            "causal_flash_attention":         causal_flash_attention_spec,
         }
 
         FUNC_NAMES = {
@@ -70,6 +102,22 @@ def _run_in_subprocess(
             "matmul":          ["matmul"],
             "flash_attention": ["flash_attention"],
             "rmsnorm":         ["rmsnorm", "rms_norm"],
+            "log_softmax":                    ["log_softmax"],
+            "swish":                          ["swish"],
+            "gelu":                           ["gelu"],
+            "sum_reduction":                  ["sum_reduction"],
+            "mean_reduction":                 ["mean_reduction"],
+            "max_reduction":                  ["max_reduction"],
+            "min_reduction":                  ["min_reduction"],
+            "l1norm":                         ["l1norm"],
+            "l2norm":                         ["l2norm"],
+            "frobenius_norm":                 ["frobenius_norm"],
+            "argmax":                         ["argmax"],
+            "argmin":                         ["argmin"],
+            "instancenorm":                   ["instancenorm"],
+            "batchnorm":                      ["batchnorm"],
+            "scaled_dot_product_attention":   ["scaled_dot_product_attention"],
+            "causal_flash_attention":         ["causal_flash_attention"],
         }
 
         def _load_fn(path: str, op: str) -> Callable:

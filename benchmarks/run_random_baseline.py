@@ -21,11 +21,37 @@ DESIGN NOTES (fixes vs. the first draft):
     mean/median hit-proposal-count and hit-rate-within-budget across
     seeds, not a single number.
 
-  - Budget matches the LLM system's budget by default (44) for the
-    headline comparison. Pass --budget to run a second pass (e.g. 440)
-    if you also want to report whether random catches up given far more
-    tries -- keep that as an explicitly separate reported number, not
-    blended into the same-budget comparison.
+  - Attention operators (flash_attention, scaled_dot_product_attention,
+    causal_flash_attention) draw head dim D from a fixed power-of-2 set,
+    not the broad DIM_RANGE -- the underlying Triton kernels use
+    tl.arange(0, D), which requires D to be a power of 2 at compile
+    time. Confirmed this constraint is inherited from flash_attention's
+    original kernel, not new to the 2 new attention operators.
+
+  - Norm-family operators (layernorm, rmsnorm, instancenorm, batchnorm)
+    draw their primary tensor's scale from NORM_SCALE_RANGE_LOG10
+    (1e0..1e4), not the broad SCALE_RANGE_LOG10 (1e-2..1e4) used
+    everywhere else. Reason: positive_scale_invariance checks compare
+    normalize(c*x) to normalize(x); that equality only holds when
+    variance(x) dominates eps in the denominator. Confirmed via
+    instancenorm: a proposal with scale=0.0175 produced max_diff=1.86
+    under rescale, a false-looking failure driven entirely by eps
+    dominating a near-zero variance, not a kernel bug. Every other
+    generator (softmax-like, elementwise, matmul, attention) is
+    UNCHANGED and still uses the original broad _random_scale --
+    narrowing those would bias the random baseline for operators that
+    were never implicated in this finding.
+
+  - OPEN QUESTION, not yet resolved: l1norm and l2norm (routed through
+    _gen_softmax_like, still on the broad scale range) may have the
+    same eps-vs-tiny-variance structure in their own
+    positive_scale_invariance checks as instancenorm did. Check
+    verification/layer3_properties/norm_properties.py's
+    check_positive_scale_invariance and its eps handling before
+    trusting l1norm/l2norm's random-baseline hit rate at small scales --
+    if the same failure mode applies, _gen_softmax_like needs to be
+    split (or l1norm/l2norm given their own generator) rather than
+    patching _make_tensor globally again.
 
 WIRED TO THE REAL PIPELINE:
   _evaluate_proposal now calls executor.execute_proposal against the
@@ -34,26 +60,23 @@ WIRED TO THE REAL PIPELINE:
   one mutant with passed_checker=False AND passed_naive=True) rather
   than a re-derived approximation of it.
 
-BLOCKING DEPENDENCY -- NOT YET RESOLVED:
-  execute_proposal calls materializer.tensors_to_inputs(operator,
-  tensors) to convert an InputProposal into actual positional call
-  arguments. That function's source has never been seen in this
-  project's context -- it almost certainly has per-operator dispatch
-  logic (everything else in this codebase does), meaning EVERY one of
-  the 21 new operators below is generated correctly but UNCONFIRMED to
-  actually route through execute_proposal until tensors_to_inputs is
-  checked/extended. Do not trust a 0% hit rate on any new operator as
-  "random search found nothing" until this is confirmed -- it may mean
-  "tensors_to_inputs doesn't know this operator yet."
+RESOLVED (previously blocking, now fixed):
+  executor.py's FUNC_NAMES and SPEC_MAP dicts only covered the
+  original 5 operators -- every one of the 16 new pure-tensor-signature
+  operators hit a KeyError on the very first call, before any Triton
+  compilation. Fixed in executor.py: both dicts extended, imports added
+  for all 16 new specs. Confirmed via per-operator debug harness that
+  all 16 now produce real check_results with no exception, EXCEPT the
+  two attention operators (see D-must-be-power-of-2 note above -- fixed
+  via the generator change, not an executor change) and instancenorm
+  (see NORM_SCALE_RANGE_LOG10 note above).
 
   Separately, GroupNorm (num_groups: int) and the six pooling operators
-  (kernel_size/stride/padding: int) cannot be represented as a valid
-  InputProposal AT ALL -- TensorDescriptor/InputProposal (schemas.py)
-  only has a slot for named tensors, no field for a plain scalar
-  hyperparameter. This needs a schema change, not a generator fix, and
-  isn't attempted here without seeing how deeply materializer.py,
-  worker.py, coordinator.py, and the history store depend on
-  InputProposal's current shape. cross_entropy (targets: int64 tensor)
+  (kernel_size/stride/padding: int) still cannot be represented as a
+  valid InputProposal AT ALL -- TensorDescriptor/InputProposal
+  (schemas.py) only has a slot for named tensors, no field for a plain
+  scalar hyperparameter. This needs a schema change, not a generator
+  fix, and isn't attempted here. cross_entropy (targets: int64 tensor)
   is deferred separately -- dtype="int64" support in the materializer
   is unconfirmed.
 
@@ -63,9 +86,8 @@ ONE REMAINING UNCONFIRMED PIECE -- file paths (original 5 operators only).
   Python dotted import paths. REFERENCE_PATHS / MUTANT_PATHS for the
   original 5 (softmax/layernorm/matmul/flash_attention/rmsnorm) are
   INFERRED from the dotted imports seen in run_checker.py, not confirmed
-  against your actual directory layout -- the 21 new operators' paths
-  are HIGH confidence, since I wrote every one of those files myself
-  this conversation and know their exact paths.
+  against your actual directory layout -- the 16 new operators' paths
+  are HIGH confidence and confirmed against the real directory listing.
 """
 
 import argparse
@@ -94,8 +116,8 @@ REFERENCE_PATHS = {
     "flash_attention": "TritonBench/reference/flash_attention.py",
     "rmsnorm":         "TritonBench/reference/rmsnorm.py",
 
-    # 16 new, pure-tensor-signature operators -- HIGH confidence, these
-    # are the exact paths from earlier this conversation.
+    # 16 new, pure-tensor-signature operators -- confirmed against real
+    # directory listing.
     "log_softmax":                    "TritonBench/reference/log_softmax.py",
     "swish":                          "TritonBench/reference/swish.py",
     "gelu":                           "TritonBench/reference/gelu.py",
@@ -219,8 +241,8 @@ MUTANT_PATHS: Dict[str, List[Tuple[str, str]]] = {
     "avg_pool3d": [("avg_pool3d/wrong_divisor", "TritonBench/cheating/avg_pool3d/wrong_divisor.py")],
 }
 
-# Only operators with a valid InputProposal representation AND (assumed,
-# unconfirmed) materializer support. groupnorm/pooling/cross_entropy are
+# Only operators with a valid InputProposal representation AND confirmed
+# executor/materializer support. groupnorm/pooling/cross_entropy are
 # deliberately excluded -- see module docstring.
 OPERATORS = [
     "softmax", "layernorm", "matmul", "flash_attention", "rmsnorm",
@@ -255,7 +277,19 @@ FILLS = ["randn", "ones", "zeros", "arange"]
 # rate uniform sampling produces them, same as any other value.
 DIM_RANGE = (32, 1024)
 SMALL_DIM_RANGE = (4, 32)     # for 4D tensors (instancenorm/batchnorm) -- keeps N*C*H*W reasonable
-SCALE_RANGE_LOG10 = (-2, 4)   # sampled in log space: 1e-2 .. 1e4
+SCALE_RANGE_LOG10 = (-2, 4)   # sampled in log space: 1e-2 .. 1e4 -- default, used everywhere
+                              # EXCEPT norm-family primary tensors (see below)
+NORM_SCALE_RANGE_LOG10 = (0, 4)   # 1e0 .. 1e4 -- avoids near-zero-variance inputs where
+                                   # positive_scale_invariance breaks down against a fixed eps.
+                                   # ONLY applied at explicit call sites in norm-family
+                                   # generators (layernorm/rmsnorm/instancenorm/batchnorm),
+                                   # NOT inside the shared _make_tensor helper.
+
+# Attention head dims must be a compile-time power of 2 -- the Triton
+# kernels use tl.arange(0, D). Confirmed inherited from flash_attention's
+# original kernel (not new to the 2 new attention operators), so this is
+# a real deployment constraint, not an artifact of these two kernels.
+ATTENTION_HEAD_DIMS = [32, 64, 128, 256, 512]
 
 
 def _random_dim(rng: random.Random, dim_range=DIM_RANGE) -> int:
@@ -267,11 +301,19 @@ def _random_scale(rng: random.Random) -> float:
     return 10 ** exponent
 
 
+def _random_scale_norm(rng: random.Random) -> float:
+    exponent = rng.uniform(*NORM_SCALE_RANGE_LOG10)
+    return 10 ** exponent
+
+
 def _random_shift(rng: random.Random) -> float:
     return rng.choice([0.0, 0.0, 0.0, rng.uniform(-10, 10)])  # mostly centered, occasionally shifted
 
 
 def _make_tensor(rng: random.Random, shape: List[int]) -> TensorDescriptor:
+    """Default tensor generator -- broad scale range. Norm-family
+    generators below do NOT use this for their primary tensor; they
+    build a TensorDescriptor directly with _random_scale_norm instead."""
     return TensorDescriptor(
         shape=shape, dtype="float32",
         fill=rng.choice(FILLS), scale=_random_scale(rng), shift=_random_shift(rng),
@@ -284,13 +326,18 @@ def _make_tensor(rng: random.Random, shape: List[int]) -> TensorDescriptor:
 
 def _gen_softmax_like(rng, keys: List[str]) -> Dict[str, TensorDescriptor]:
     """Single 2D tensor: softmax, log_softmax, sum/mean/max/min_reduction,
-    l1norm, l2norm, argmax, argmin -- all just ["x"] at (n_rows, n_cols)."""
+    l1norm, l2norm, argmax, argmin -- all just ["x"] at (n_rows, n_cols).
+    NOTE: l1norm/l2norm's positive_scale_invariance check may have the
+    same eps-vs-tiny-variance issue found in instancenorm -- unconfirmed.
+    If so, this generator will need to be split for those two operators
+    rather than patched globally again."""
     shape = [_random_dim(rng), _random_dim(rng)]
     return {keys[0]: _make_tensor(rng, shape)}
 
 
 def _gen_elementwise_1d(rng, keys: List[str]) -> Dict[str, TensorDescriptor]:
-    """Single 1D tensor: swish, gelu."""
+    """Single 1D tensor: swish, gelu. No normalization -- broad scale
+    range is fine, unaffected by the eps/scale-invariance finding."""
     n = _random_dim(rng)
     return {keys[0]: _make_tensor(rng, [n])}
 
@@ -305,9 +352,10 @@ def _gen_frobenius_norm(rng, keys: List[str]) -> Dict[str, TensorDescriptor]:
 def _gen_layernorm(rng, keys: List[str]) -> Dict[str, TensorDescriptor]:
     n_rows, n_cols = _random_dim(rng), _random_dim(rng)
     return {
-        "x": _make_tensor(rng, [n_rows, n_cols]),
+        "x": TensorDescriptor(shape=[n_rows, n_cols], dtype="float32",
+                               fill=rng.choice(FILLS), scale=_random_scale_norm(rng), shift=_random_shift(rng)),
         "gamma": TensorDescriptor(shape=[n_cols], dtype="float32",
-                                   fill=rng.choice(["ones", "randn"]), scale=_random_scale(rng), shift=0.0),
+                                   fill=rng.choice(["ones", "randn"]), scale=_random_scale_norm(rng), shift=0.0),
         "beta": TensorDescriptor(shape=[n_cols], dtype="float32",
                                   fill="zeros", scale=1.0, shift=rng.uniform(-5, 5)),
     }
@@ -316,16 +364,19 @@ def _gen_layernorm(rng, keys: List[str]) -> Dict[str, TensorDescriptor]:
 def _gen_rmsnorm(rng, keys: List[str]) -> Dict[str, TensorDescriptor]:
     n_rows, n_cols = _random_dim(rng), _random_dim(rng)
     return {
-        "x": _make_tensor(rng, [n_rows, n_cols]),
+        "x": TensorDescriptor(shape=[n_rows, n_cols], dtype="float32",
+                               fill=rng.choice(FILLS), scale=_random_scale_norm(rng), shift=_random_shift(rng)),
         "gamma": TensorDescriptor(shape=[n_cols], dtype="float32",
-                                   fill=rng.choice(["ones", "randn"]), scale=_random_scale(rng), shift=0.0),
+                                   fill=rng.choice(["ones", "randn"]), scale=_random_scale_norm(rng), shift=0.0),
     }
 
 
 def _gen_matmul(rng, keys: List[str]) -> Dict[str, TensorDescriptor]:
     """A:[M,K], B:[K,N] -- K SHARED, M/N independent. See module history:
     giving A and B the same [dim1,dim2] shape (the original bug) makes
-    the multiplication valid only ~0.1% of the time by coincidence."""
+    the multiplication valid only ~0.1% of the time by coincidence.
+    Broad scale range -- no normalization involved, unaffected by the
+    eps/scale-invariance finding."""
     M, K, N = _random_dim(rng), _random_dim(rng), _random_dim(rng)
     return {
         "A": _make_tensor(rng, [M, K]),
@@ -336,8 +387,14 @@ def _gen_matmul(rng, keys: List[str]) -> Dict[str, TensorDescriptor]:
 def _gen_attention_like(rng, keys: List[str]) -> Dict[str, TensorDescriptor]:
     """Q,K,V all share one (N,D) -- self-attention requires this,
     confirmed against the reference kernels' own signatures. Covers
-    flash_attention, scaled_dot_product_attention, causal_flash_attention."""
-    N, D = _random_dim(rng), _random_dim(rng)
+    flash_attention, scaled_dot_product_attention, causal_flash_attention.
+    D is drawn from ATTENTION_HEAD_DIMS (power-of-2 only), NOT DIM_RANGE
+    -- the Triton kernels use tl.arange(0, D), which requires D to be a
+    compile-time power of 2. Confirmed this constraint exists in the
+    original flash_attention kernel too, so it's a real deployment
+    constraint being modeled correctly here, not worked around."""
+    N = _random_dim(rng)
+    D = rng.choice(ATTENTION_HEAD_DIMS)
     shape = [N, D]
     return {k: _make_tensor(rng, shape) for k in keys}
 
@@ -347,9 +404,10 @@ def _gen_instancenorm(rng, keys: List[str]) -> Dict[str, TensorDescriptor]:
     in 4D; SMALL_DIM_RANGE keeps proposals a reasonable size."""
     N, C, H, W = (_random_dim(rng, SMALL_DIM_RANGE) for _ in range(4))
     return {
-        "x": _make_tensor(rng, [N, C, H, W]),
+        "x": TensorDescriptor(shape=[N, C, H, W], dtype="float32",
+                               fill=rng.choice(FILLS), scale=_random_scale_norm(rng), shift=_random_shift(rng)),
         "weight": TensorDescriptor(shape=[C], dtype="float32",
-                                    fill=rng.choice(["ones", "randn"]), scale=_random_scale(rng), shift=0.0),
+                                    fill=rng.choice(["ones", "randn"]), scale=_random_scale_norm(rng), shift=0.0),
         "bias": TensorDescriptor(shape=[C], dtype="float32",
                                   fill="zeros", scale=1.0, shift=rng.uniform(-5, 5)),
     }
@@ -359,11 +417,12 @@ def _gen_batchnorm(rng, keys: List[str]) -> Dict[str, TensorDescriptor]:
     """x: (N,C,H,W), running_mean/running_var/weight/bias: (C,)."""
     N, C, H, W = (_random_dim(rng, SMALL_DIM_RANGE) for _ in range(4))
     return {
-        "x": _make_tensor(rng, [N, C, H, W]),
+        "x": TensorDescriptor(shape=[N, C, H, W], dtype="float32",
+                               fill=rng.choice(FILLS), scale=_random_scale_norm(rng), shift=_random_shift(rng)),
         "running_mean": TensorDescriptor(shape=[C], dtype="float32", fill="randn", scale=1.0, shift=0.0),
         "running_var": TensorDescriptor(shape=[C], dtype="float32", fill="ones", scale=1.0, shift=0.0),
         "weight": TensorDescriptor(shape=[C], dtype="float32",
-                                    fill=rng.choice(["ones", "randn"]), scale=_random_scale(rng), shift=0.0),
+                                    fill=rng.choice(["ones", "randn"]), scale=_random_scale_norm(rng), shift=0.0),
         "bias": TensorDescriptor(shape=[C], dtype="float32",
                                   fill="zeros", scale=1.0, shift=rng.uniform(-5, 5)),
     }
@@ -404,7 +463,9 @@ GENERATORS = {
 def random_proposal(operator: str, worker_id: str, iteration: int, rng: random.Random) -> InputProposal:
     """Generate a random InputProposal with no LLM and no curated
     edge-case shortlist -- shape dims and scale are drawn from broad
-    uniform/log-uniform ranges, not hand-picked gotcha values.
+    uniform/log-uniform ranges, not hand-picked gotcha values (except
+    where a real deployment/numerical constraint requires otherwise --
+    see ATTENTION_HEAD_DIMS and NORM_SCALE_RANGE_LOG10 above).
     Dispatches to a per-operator generator (GENERATORS above) rather than
     forcing every operator through one shared shape-generation path --
     the 24 new operators span 1D (swish/gelu), 2D (most), and 4D
@@ -493,7 +554,7 @@ def run_operator(operator: str, budget: int, seed: int, timeout_seconds: int) ->
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--budget", type=int, default=44,
+    parser.add_argument("--budget", type=int, default=25,
                          help="proposals per seed -- match your LLM system's budget for the headline comparison")
     parser.add_argument("--n-seeds", type=int, default=10)
     parser.add_argument("--timeout", type=int, default=30,
