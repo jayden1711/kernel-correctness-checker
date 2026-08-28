@@ -1,0 +1,12 @@
+perturbation-routed calls that would run the defect probe : 844
+(argmax/argmin excluded -- discrete output is flagged with no probe)
+
+ defect samples  extra launches   added ms  checker wall   corpus
+              1             844        103          1.2%     0.2%
+              3           2,532        308          3.6%     0.6%
+              5           4,220        514          6.1%     1.0%
+             20          16,880       2056         24.3%     3.9%
+
+Shipped default is 3. The banked defect medians are over 40 samples, so
+3 is a cost choice that has NOT been validated for stability -- arm C of
+scopedet.sh exists to settle it against 20.

@@ -1,0 +1,21 @@
+  n  checker wall ms  candidates  ms/candidate
+  3           6818.0         240        28.408
+  5           6829.6         240        28.457
+ 10           7421.9         240        30.924
+ 15           7485.3         240        31.189
+ 20           8474.3         240        35.310
+ 40          10456.9         240        43.570
+
+OLS  wall_ms(n) = 6346.1 + 101.176 * n    R^2 = 0.9801
+
+At the shipped n_samples=20:
+  checker wall (instrumented)          : 8474.3 ms  over 240 candidates
+  n-scaling (sensitivity-loop) portion : 2023.5 ms = 23.9% of checker wall
+  n=0 intercept (everything else)      : 6346.1 ms
+
+  => eliminating the sensitivity loop ENTIRELY (free replacement) is an
+     ABSOLUTE CEILING of -23.9% checker wall.
+
+  Corpus translation (warm run 60.8s; perturbation-bearing checker
+  portion 9.89s, same denominator as n_samples_curve/FINDINGS.md):
+     ceiling saving = 2.36 s = 3.9% of corpus runtime

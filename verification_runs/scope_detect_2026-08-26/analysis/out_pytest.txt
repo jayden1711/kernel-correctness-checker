@@ -1,0 +1,11 @@
+ok
+configfile: pytest.ini
+plugins: cov-7.1.0, hypothesis-6.158.1, anyio-4.14.2
+collected 51 items
+
+tests/verification/layer2/test_scope_detect.py ......................... [ 49%]
+..........................                                               [100%]
+
+============================== 51 passed in 0.54s ==============================
+
+[exited with code 0]

@@ -1,0 +1,1167 @@
+{
+ "wrappers": [
+  {
+   "population": "reference",
+   "file": "TritonBench/reference/argmax.py",
+   "func": "argmax",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "reference",
+   "file": "TritonBench/reference/argmin.py",
+   "func": "argmin",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "reference",
+   "file": "TritonBench/reference/avg_pool1d.py",
+   "func": "avg_pool1d",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "reference",
+   "file": "TritonBench/reference/avg_pool2d.py",
+   "func": "avg_pool2d",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "reference",
+   "file": "TritonBench/reference/avg_pool3d.py",
+   "func": "avg_pool3d",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "reference",
+   "file": "TritonBench/reference/batchnorm.py",
+   "func": "batchnorm",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "reference",
+   "file": "TritonBench/reference/causal_flash_attention.py",
+   "func": "causal_flash_attention",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "reference",
+   "file": "TritonBench/reference/cross_entropy.py",
+   "func": "cross_entropy",
+   "n_torch": 1,
+   "n_triton": 1,
+   "ratio": 0.5,
+   "verdict": "pass"
+  },
+  {
+   "population": "reference",
+   "file": "TritonBench/reference/flash_attention.py",
+   "func": "flash_attention",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "reference",
+   "file": "TritonBench/reference/frobenius_norm.py",
+   "func": "frobenius_norm",
+   "n_torch": 0,
+   "n_triton": 2,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "reference",
+   "file": "TritonBench/reference/gelu.py",
+   "func": "gelu",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "reference",
+   "file": "TritonBench/reference/groupnorm.py",
+   "func": "groupnorm",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "reference",
+   "file": "TritonBench/reference/instancenorm.py",
+   "func": "instancenorm",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "reference",
+   "file": "TritonBench/reference/l1norm.py",
+   "func": "l1norm",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "reference",
+   "file": "TritonBench/reference/l2norm.py",
+   "func": "l2norm",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "reference",
+   "file": "TritonBench/reference/layernorm.py",
+   "func": "layernorm",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "reference",
+   "file": "TritonBench/reference/log_softmax.py",
+   "func": "log_softmax",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "reference",
+   "file": "TritonBench/reference/mat_mult.py",
+   "func": "matmul",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "reference",
+   "file": "TritonBench/reference/max_pool1d.py",
+   "func": "max_pool1d",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "reference",
+   "file": "TritonBench/reference/max_pool2d.py",
+   "func": "max_pool2d",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "reference",
+   "file": "TritonBench/reference/max_pool3d.py",
+   "func": "max_pool3d",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "reference",
+   "file": "TritonBench/reference/max_reduction.py",
+   "func": "max_reduction",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "reference",
+   "file": "TritonBench/reference/mean_reduction.py",
+   "func": "mean_reduction",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "reference",
+   "file": "TritonBench/reference/min_reduction.py",
+   "func": "min_reduction",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "reference",
+   "file": "TritonBench/reference/rmsnorm.py",
+   "func": "rmsnorm",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "reference",
+   "file": "TritonBench/reference/scaled_dot_product_attention.py",
+   "func": "scaled_dot_product_attention",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "reference",
+   "file": "TritonBench/reference/softmax.py",
+   "func": "softmax",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "reference",
+   "file": "TritonBench/reference/sum_reduction.py",
+   "func": "sum_reduction",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "reference",
+   "file": "TritonBench/reference/swish.py",
+   "func": "swish",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "cheating_mutants",
+   "file": "TritonBench/cheating/mean_reduction/partial_reduction.py",
+   "func": "mean_reduction",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "cheating_mutants",
+   "file": "TritonBench/cheating/gelu/sigmoid_approx.py",
+   "func": "gelu",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "cheating_mutants",
+   "file": "TritonBench/cheating/causal_flash_attention/wrong_causal_mask.py",
+   "func": "causal_flash_attention",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "cheating_mutants",
+   "file": "TritonBench/cheating/sum_reduction/partial_reduction.py",
+   "func": "sum_reduction",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "cheating_mutants",
+   "file": "TritonBench/cheating/argmax/tiebreak.py",
+   "func": "argmax",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "cheating_mutants",
+   "file": "TritonBench/cheating/min_reduction/wrong_padding.py",
+   "func": "min_reduction",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "cheating_mutants",
+   "file": "TritonBench/cheating/argmin/tiebreak.py",
+   "func": "argmin",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "cheating_mutants",
+   "file": "TritonBench/cheating/scaled_dot_product_attention/wrong_mask.py",
+   "func": "scaled_dot_product_attention",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "cheating_mutants",
+   "file": "TritonBench/cheating/avg_pool3d/wrong_divisor.py",
+   "func": "avg_pool3d",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "cheating_mutants",
+   "file": "TritonBench/cheating/layer_norm/ignore_gamma_beta.py",
+   "func": "layernorm",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "cheating_mutants",
+   "file": "TritonBench/cheating/layer_norm/skip_mean_subtract.py",
+   "func": "layernorm",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "cheating_mutants",
+   "file": "TritonBench/cheating/layer_norm/wrong_variance_estimate.py",
+   "func": "layernorm",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "cheating_mutants",
+   "file": "TritonBench/cheating/max_pool1d/wrong_padding.py",
+   "func": "max_pool1d",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "cheating_mutants",
+   "file": "TritonBench/cheating/max_pool2d/wrong_padding.py",
+   "func": "max_pool2d",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "cheating_mutants",
+   "file": "TritonBench/cheating/max_pool3d/wrong_padding.py",
+   "func": "max_pool3d",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "cheating_mutants",
+   "file": "TritonBench/cheating/frobenius_norm/wrong_norm.py",
+   "func": "frobenius_norm",
+   "n_torch": 0,
+   "n_triton": 2,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "cheating_mutants",
+   "file": "TritonBench/cheating/rmsnorm/ignore_gamma.py",
+   "func": "rmsnorm",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "cheating_mutants",
+   "file": "TritonBench/cheating/rmsnorm/partial_reduction.py",
+   "func": "rmsnorm",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "cheating_mutants",
+   "file": "TritonBench/cheating/rmsnorm/wrong_norm.py",
+   "func": "rmsnorm",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "cheating_mutants",
+   "file": "TritonBench/cheating/avg_pool2d/wrong_divisor.py",
+   "func": "avg_pool2d",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "cheating_mutants",
+   "file": "TritonBench/cheating/softmax/first_tile.py",
+   "func": "softmax",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "cheating_mutants",
+   "file": "TritonBench/cheating/softmax/wrong_reduction.py",
+   "func": "softmax",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "cheating_mutants",
+   "file": "TritonBench/cheating/log_softmax/skip_max_subtraction.py",
+   "func": "log_softmax",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "cheating_mutants",
+   "file": "TritonBench/cheating/avg_pool1d/wrong_divisor.py",
+   "func": "avg_pool1d",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "cheating_mutants",
+   "file": "TritonBench/cheating/instancenorm/skip_eps.py",
+   "func": "instancenorm",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "cheating_mutants",
+   "file": "TritonBench/cheating/max_reduction/wrong_padding.py",
+   "func": "max_reduction",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "cheating_mutants",
+   "file": "TritonBench/cheating/matmult/partial_k_reduct.py",
+   "func": "matmul",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "cheating_mutants",
+   "file": "TritonBench/cheating/matmult/skip_boundary_tiles.py",
+   "func": "matmul",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "cheating_mutants",
+   "file": "TritonBench/cheating/matmult/swapped_strides.py",
+   "func": "matmul",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "cheating_mutants",
+   "file": "TritonBench/cheating/matmult/wrong_dtype.py",
+   "func": "matmul",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "cheating_mutants",
+   "file": "TritonBench/cheating/batchnorm/wrong_running_stats_broadcast.py",
+   "func": "batchnorm",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "cheating_mutants",
+   "file": "TritonBench/cheating/l2norm/wrong_norm.py",
+   "func": "l2norm",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "cheating_mutants",
+   "file": "TritonBench/cheating/flash_attention/approx_denom.py",
+   "func": "flash_attention",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "cheating_mutants",
+   "file": "TritonBench/cheating/flash_attention/drop_last_tile.py",
+   "func": "flash_attention",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "cheating_mutants",
+   "file": "TritonBench/cheating/flash_attention/skip_rescaling.py",
+   "func": "flash_attention",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "cheating_mutants",
+   "file": "TritonBench/cheating/flash_attention/wrong_mask.py",
+   "func": "flash_attention",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "cheating_mutants",
+   "file": "TritonBench/cheating/cross_entropy/missing_max_subtraction.py",
+   "func": "cross_entropy",
+   "n_torch": 1,
+   "n_triton": 1,
+   "ratio": 0.5,
+   "verdict": "pass"
+  },
+  {
+   "population": "cheating_mutants",
+   "file": "TritonBench/cheating/swish/linear_sigmoid_approx.py",
+   "func": "swish",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "cheating_mutants",
+   "file": "TritonBench/cheating/l1norm/partial_reduction.py",
+   "func": "l1norm",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "cheating_mutants",
+   "file": "TritonBench/cheating/groupnorm/ignore_affine.py",
+   "func": "groupnorm",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "cheating_mutants",
+   "file": "TritonBench/cheating/max_reduction.py/wrong_padding.py",
+   "func": "max_reduction",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "near_miss",
+   "file": "TritonBench/near_miss/gelu/m050.py",
+   "func": "gelu",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "near_miss",
+   "file": "TritonBench/near_miss/gelu/m080.py",
+   "func": "gelu",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "near_miss",
+   "file": "TritonBench/near_miss/gelu/m100.py",
+   "func": "gelu",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "near_miss",
+   "file": "TritonBench/near_miss/gelu/m125.py",
+   "func": "gelu",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "near_miss",
+   "file": "TritonBench/near_miss/gelu/m200.py",
+   "func": "gelu",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "near_miss",
+   "file": "TritonBench/near_miss/gelu/v050.py",
+   "func": "gelu",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "near_miss",
+   "file": "TritonBench/near_miss/gelu/v080.py",
+   "func": "gelu",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "near_miss",
+   "file": "TritonBench/near_miss/gelu/v100.py",
+   "func": "gelu",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "near_miss",
+   "file": "TritonBench/near_miss/gelu/v125.py",
+   "func": "gelu",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "near_miss",
+   "file": "TritonBench/near_miss/gelu/v200.py",
+   "func": "gelu",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "near_miss",
+   "file": "TritonBench/near_miss/sum_reduction/m050.py",
+   "func": "sum_reduction",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "near_miss",
+   "file": "TritonBench/near_miss/sum_reduction/m080.py",
+   "func": "sum_reduction",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "near_miss",
+   "file": "TritonBench/near_miss/sum_reduction/m100.py",
+   "func": "sum_reduction",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "near_miss",
+   "file": "TritonBench/near_miss/sum_reduction/m125.py",
+   "func": "sum_reduction",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "near_miss",
+   "file": "TritonBench/near_miss/sum_reduction/m200.py",
+   "func": "sum_reduction",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "near_miss",
+   "file": "TritonBench/near_miss/sum_reduction/v050.py",
+   "func": "sum_reduction",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "near_miss",
+   "file": "TritonBench/near_miss/sum_reduction/v080.py",
+   "func": "sum_reduction",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "near_miss",
+   "file": "TritonBench/near_miss/sum_reduction/v100.py",
+   "func": "sum_reduction",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "near_miss",
+   "file": "TritonBench/near_miss/sum_reduction/v125.py",
+   "func": "sum_reduction",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "near_miss",
+   "file": "TritonBench/near_miss/sum_reduction/v200.py",
+   "func": "sum_reduction",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "near_miss",
+   "file": "TritonBench/near_miss/layernorm/m050.py",
+   "func": "layernorm",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "near_miss",
+   "file": "TritonBench/near_miss/layernorm/m080.py",
+   "func": "layernorm",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "near_miss",
+   "file": "TritonBench/near_miss/layernorm/m100.py",
+   "func": "layernorm",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "near_miss",
+   "file": "TritonBench/near_miss/layernorm/m125.py",
+   "func": "layernorm",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "near_miss",
+   "file": "TritonBench/near_miss/layernorm/m200.py",
+   "func": "layernorm",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "near_miss",
+   "file": "TritonBench/near_miss/layernorm/v050.py",
+   "func": "layernorm",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "near_miss",
+   "file": "TritonBench/near_miss/layernorm/v080.py",
+   "func": "layernorm",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "near_miss",
+   "file": "TritonBench/near_miss/layernorm/v100.py",
+   "func": "layernorm",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "near_miss",
+   "file": "TritonBench/near_miss/layernorm/v125.py",
+   "func": "layernorm",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "near_miss",
+   "file": "TritonBench/near_miss/layernorm/v200.py",
+   "func": "layernorm",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "near_miss",
+   "file": "TritonBench/near_miss/softmax/m050.py",
+   "func": "softmax",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "near_miss",
+   "file": "TritonBench/near_miss/softmax/m080.py",
+   "func": "softmax",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "near_miss",
+   "file": "TritonBench/near_miss/softmax/m100.py",
+   "func": "softmax",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "near_miss",
+   "file": "TritonBench/near_miss/softmax/m125.py",
+   "func": "softmax",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "near_miss",
+   "file": "TritonBench/near_miss/softmax/m200.py",
+   "func": "softmax",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "near_miss",
+   "file": "TritonBench/near_miss/softmax/v050.py",
+   "func": "softmax",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "near_miss",
+   "file": "TritonBench/near_miss/softmax/v080.py",
+   "func": "softmax",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "near_miss",
+   "file": "TritonBench/near_miss/softmax/v100.py",
+   "func": "softmax",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "near_miss",
+   "file": "TritonBench/near_miss/softmax/v125.py",
+   "func": "softmax",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "near_miss",
+   "file": "TritonBench/near_miss/softmax/v200.py",
+   "func": "softmax",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "near_miss",
+   "file": "TritonBench/near_miss/l2norm/m050.py",
+   "func": "l2norm",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "near_miss",
+   "file": "TritonBench/near_miss/l2norm/m080.py",
+   "func": "l2norm",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "near_miss",
+   "file": "TritonBench/near_miss/l2norm/m100.py",
+   "func": "l2norm",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "near_miss",
+   "file": "TritonBench/near_miss/l2norm/m125.py",
+   "func": "l2norm",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "near_miss",
+   "file": "TritonBench/near_miss/l2norm/m200.py",
+   "func": "l2norm",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "near_miss",
+   "file": "TritonBench/near_miss/l2norm/v050.py",
+   "func": "l2norm",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "near_miss",
+   "file": "TritonBench/near_miss/l2norm/v080.py",
+   "func": "l2norm",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "near_miss",
+   "file": "TritonBench/near_miss/l2norm/v100.py",
+   "func": "l2norm",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "near_miss",
+   "file": "TritonBench/near_miss/l2norm/v125.py",
+   "func": "l2norm",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "near_miss",
+   "file": "TritonBench/near_miss/l2norm/v200.py",
+   "func": "l2norm",
+   "n_torch": 0,
+   "n_triton": 1,
+   "ratio": 0.0,
+   "verdict": "pass"
+  },
+  {
+   "population": "experiments",
+   "file": "TritonBench/experiments/flash_attention.py",
+   "func": "run_flash_attention",
+   "n_torch": 3,
+   "n_triton": 0,
+   "ratio": 1.0,
+   "verdict": "FLAG"
+  },
+  {
+   "population": "experiments",
+   "file": "TritonBench/experiments/layernorm.py",
+   "func": "run_layernorm",
+   "n_torch": 3,
+   "n_triton": 0,
+   "ratio": 1.0,
+   "verdict": "FLAG"
+  },
+  {
+   "population": "experiments",
+   "file": "TritonBench/experiments/matmul.py",
+   "func": "run_matmul",
+   "n_torch": 5,
+   "n_triton": 0,
+   "ratio": 1.0,
+   "verdict": "FLAG"
+  },
+  {
+   "population": "experiments",
+   "file": "TritonBench/experiments/softmax.py",
+   "func": "run_softmax",
+   "n_torch": 2,
+   "n_triton": 0,
+   "ratio": 1.0,
+   "verdict": "FLAG"
+  }
+ ],
+ "synthetic": [
+  {
+   "case": "pure_delegation_listed_op",
+   "passed": false,
+   "detail": "High PyTorch delegation ratio: 100% of compute calls (1/1) are standard PyTorch ops at lines [2]. Kernel may be delegating most work back to the reference."
+  },
+  {
+   "case": "pure_delegation_unlisted_op",
+   "passed": true,
+   "detail": "No compute ops detected; skipping partial-computation check."
+  },
+  {
+   "case": "pure_delegation_cross_entropy",
+   "passed": true,
+   "detail": "No compute ops detected; skipping partial-computation check."
+  },
+  {
+   "case": "pure_delegation_max_pool",
+   "passed": true,
+   "detail": "No compute ops detected; skipping partial-computation check."
+  },
+  {
+   "case": "delegation_plus_decoy_launch",
+   "passed": true,
+   "detail": "Partial-computation check passed: 1 Triton launch(es), 1 PyTorch op(s) (delegation ratio 50%)."
+  },
+  {
+   "case": "delegation_unlisted_plus_decoy",
+   "passed": true,
+   "detail": "Partial-computation check passed: 1 Triton launch(es), 0 PyTorch op(s) (delegation ratio 0%)."
+  },
+  {
+   "case": "two_listed_ops_one_launch",
+   "passed": false,
+   "detail": "High PyTorch delegation ratio: 67% of compute calls (2/3) are standard PyTorch ops at lines [2, 3]. Kernel may be delegating most work back to the reference."
+  },
+  {
+   "case": "honest_fused_conv_epilogue",
+   "passed": true,
+   "detail": "Partial-computation check passed: 1 Triton launch(es), 1 PyTorch op(s) (delegation ratio 50%)."
+  },
+  {
+   "case": "honest_two_aux_ops",
+   "passed": false,
+   "detail": "High PyTorch delegation ratio: 67% of compute calls (2/3) are standard PyTorch ops at lines [2, 3]. Kernel may be delegating most work back to the reference."
+  }
+ ]
+}

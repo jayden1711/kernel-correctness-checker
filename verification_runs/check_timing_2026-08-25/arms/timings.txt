@@ -1,0 +1,15 @@
+=== A_baseline () 1787636949.918728421
+=== A_baseline RC=0 END 1787636976.273073181
+[A_baseline] SUMMARY catch 40/40 fp 0/200
+=== B_no_wm_large (KCC_DISABLE_VARIANTS=large_uniform,large_random) 1787636976.275431195
+=== B_no_wm_large RC=0 END 1787636991.551657994
+[B_no_wm_large] SUMMARY catch 40/40 fp 0/200
+=== C_no_adv_large (KCC_DISABLE_CHECKS=adversarial_large_magnitude,adversarial_large_magnitude_logits,adversarial_large_magnitude_qk) 1787636991.554831573
+=== C_no_adv_large RC=0 END 1787637007.490760812
+[C_no_adv_large] SUMMARY catch 40/40 fp 0/200
+=== D_no_both (KCC_DISABLE_VARIANTS=large_uniform,large_random KCC_DISABLE_CHECKS=adversarial_large_magnitude,adversarial_large_magnitude_logits,adversarial_large_magnitude_qk) 1787637007.493498029
+=== D_no_both RC=0 END 1787637022.273429599
+[D_no_both] SUMMARY catch 40/40 fp 0/200
+=== E_no_wm_at_all (KCC_DISABLE_CHECKS=weight_magnitude) 1787637022.275814295
+=== E_no_wm_at_all RC=0 END 1787637036.622082061
+[E_no_wm_at_all] SUMMARY catch 40/40 fp 0/200

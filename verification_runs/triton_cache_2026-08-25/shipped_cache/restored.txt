@@ -1,0 +1,4 @@
+post-restore files: 8730
+post-restore cubins: 1086
+post-restore bytes: 118584224
+Tesla T4, GPU-e550199c-f636-1411-95f9-fe246481c385

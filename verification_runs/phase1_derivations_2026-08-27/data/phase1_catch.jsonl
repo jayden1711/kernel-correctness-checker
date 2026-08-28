@@ -1,0 +1,54 @@
+{"op": "relu", "mutant": "leaky_slope", "caught": true, "flagged_by": ["L2:nonneg_output", "L2:idempotent", "L3:adv_all_negative", "L3:adv_large_magnitude", "L3:perturbation"], "fp_on_correct": []}
+{"op": "relu", "mutant": "zero_at_boundary", "caught": true, "flagged_by": ["L3:adv_small_positive"], "fp_on_correct": []}
+{"op": "leaky_relu", "mutant": "hardcoded_slope", "caught": true, "flagged_by": ["L3:adv_all_negative", "L3:adv_large_magnitude", "L3:perturbation"], "fp_on_correct": []}
+{"op": "leaky_relu", "mutant": "dead_negative", "caught": true, "flagged_by": ["L3:adv_all_negative", "L3:adv_large_magnitude", "L3:perturbation"], "fp_on_correct": []}
+{"op": "sigmoid", "mutant": "unstable_exp", "caught": true, "flagged_by": ["L3:adv_saturating_pos"], "fp_on_correct": []}
+{"op": "sigmoid", "mutant": "missing_one", "caught": true, "flagged_by": ["L3:adv_saturating_pos", "L3:adv_near_zero", "L3:perturbation"], "fp_on_correct": []}
+{"op": "tanh", "mutant": "hard_approx", "caught": true, "flagged_by": ["L3:perturbation"], "fp_on_correct": []}
+{"op": "tanh", "mutant": "wrong_coeff", "caught": true, "flagged_by": ["L3:perturbation"], "fp_on_correct": []}
+{"op": "selu", "mutant": "missing_scale", "caught": true, "flagged_by": ["L3:adv_all_negative", "L3:adv_saturating_neg", "L3:perturbation"], "fp_on_correct": []}
+{"op": "selu", "mutant": "swapped_consts", "caught": true, "flagged_by": ["L3:perturbation"], "fp_on_correct": []}
+{"op": "elu", "mutant": "missing_minus_one", "caught": true, "flagged_by": ["L3:adv_all_negative", "L3:adv_exact_zero", "L3:adv_saturating_neg", "L3:perturbation"], "fp_on_correct": []}
+{"op": "elu", "mutant": "ignores_alpha", "caught": true, "flagged_by": ["L3:adv_all_negative", "L3:adv_saturating_neg", "L3:perturbation"], "fp_on_correct": []}
+{"op": "softplus", "mutant": "naive_overflow", "caught": true, "flagged_by": ["L3:adv_saturating_pos"], "fp_on_correct": []}
+{"op": "softplus", "mutant": "linear_approx", "caught": true, "flagged_by": ["L3:adv_saturating_pos", "L3:adv_saturating_neg", "L3:perturbation"], "fp_on_correct": []}
+{"op": "hardsigmoid", "mutant": "wrong_divisor", "caught": true, "flagged_by": ["L3:adv_inside_linear", "L3:perturbation"], "fp_on_correct": []}
+{"op": "hardsigmoid", "mutant": "wrong_bounds", "caught": true, "flagged_by": ["L3:adv_at_breakpoints", "L3:adv_inside_linear", "L3:perturbation"], "fp_on_correct": []}
+{"op": "new_gelu", "mutant": "sigmoid_approx", "caught": true, "flagged_by": ["L3:adv_large_magnitude", "L3:perturbation"], "fp_on_correct": []}
+{"op": "new_gelu", "mutant": "dropped_cubic", "caught": true, "flagged_by": ["L3:adv_large_magnitude", "L3:perturbation"], "fp_on_correct": []}
+{"op": "cumsum", "mutant": "exclusive_off_by_one", "caught": true, "flagged_by": ["L3:adv_alternating_signs", "L3:adv_large_then_tiny", "L3:adv_all_ones", "L3:adv_non_power_of_two", "L3:perturbation"], "fp_on_correct": []}
+{"op": "cumsum", "mutant": "first_tile_only", "caught": true, "flagged_by": ["L3:adv_alternating_signs", "L3:adv_all_ones", "L3:adv_non_power_of_two", "L3:perturbation"], "fp_on_correct": []}
+{"op": "cumsum_reverse", "mutant": "forward_instead", "caught": true, "flagged_by": ["L3:adv_alternating_signs", "L3:adv_large_then_tiny", "L3:adv_all_ones", "L3:adv_non_power_of_two", "L3:perturbation"], "fp_on_correct": []}
+{"op": "cumsum_reverse", "mutant": "off_by_one", "caught": true, "flagged_by": ["L3:adv_alternating_signs", "L3:adv_large_then_tiny", "L3:adv_all_ones", "L3:adv_non_power_of_two", "L3:perturbation"], "fp_on_correct": []}
+{"op": "cumsum_exclusive", "mutant": "inclusive_instead", "caught": true, "flagged_by": ["L3:adv_alternating_signs", "L3:adv_large_then_tiny", "L3:adv_all_ones", "L3:adv_non_power_of_two", "L3:perturbation"], "fp_on_correct": []}
+{"op": "cumsum_exclusive", "mutant": "shifted_wrong", "caught": true, "flagged_by": ["L3:adv_alternating_signs", "L3:adv_large_then_tiny", "L3:adv_all_ones", "L3:adv_non_power_of_two"], "fp_on_correct": []}
+{"op": "masked_cumsum", "mutant": "ignores_mask", "caught": true, "flagged_by": ["L3:adv_alternating_signs", "L3:adv_large_then_tiny", "L3:adv_all_ones", "L3:adv_all_masked_out", "L3:perturbation"], "fp_on_correct": []}
+{"op": "masked_cumsum", "mutant": "mask_after", "caught": true, "flagged_by": ["L3:adv_alternating_signs", "L3:adv_large_then_tiny", "L3:adv_all_ones", "L3:adv_all_masked_out", "L3:perturbation"], "fp_on_correct": []}
+{"op": "matvec", "mutant": "partial_k", "caught": true, "flagged_by": ["L3:adv_large_magnitude", "L3:adv_row_of_zeros", "L3:adv_alternating_signs", "L3:perturbation"], "fp_on_correct": []}
+{"op": "matvec", "mutant": "uninit_accum", "caught": true, "flagged_by": ["L3:adv_row_of_zeros", "L3:adv_alternating_signs"], "fp_on_correct": []}
+{"op": "batched_matmul", "mutant": "ignores_batch_stride", "caught": true, "flagged_by": ["L3:adv_large_magnitude", "L3:adv_alternating_signs", "L3:perturbation"], "fp_on_correct": []}
+{"op": "batched_matmul", "mutant": "partial_k", "caught": true, "flagged_by": ["L3:adv_large_magnitude", "L3:adv_single_batch_nonzero", "L3:adv_alternating_signs", "L3:perturbation"], "fp_on_correct": []}
+{"op": "diagonal_matmul", "mutant": "wrong_axis", "caught": true, "flagged_by": ["L3:adv_one_hot_diagonal", "L3:adv_large_magnitude", "L3:perturbation"], "fp_on_correct": []}
+{"op": "diagonal_matmul", "mutant": "no_scaling", "caught": true, "flagged_by": ["L3:adv_one_hot_diagonal", "L3:adv_large_magnitude", "L3:perturbation"], "fp_on_correct": []}
+{"op": "triangular_matmul", "mutant": "forgot_mask", "caught": true, "flagged_by": ["L3:adv_upper_only_input", "L3:adv_identity", "L3:adv_large_magnitude", "L3:perturbation"], "fp_on_correct": []}
+{"op": "triangular_matmul", "mutant": "wrong_side", "caught": true, "flagged_by": ["L3:adv_upper_only_input", "L3:adv_identity", "L3:adv_large_magnitude", "L3:perturbation"], "fp_on_correct": []}
+{"op": "mse_loss", "mutant": "sum_not_mean", "caught": true, "flagged_by": ["L3:adv_large_magnitude", "L3:perturbation"], "fp_on_correct": []}
+{"op": "mse_loss", "mutant": "abs_not_sq", "caught": true, "flagged_by": ["L3:adv_large_magnitude", "L3:perturbation"], "fp_on_correct": []}
+{"op": "huber_loss", "mutant": "quadratic_only", "caught": true, "flagged_by": ["L3:adv_far_linear_regime", "L3:perturbation"], "fp_on_correct": []}
+{"op": "huber_loss", "mutant": "wrong_boundary", "caught": true, "flagged_by": ["L3:adv_at_beta_boundary", "L3:adv_far_linear_regime", "L3:perturbation"], "fp_on_correct": []}
+{"op": "bce_loss", "mutant": "no_clamp", "caught": true, "flagged_by": ["L3:adv_exact_zero_and_one"], "fp_on_correct": []}
+{"op": "bce_loss", "mutant": "missing_term", "caught": true, "flagged_by": ["L3:adv_near_one_prob", "L3:adv_exact_half", "L3:adv_exact_zero_and_one", "L3:perturbation"], "fp_on_correct": []}
+{"op": "kldiv_loss", "mutant": "forgot_log_target", "caught": true, "flagged_by": ["L3:adv_identical_distributions", "L3:adv_near_zero_target", "L3:adv_uniform_input", "L3:perturbation"], "fp_on_correct": []}
+{"op": "kldiv_loss", "mutant": "mean_not_batchmean", "caught": true, "flagged_by": ["L3:adv_near_zero_target", "L3:adv_uniform_input", "L3:perturbation"], "fp_on_correct": []}
+{"op": "nll_loss", "mutant": "wrong_index", "caught": true, "flagged_by": ["L3:adv_confident_correct", "L3:adv_confident_wrong", "L3:perturbation"], "fp_on_correct": []}
+{"op": "nll_loss", "mutant": "no_negation", "caught": true, "flagged_by": ["L3:adv_confident_wrong", "L3:adv_uniform", "L3:perturbation"], "fp_on_correct": []}
+{"op": "rope", "mutant": "half_swap", "caught": true, "flagged_by": ["L3:adv_norm_preservation_probe", "L3:adv_single_axis", "L3:adv_alternating_signs", "L3:perturbation"], "fp_on_correct": []}
+{"op": "rope", "mutant": "sign_error", "caught": true, "flagged_by": ["L2:norm_preserved", "L3:adv_norm_preservation_probe", "L3:adv_alternating_signs", "L3:perturbation"], "fp_on_correct": []}
+{"op": "swiglu", "mutant": "halves_swapped", "caught": true, "flagged_by": ["L3:adv_gate_saturating_neg", "L3:adv_gate_saturating_pos", "L3:perturbation"], "fp_on_correct": []}
+{"op": "swiglu", "mutant": "gelu_gate", "caught": true, "flagged_by": ["L3:perturbation"], "fp_on_correct": []}
+{"op": "logsumexp", "mutant": "no_max_subtract", "caught": true, "flagged_by": ["L3:adv_extreme_range", "L3:adv_max_in_last_tile"], "fp_on_correct": []}
+{"op": "logsumexp", "mutant": "first_tile_max", "caught": true, "flagged_by": ["L3:adv_max_in_last_tile"], "fp_on_correct": []}
+{"op": "std_reduction", "mutant": "one_pass_cancel", "caught": true, "flagged_by": ["L2:shift_invariant", "L3:adv_large_offset"], "fp_on_correct": []}
+{"op": "std_reduction", "mutant": "biased_divisor", "caught": true, "flagged_by": ["L3:adv_large_offset", "L3:adv_single_outlier", "L3:perturbation"], "fp_on_correct": []}
+{"op": "var_reduction", "mutant": "biased_divisor", "caught": true, "flagged_by": ["L3:adv_large_offset", "L3:adv_single_outlier", "L3:perturbation"], "fp_on_correct": []}
+{"op": "var_reduction", "mutant": "one_pass_cancel", "caught": true, "flagged_by": ["L3:adv_large_offset"], "fp_on_correct": []}

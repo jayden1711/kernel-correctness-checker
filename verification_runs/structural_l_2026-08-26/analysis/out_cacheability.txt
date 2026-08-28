@@ -1,0 +1,15 @@
+operator               y min     y med     y max   spread    CV %   cacheable?
+gelu                  3.9767    3.9855    3.9948   1.0046    0.15   YES (<1%)
+swish                 3.8018    3.8101    3.8242   1.0059    0.21   YES (<1%)
+softmax               1.8439    2.0811    2.3964   1.2996    9.46   NO
+log_softmax           4.2638    4.3485    4.3782   1.0268    0.94   YES (<1%)
+l1norm                3.7124    3.8297    3.9160   1.0548    1.57   marginal
+l2norm                3.8423    3.8746    3.9600   1.0306    0.92   YES (<1%)
+frobenius_norm        4.4342    4.4343    4.4343   1.0000    0.00   YES (<1%)
+layernorm             3.8452    3.8823    3.9386   1.0243    0.79   YES (<1%)
+rmsnorm               3.8423    3.8746    3.9600   1.0306    0.92   YES (<1%)
+matmul                3.5416    3.5416    3.5416   1.0000    0.00   YES (<1%)
+sum_reduction         3.2487    3.2487    3.2487   1.0000    0.00   YES (<1%)
+max_reduction         3.2487    3.2487    3.2487   1.0000    0.00   YES (<1%)
+
+[exited with code 0]

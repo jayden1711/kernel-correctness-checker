@@ -1,0 +1,40 @@
+ALL records  B 854 C 854
+record keys align across arms: True
+
+CLASSIFICATION DISAGREEMENTS B(3 samples) vs C(20): 18 of 854 records
+  causal_flash_attention/adversarial_large_magnitude_qk  x1
+      B(3) -> (silent)
+      C(20)-> ('saturation',)
+  causal_flash_attention/adversarial_large_magnitude_qk  x1
+      B(3) -> ('saturation',)
+      C(20)-> (silent)
+  cross_entropy/adversarial_large_magnitude_logits  x3
+      B(3) -> ('saturation',)
+      C(20)-> (silent)
+  gelu/adversarial_near_global_min  x1
+      B(3) -> ('quantisation_floor',)
+      C(20)-> ('quantisation_floor', 'saturation')
+  layernorm/adversarial_wrong_variance_trigger  x11
+      B(3) -> ('saturation',)
+      C(20)-> (silent)
+  scaled_dot_product_attention/adversarial_large_magnitude_qk  x1
+      B(3) -> (silent)
+      C(20)-> ('saturation',)
+
+WORST IN-SCOPE (silent) DEFECT over ALL records
+  B  3 samples: worst 8.613%  (scaled_dot_product_attention/adversarial_large_magnitude_qk)   margin 1.16x
+         8.613%  scaled_dot_product_attention/adversarial_large_magnitude_qk
+         8.091%  layernorm/adversarial_wrong_variance_trigger
+         7.562%  layernorm/adversarial_skip_mean_subtract
+         7.332%  layernorm/adversarial_wrong_variance_trigger
+         6.091%  layernorm/adversarial_skip_mean_subtract
+  C 20 samples: worst 9.605%  (cross_entropy/adversarial_large_magnitude_logits)   margin 1.04x
+         9.605%  cross_entropy/adversarial_large_magnitude_logits
+         8.936%  layernorm/adversarial_wrong_variance_trigger
+         8.872%  layernorm/adversarial_wrong_variance_trigger
+         8.606%  layernorm/adversarial_wrong_variance_trigger
+         8.189%  cross_entropy/adversarial_large_magnitude_logits
+
+  banked derivation assumed worst in-scope = 3.66% -> margin 2.5x
+
+[exited with code 0]

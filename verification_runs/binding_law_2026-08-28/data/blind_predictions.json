@@ -1,0 +1,118 @@
+{
+ "rmsnorm": {
+  "table": [
+   [
+    "unit_rms",
+    0.001002675979682535,
+    ""
+   ],
+   [
+    "scale_invariance",
+    null,
+    "derived inert (comparator is scaled-vs-scaled or zero)"
+   ],
+   [
+    "gamma_correctness",
+    null,
+    "derived inert (comparator is scaled-vs-scaled or zero)"
+   ],
+   [
+    "precision_coercion",
+    0.0013742533955153592,
+    ""
+   ],
+   [
+    "cross_shape",
+    0.0001213202489154351,
+    ""
+   ],
+   [
+    "weight_magnitude",
+    0.0012168292371741412,
+    ""
+   ],
+   [
+    "perturbation_tolerance",
+    0.003352919851649884,
+    ""
+   ],
+   [
+    "adversarial_large_magnitude",
+    0.003623135882156248,
+    ""
+   ],
+   [
+    "adversarial_near_zero",
+    0.08151201277727135,
+    "floor-bound"
+   ],
+   [
+    "adversarial_non_power_of_two",
+    0.0037050385902463053,
+    ""
+   ],
+   [
+    "adversarial_constant_rows",
+    null,
+    " (above range)"
+   ],
+   [
+    "adversarial_large_variance",
+    0.002670739991807027,
+    ""
+   ]
+  ],
+  "binding": [
+   "cross_shape",
+   0.0001213202489154351
+  ],
+  "second": [
+   "unit_rms",
+   0.001002675979682535
+  ],
+  "gap": 8.264704273574635
+ },
+ "frobenius_norm": {
+  "table": [
+   [
+    "unit_frobenius_norm",
+    0.000999761819782691,
+    ""
+   ],
+   [
+    "positive_scale_invariance",
+    null,
+    "derived inert (comparator is scaled-vs-scaled or zero)"
+   ],
+   [
+    "cross_shape",
+    0.00044024438792593124,
+    ""
+   ],
+   [
+    "weight_magnitude",
+    0.013745669822306857,
+    ""
+   ],
+   [
+    "perturbation_tolerance",
+    0.0032198711804744405,
+    ""
+   ],
+   [
+    "adversarial_dominant_outlier",
+    0.000149382304803883,
+    ""
+   ]
+  ],
+  "binding": [
+   "adversarial_dominant_outlier",
+   0.000149382304803883
+  ],
+  "second": [
+   "cross_shape",
+   0.00044024438792593124
+  ],
+  "gap": 2.9470986440054423
+ }
+}

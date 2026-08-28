@@ -1,0 +1,12 @@
+patched
+OK  gelu                         defect%=        -  s/ulp=           -   -> silent
+OK  layernorm                    defect%=        -  s/ulp=           -   -> silent
+OK  softmax                      defect%=        -  s/ulp=           -   -> silent
+OK  softmax_saturated            defect%=    69.84  s/ulp=      171.00   -> saturation
+OK  fp_floor_few_ulp             defect%=    42.86  s/ulp=        8.00   -> quantisation_floor,saturation
+OK  fp_floor_zero_response       defect%=        -  s/ulp=        0.00   -> quantisation_floor
+OK  argmax                       defect%=        -  s/ulp=           -   -> structural_exclusion
+
+MEASUREMENT PROBE: PASS
+
+[exited with code 0]

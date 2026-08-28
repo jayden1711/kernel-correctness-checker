@@ -1,0 +1,41 @@
+patched
+operator          variant                             tol_mc   tol_struct    ratio
+sum_reduction     <ordinary>                       1.065e-01    1.105e-01    1.037
+sum_reduction     second_half_dominant             8.340e-01    7.919e-01    0.950
+sum_reduction     large_magnitude                  5.537e+01    5.524e+01    0.998
+mean_reduction    <ordinary>                       8.517e-04    8.547e-04    1.004
+mean_reduction    second_half_dominant             5.802e-03    6.078e-03    1.048
+mean_reduction    large_magnitude                  4.194e-01    4.273e-01    1.019
+max_reduction     <ordinary>                       8.874e-03    9.816e-03    1.106  <
+max_reduction     all_negative_nonpow2             2.652e-03    2.834e-03    1.069
+max_reduction     large_magnitude                  4.635e+00    4.908e+00    1.059
+min_reduction     <ordinary>                       1.006e-02    9.765e-03    0.971
+min_reduction     all_positive_nonpow2             2.738e-03    2.829e-03    1.034
+min_reduction     large_magnitude                  5.355e+00    4.883e+00    0.912
+gelu              <ordinary>                       1.356e-02    1.350e-02    0.996
+gelu              large_magnitude                  1.321e+00    1.289e+00    0.976
+gelu              near_global_min                  1.341e-06    1.382e-06    1.031
+swish             <ordinary>                       1.296e-02    1.262e-02    0.974
+swish             large_magnitude                  1.291e+00    1.294e+00    1.002
+swish             near_global_min                  1.000e-06    1.000e-06    1.000
+softmax           <ordinary>                       7.177e-04    7.855e-04    1.094
+softmax           max_in_last_tile                 1.000e-06     declined       --
+softmax           equal_logits                     1.060e-04    1.035e-04    0.976
+softmax           extreme_range                    1.000e-06     declined       --
+softmax           non_power_of_two                 7.160e-04    6.942e-04    0.969
+softmax           near_zero_variance               1.000e-06    1.000e-06    1.000
+log_softmax       <ordinary>                       1.345e-02    1.356e-02    1.008
+log_softmax       large_magnitude                  3.811e+00    3.817e+00    1.002
+log_softmax       near_zero_variance               1.000e-06    1.000e-06    1.000
+l1norm            <ordinary>                       1.347e-04    1.382e-04    1.026
+l1norm            second_half_dominant             3.027e-04    2.036e-04    0.673  <
+l2norm            <ordinary>                       1.186e-03    1.212e-03    1.022
+l2norm            high_variance_row                1.236e-03    1.247e-03    1.008
+frobenius_norm    <ordinary>                       1.494e-04    1.470e-04    0.984
+frobenius_norm    dominant_outlier                 1.524e-04    1.470e-04    0.965
+
+tol_struct / tol_mc:
+  ORDINARY inputs (validated regime) n= 11  min    0.971  med   1.008  max      1.106   within +-10%: 10/11   within 2x: 11/11
+  ADVERSARIAL inputs (untested)      n= 20  min    0.673  med   1.000  max      1.069   within +-10%: 19/20   within 2x: 20/20
+
+[exited with code 0]

@@ -44,11 +44,22 @@ from verification.adversarial_search.schemas import (
 )
 from verification.adversarial_search.executor import (
     execute_proposal,
+    execute_proposal_batch,
     build_feedback_hints,
 )
-from verification.adversarial_search.worker import AdversarialWorker
+from verification.adversarial_search.worker import AdversarialWorker, ProposalRejected
+from verification.adversarial_search.reference_failure import (
+    classify_reference_failure,
+    invariant_failures,
+)
 from verification.adversarial_search.strategy import SearchStrategy, get_strategy
 from verification.adversarial_search.history.store import SearchHistoryStore
+
+# How many times to re-ask for a first proposal before giving up on a worker.
+# Small on purpose: a persistently-rejecting worker is a signal (usually a wrong
+# SHAPE_CONSTRAINTS entry or an OPERATOR_CONTEXT that contradicts it), and
+# spinning here would burn LLM budget hiding that signal rather than surfacing it.
+_COLD_START_ATTEMPTS = 3
 
 
 # Seed bug patterns per operator — assigned round-robin to workers
@@ -58,6 +69,29 @@ _BUG_PATTERNS: Dict[str, List[str]] = {
     "matmul":          ["partial_k_reduct", "skip_boundary", "swapped_strides", "wrong_dtype"],
     "flash_attention": ["drop_last_tile", "skip_rescaling", "approx_denom", "wrong_mask"],
     "rmsnorm":         ["ignore_gamma", "wrong_norm", "partial_reduction", "missing_eps"],
+
+    # Front-door wiring for the 16 operators executor.py already supports.
+    # Unlike the original 5 (several hand-built named bugs each), each of
+    # these has exactly one real mutant on disk -- so one seed pattern
+    # per operator, taken directly from that mutant's own name, rather
+    # than inventing plausible-sounding patterns with no corresponding
+    # mutant to actually confirm a hit against.
+    "log_softmax":                  ["skip_max_subtraction"],
+    "swish":                        ["linear_sigmoid_approx"],
+    "gelu":                         ["sigmoid_approx"],
+    "sum_reduction":                ["partial_reduction"],
+    "mean_reduction":               ["partial_reduction"],
+    "max_reduction":                ["wrong_padding"],
+    "min_reduction":                ["wrong_padding"],
+    "l1norm":                       ["partial_reduction"],
+    "l2norm":                       ["wrong_norm"],
+    "frobenius_norm":               ["wrong_norm"],
+    "argmax":                       ["tiebreak"],
+    "argmin":                       ["tiebreak"],
+    "instancenorm":                 ["skip_eps"],
+    "batchnorm":                    ["wrong_running_stats_broadcast"],
+    "scaled_dot_product_attention": ["wrong_mask"],
+    "causal_flash_attention":       ["wrong_causal_mask"],
 }
 
 
@@ -72,6 +106,15 @@ class SearchCoordinator:
         model:               LiteLLM model string
         strategy:            "greedy" | "beam" | "diverse"
         n_workers:           Parallel worker count (= beam width for beam/diverse)
+        batch_executions:    Run a proposal's kernels in ONE subprocess (default).
+                             False restores one subprocess per kernel.
+        use_forkserver:      Create batched children by forking a torch-preloaded
+                             server instead of booting a fresh interpreter,
+                             removing the 85% of startup that is `import torch`.
+                             Independent of batch_executions -- one sets how many
+                             processes a proposal costs, the other how much each
+                             costs to create. Ignored when batching is off, since
+                             the single-kernel path is spawn-only by design.
         max_iterations:      Max proposals per worker before giving up
         timeout_per_exec:    Subprocess timeout in seconds
         output_dir:          Where to write SearchResult JSON + SQLite DB
@@ -88,6 +131,8 @@ class SearchCoordinator:
         model: str,
         strategy: str = "beam",
         n_workers: int = 4,
+        batch_executions: bool = True,
+        use_forkserver: bool = True,
         max_iterations: int = 20,
         timeout_per_exec: int = 30,
         output_dir: str = "adversarial_results",
@@ -100,6 +145,17 @@ class SearchCoordinator:
         self.mutant_src_paths = mutant_src_paths
         self.model = model
         self.n_workers = n_workers
+        # One subprocess per proposal instead of one per kernel. Default on;
+        # `--no-batch` restores the original path for the A/B arm and as an
+        # escape hatch. See _execute_kernels for what else differs between them.
+        self.batch_executions = batch_executions
+        # Default ON since 2026-08-28: the measurement that was owed arrived --
+        # verification_runs/forkserver_ab/ (36-41% end-to-end, all three gates
+        # green) and the default-path re-verification in
+        # verification_runs/forkserver_default_2026-08-28/. `--no-forkserver`
+        # is the escape hatch; platforms without forkserver degrade to spawn
+        # and every result records the method actually used.
+        self.use_forkserver = use_forkserver
         self.max_iterations = max_iterations
         self.timeout_per_exec = timeout_per_exec
         self.output_dir = Path(output_dir)
@@ -235,10 +291,25 @@ class SearchCoordinator:
             proposal = resume_proposal
             print(f"[{worker_id}] Resuming from proposal {proposal.proposal_id[:8]}")
         else:
-            try:
-                proposal = worker.propose()
-            except Exception as e:
-                print(f"[{worker_id}] Initial proposal failed: {e}")
+            # Bounded retry on cold start, for the same reason as the refine
+            # path below: a rejected proposal means the worker is healthy but
+            # produced a bad input, and giving up here forfeits ALL
+            # max_iterations before a single one has run.
+            proposal = None
+            for attempt in range(_COLD_START_ATTEMPTS):
+                try:
+                    proposal = worker.propose()
+                    break
+                except ProposalRejected as e:
+                    print(f"[{worker_id}] Initial proposal rejected "
+                          f"({attempt + 1}/{_COLD_START_ATTEMPTS}): {e}")
+                except Exception as e:
+                    # Not recoverable by retrying -- original behaviour.
+                    print(f"[{worker_id}] Initial proposal failed: {e}")
+                    return
+            if proposal is None:
+                print(f"[{worker_id}] No valid initial proposal after "
+                      f"{_COLD_START_ATTEMPTS} attempts. Stopping this worker.")
                 return
 
         for iteration in range(self.max_iterations):
@@ -253,29 +324,31 @@ class SearchCoordinator:
             # Persist proposal before executing (crash-safe)
             self.store.save_proposal(self._run_id, proposal)
 
-            # Execute
-            reference_result = execute_proposal(
-                proposal=proposal,
-                kernel_id="reference",
-                candidate_src_path=self.reference_src_path,
-                reference_src_path=self.reference_src_path,
-                operator=self.operator,
-                timeout_seconds=self.timeout_per_exec,
-            )
+            # Execute every kernel of this proposal in ONE subprocess.
+            #
+            # Reference FIRST, and the order matters: if a mutant poisons the
+            # CUDA context, the one result the verdict cannot be computed
+            # without has already been produced and committed.
+            #
+            # `on_result` persists the full per-check detail as soon as it
+            # exists, not at the end of the proposal. Until this existed,
+            # check_results was computed for every execution and discarded, so
+            # a post-mortem could not tell whether the checker caught a mutant
+            # or which check caught it -- see
+            # adversarial_results/CFA_NONHIT_ROOTCAUSE.md. Writing per-execution
+            # also means a batch that dies partway through still leaves
+            # everything that ran committed, which is the same guarantee the
+            # per-mutant loop used to give.
+            kernels = [("reference", self.reference_src_path)]
+            kernels += list(self.mutant_src_paths.items())
 
-            mutant_results = []
-            for kernel_id, path in self.mutant_src_paths.items():
-                if self._stop_event.is_set():
-                    return
-                mr = execute_proposal(
-                    proposal=proposal,
-                    kernel_id=kernel_id,
-                    candidate_src_path=path,
-                    reference_src_path=self.reference_src_path,
-                    operator=self.operator,
-                    timeout_seconds=self.timeout_per_exec,
-                )
-                mutant_results.append(mr)
+            executions = self._execute_kernels(proposal, kernels)
+
+            if self._stop_event.is_set():
+                return
+
+            reference_result = executions[0]
+            mutant_results = executions[1:]
 
             # Score and evaluate
             verdict = self._evaluate_verdict(proposal, reference_result, mutant_results)
@@ -333,13 +406,95 @@ class SearchCoordinator:
 
             try:
                 proposal = worker.refine(feedback)
+            except ProposalRejected as e:
+                # The worker is HEALTHY -- it produced output, that output just
+                # wasn't a usable proposal (bad JSON, or a shape-contract
+                # violation). Recover instead of forfeiting the rest of the
+                # budget.
+                #
+                # This used to be a bare `return`, and it was measured costing
+                # real work: in the 2026-08-21 causal_flash_attention run worker
+                # w0 died at iteration 13 and forfeited 6 iterations, which is
+                # why that run produced 74 proposals instead of 80. Shape
+                # constraints raise the rejection rate, so without this recovery
+                # they would have been a net throughput loss.
+                #
+                # Cold-start rather than plain `continue`: `proposal` still holds
+                # the PREVIOUS iteration's input, so continuing would re-execute
+                # an input we already have a verdict for -- duplicated work and
+                # double-counted statistics. propose() builds a clean first-turn
+                # prompt instead, giving a genuinely new input.
+                print(f"[{worker_id}] Proposal rejected at iteration {iteration} "
+                      f"({e}); resetting to a fresh proposal.")
+                try:
+                    proposal = worker.propose()
+                except ProposalRejected as e2:
+                    print(f"[{worker_id}] Fresh proposal also rejected: {e2}. "
+                          f"Stopping this worker.")
+                    return
             except Exception as e:
+                # Anything else (transport error, API outage, unexpected bug) is
+                # NOT recoverable by retrying -- keep the original behaviour.
                 print(f"[{worker_id}] Refinement failed at iteration {iteration}: {e}")
                 return
 
         print(f"[{worker_id}] Exhausted {self.max_iterations} iterations.")
 
     # ── Verdict evaluation ────────────────────────────────────────────────────
+
+    def _execute_kernels(self, proposal, kernels):
+        """Run one proposal's kernels, batched or one-per-subprocess.
+
+        BOTH ARMS LIVE HERE ON PURPOSE. The measurement this switch exists for
+        is a before/after on the same binary, same instrumentation, same
+        corpus -- the alternative, comparing two checkouts, is how a dict-order
+        confound and an inside-the-subprocess timer both got mistaken for real
+        effects in this repo before.
+
+        The arms are not merely fast and slow versions of one thing. Batched
+        materialises the input tensors ONCE from a proposal-derived seed, so
+        every kernel of a proposal sees identical data; single leaves the RNG
+        unseeded, so each spawned process draws its own. That is the declared
+        semantic change, and keeping it bound to the same switch is what makes
+        it measurable rather than confounding.
+
+        `use_forkserver` is a THIRD, ORTHOGONAL axis and is deliberately not
+        folded into this one: batching sets how many processes a proposal costs,
+        the start method sets how much each costs to create, and collapsing them
+        into a single switch would make the two effects impossible to separate in
+        the before/after. It reaches only the batched arm -- the single-kernel
+        path is spawn-only by design, because it does not seed and a fork would
+        hand every child the same generator state.
+        """
+        save = lambda r: self.store.save_execution(self._run_id, r)
+
+        if self.batch_executions:
+            return execute_proposal_batch(
+                proposal=proposal,
+                kernels=kernels,
+                reference_src_path=self.reference_src_path,
+                operator=self.operator,
+                timeout_seconds=self.timeout_per_exec,
+                on_result=save,
+                should_stop=self._stop_event.is_set,
+                use_forkserver=self.use_forkserver,
+            )
+
+        results = []
+        for kernel_id, path in kernels:
+            if self._stop_event.is_set():
+                break
+            r = execute_proposal(
+                proposal=proposal,
+                kernel_id=kernel_id,
+                candidate_src_path=path,
+                reference_src_path=self.reference_src_path,
+                operator=self.operator,
+                timeout_seconds=self.timeout_per_exec,
+            )
+            save(r)
+            results.append(r)
+        return results
 
     def _evaluate_verdict(
         self,
@@ -356,27 +511,71 @@ class SearchCoordinator:
         """
         reference_passed = reference_result.passed_checker
         hit_mutants = []
-        missed_mutants = []
+        not_caught = []
+        caught_no_gap = []
+        mutant_records = []
         gap_confirmed = False
 
         for mr in mutant_results:
-            if not mr.passed_checker and mr.passed_naive:
+            caught = not mr.passed_checker
+            if caught and mr.passed_naive:
+                # The publishable case: our checker caught it, naive allclose
+                # did not.
+                outcome = "caught_with_gap"
                 hit_mutants.append(mr.kernel_id)
                 gap_confirmed = True
+            elif caught:
+                # The checker DID catch it -- naive allclose just caught it too,
+                # so there is no gap to report. This is a success for the
+                # checker and was previously indistinguishable from a miss.
+                outcome = "caught_no_gap"
+                caught_no_gap.append(mr.kernel_id)
             else:
-                missed_mutants.append(mr.kernel_id)
+                # The checker genuinely did not catch it.
+                outcome = "not_caught"
+                not_caught.append(mr.kernel_id)
+
+            mutant_records.append({
+                "kernel_id": mr.kernel_id,
+                "passed_checker": mr.passed_checker,
+                "passed_naive": mr.passed_naive,
+                "outcome": outcome,
+            })
+
+        # Backward-compatible union. Every existing consumer -- the history DB
+        # column, beam/greedy scoring, the worker feedback template -- keeps
+        # reading this unchanged, so stored runs stay comparable. New diagnosis
+        # should use not_caught / caught_no_gap / mutant_records instead.
+        missed_mutants = caught_no_gap + not_caught
 
         is_hit = reference_passed and bool(hit_mutants) and gap_confirmed
+
+        ref_failure_kind = classify_reference_failure(reference_result)
 
         parts = []
         if not reference_passed:
             fails = [r["check_name"] for r in reference_result.check_results
                      if not r["passed"]][:3]
             parts.append(f"Reference failed: {fails}")
+            if ref_failure_kind == "invariant":
+                # The reference EXECUTED and violated its own operator
+                # invariant on an in-contract input -- that is a bug in the
+                # reference kernel, not a bad input. Say so where a human
+                # will see it; the plain "Reference failed" bucket hid the
+                # flash_attention masking bug for a month.
+                bad = invariant_failures(fails)
+                parts.insert(0, f"REFERENCE-SUSPECT (invariant(s) {bad} "
+                                f"violated by the reference itself)")
+                print(f"[coordinator] ⚠ REFERENCE-SUSPECT on "
+                      f"{proposal.proposal_id[:8]}: reference kernel violated "
+                      f"{bad} — possible reference bug, not an invalid input. "
+                      f"Run scripts/review_reference_failures.py.")
         if hit_mutants:
             parts.append(f"Caught (gap confirmed): {hit_mutants}")
-        if missed_mutants:
-            parts.append(f"Missed: {missed_mutants}")
+        if caught_no_gap:
+            parts.append(f"Caught but no allclose gap: {caught_no_gap}")
+        if not_caught:
+            parts.append(f"Not caught: {not_caught}")
         if not parts:
             parts.append("All checks passed, no mutants caught.")
 
@@ -385,9 +584,13 @@ class SearchCoordinator:
             is_hit=is_hit,
             hit_mutants=hit_mutants,
             missed_mutants=missed_mutants,
+            not_caught=not_caught,
+            caught_no_gap=caught_no_gap,
+            mutant_records=mutant_records,
             reference_passed=reference_passed,
             gap_confirmed=gap_confirmed,
             failure_summary=" | ".join(parts),
+            reference_failure_kind=ref_failure_kind,
         )
 
     # ── Beam helpers ──────────────────────────────────────────────────────────
@@ -458,7 +661,8 @@ class SearchCoordinator:
         print(
             f"[{worker_id}] iter={iteration:03d} "
             f"status={status} score={verdict.beam_score:6.1f} "
-            f"hit={verdict.hit_mutants} miss={verdict.missed_mutants}"
+            f"hit={verdict.hit_mutants} no_gap={verdict.caught_no_gap} "
+            f"not_caught={verdict.not_caught}"
         )
 
     def _print_summary(self, result: SearchResult, wall_s: float):

@@ -1,0 +1,10 @@
+softmax      True | Perturbation check passed. max_err=0.000000 <= adaptive_tol=0.001057.
+argmax       True | Perturbation check passed. max_err=0.000000 <= adaptive_tol=0.001262.
+no op_name   True | Perturbation check passed. max_err=0.000000 <= adaptive_tol=0.001016.
+mutated      False | Candidate exceeds adaptive tolerance. max_err=0.113912, adaptive_tol=0.001057 (closed-form Jacobian, KCC_STRUCTURAL_L).
+layernorm    True | Perturbation check passed. max_err=0.000000 <= adaptive_tol=0.013803.
+
+missing-companion fallback: OK
+SMOKE: PASS
+
+[exited with code 0]

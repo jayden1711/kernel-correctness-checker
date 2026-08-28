@@ -45,23 +45,36 @@ def check_shift_invariance(
 def check_monotonicity(
     kernel_fn: Callable,
     x: torch.Tensor,
+    atol: float = 1e-4,
 ) -> tuple:
     """
     If a[i] > a[j] then softmax(a)[i] > softmax(a)[j] (within each row).
 
-    Verified via KL divergence: swapping any two elements in the input
-    and checking that the output ordering is consistent.
     We use a lightweight check: the argmax of the output should match the
     argmax of the input.
+
+    PROACTIVELY HARDENED (same root cause as log_softmax's
+    check_monotonicity, fixed after it intermittently false-positived on
+    the reference): comparing argmax INDICES via exact equality is
+    brittle near a near-tie in x -- floating-point rounding in the real
+    kernel can legitimately pick a different (but numerically
+    indistinguishable) top element. This hasn't misfired yet here
+    (single-pair blast radius vs. log_softmax's full-argsort ~n^2/2
+    pairs, so much lower odds per run), but it's the same latent risk, so
+    fixed the same way pre-emptively: compare the output VALUE at the
+    input's argmax position against the output's own row max, with
+    tolerance, instead of comparing indices.
     """
     out = kernel_fn(x).float()
     input_argmax = x.argmax(dim=-1)
-    output_argmax = out.argmax(dim=-1)
-    if not (input_argmax == output_argmax).all():
-        n_wrong = (input_argmax != output_argmax).sum().item()
+    out_at_input_argmax = torch.gather(out, -1, input_argmax.unsqueeze(-1)).squeeze(-1)
+    out_row_max = out.max(dim=-1).values
+    if not torch.allclose(out_at_input_argmax, out_row_max, atol=atol):
+        worst = (out_row_max - out_at_input_argmax).max().item()
+        n_wrong = ((out_row_max - out_at_input_argmax) > atol).sum().item()
         return False, (
             f"Monotonicity violated in {n_wrong}/{x.shape[0]} rows: "
-            "argmax of output does not match argmax of input."
+            f"output at input's argmax position is not the row max (worst gap={worst:.6f})."
         )
     return True, "Monotonicity (argmax preservation) holds."
 

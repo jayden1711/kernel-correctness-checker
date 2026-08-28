@@ -1,0 +1,30 @@
+{
+ "upload_trials_s": [
+  8.18,
+  7.86,
+  7.47
+ ],
+ "upload_mean_s": 7.84,
+ "reference_743KB_upload_s": 1.61,
+ "download_21.7MB_s": 3.56,
+ "untar_on_vm_s": 0.95,
+ "tgz_bytes": 21695234,
+ "raw_bytes": 118555552,
+ "specializations": 1086,
+ "cold_run_s": 241.67,
+ "same_vm_warm_run_s": 60.78,
+ "shipped_cache_fresh_vm_run_s": 69.88,
+ "cache_entries_before_run": {
+  "files": 8730,
+  "cubins": 1086
+ },
+ "cache_entries_after_run": {
+  "files": 8730,
+  "cubins": 1086
+ },
+ "new_compiles": 0,
+ "gpu_uuid_build_vm": "GPU-d6066aae-d0d1-c5e3-6fe9-0efe31665957 (kccmeas)",
+ "gpu_uuid_ship_vm": "GPU-e550199c-f636-1411-95f9-fe246481c385 (kccship)",
+ "mutant_verdicts_differing_vs_cold": "0 of 440",
+ "reference_verdicts_differing_vs_cold": "4 of 2200 (all frobenius_norm/autokernel_gate)"
+}

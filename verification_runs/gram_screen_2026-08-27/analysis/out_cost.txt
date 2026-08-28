@@ -1,0 +1,4 @@
+perturbation-routed    A median     3.28 ms  G median    16.32 ms  (n=868/868)
+other checks           A median     0.43 ms  G median     0.46 ms  (n=3465/3465)
+total check wall: A 6.1s  G 23.0s  (+278.1%)
+routed-only wall: A 2.7s  G 19.6s  (+625.9%)

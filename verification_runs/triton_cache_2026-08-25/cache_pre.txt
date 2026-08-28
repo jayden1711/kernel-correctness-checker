@@ -1,0 +1,3 @@
+exists: False
+entries: 0
+TRITON_CACHE_DIR: <unset>

@@ -1,0 +1,510 @@
+{
+  "spawn_0": {
+    "arm": "spawn",
+    "wall_s": 129.73611521720886,
+    "n": 40,
+    "n_ref_failed": 5,
+    "failures": [
+      {
+        "proposal_id": "51a0e4b1-ef4f-4e2f-acbd-f6de1a5310fd",
+        "passed": false,
+        "failed": [
+          [
+            "nan_inf",
+            "Kernel raised an exception: at 18:16:\n    N,\n    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr\n):\n    \"\"\"Same tiling / online-softmax structure as flash_attention_kernel,\n    with a co"
+          ],
+          [
+            "dtype_preserved",
+            "Kernel raised an exception: at 18:16:\n    N,\n    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr\n):\n    \"\"\"Same tiling / online-softmax structure as flash_attention_kernel,\n    with a co"
+          ]
+        ]
+      },
+      {
+        "proposal_id": "65c17fa2-94d5-4fac-a537-9f54c6cea370",
+        "passed": false,
+        "failed": [
+          [
+            "nan_inf",
+            "Kernel raised an exception: too many values to unpack (expected 2)"
+          ],
+          [
+            "dtype_preserved",
+            "Kernel raised an exception: too many values to unpack (expected 2)"
+          ]
+        ]
+      },
+      {
+        "proposal_id": "68b8c987-9964-45d8-9bb7-f64d565fcce8",
+        "passed": false,
+        "failed": [
+          [
+            "nan_inf",
+            "Kernel raised an exception: at 18:16:\n    N,\n    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr\n):\n    \"\"\"Same tiling / online-softmax structure as flash_attention_kernel,\n    with a co"
+          ],
+          [
+            "dtype_preserved",
+            "Kernel raised an exception: at 18:16:\n    N,\n    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr\n):\n    \"\"\"Same tiling / online-softmax structure as flash_attention_kernel,\n    with a co"
+          ]
+        ]
+      },
+      {
+        "proposal_id": "af2dc964-ac3d-44bf-9aee-52a381eb9907",
+        "passed": false,
+        "failed": [
+          [
+            "nan_inf",
+            "Kernel raised an exception: too many values to unpack (expected 2)"
+          ],
+          [
+            "dtype_preserved",
+            "Kernel raised an exception: too many values to unpack (expected 2)"
+          ]
+        ]
+      },
+      {
+        "proposal_id": "793d3f0a-a128-4b5c-abbd-c9a43bb99ef1",
+        "passed": false,
+        "failed": [
+          [
+            "nan_inf",
+            "Kernel raised an exception: at 18:16:\n    N,\n    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr\n):\n    \"\"\"Same tiling / online-softmax structure as flash_attention_kernel,\n    with a co"
+          ],
+          [
+            "dtype_preserved",
+            "Kernel raised an exception: at 18:16:\n    N,\n    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr\n):\n    \"\"\"Same tiling / online-softmax structure as flash_attention_kernel,\n    with a co"
+          ]
+        ]
+      }
+    ]
+  },
+  "forkserver_1": {
+    "arm": "forkserver",
+    "wall_s": 74.58410978317261,
+    "n": 40,
+    "n_ref_failed": 6,
+    "failures": [
+      {
+        "proposal_id": "51a0e4b1-ef4f-4e2f-acbd-f6de1a5310fd",
+        "passed": false,
+        "failed": [
+          [
+            "nan_inf",
+            "Kernel raised an exception: at 18:16:\n    N,\n    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr\n):\n    \"\"\"Same tiling / online-softmax structure as flash_attention_kernel,\n    with a co"
+          ],
+          [
+            "dtype_preserved",
+            "Kernel raised an exception: at 18:16:\n    N,\n    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr\n):\n    \"\"\"Same tiling / online-softmax structure as flash_attention_kernel,\n    with a co"
+          ]
+        ]
+      },
+      {
+        "proposal_id": "4aff5bf2-5f92-4a45-b27e-1ef40bc16ce7",
+        "passed": false,
+        "failed": [
+          [
+            "kernel_executed",
+            "Output is bit-identical to reference AND candidate is 11.3x faster. Likely delegating to reference."
+          ]
+        ]
+      },
+      {
+        "proposal_id": "65c17fa2-94d5-4fac-a537-9f54c6cea370",
+        "passed": false,
+        "failed": [
+          [
+            "nan_inf",
+            "Kernel raised an exception: too many values to unpack (expected 2)"
+          ],
+          [
+            "dtype_preserved",
+            "Kernel raised an exception: too many values to unpack (expected 2)"
+          ]
+        ]
+      },
+      {
+        "proposal_id": "68b8c987-9964-45d8-9bb7-f64d565fcce8",
+        "passed": false,
+        "failed": [
+          [
+            "nan_inf",
+            "Kernel raised an exception: at 18:16:\n    N,\n    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr\n):\n    \"\"\"Same tiling / online-softmax structure as flash_attention_kernel,\n    with a co"
+          ],
+          [
+            "dtype_preserved",
+            "Kernel raised an exception: at 18:16:\n    N,\n    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr\n):\n    \"\"\"Same tiling / online-softmax structure as flash_attention_kernel,\n    with a co"
+          ]
+        ]
+      },
+      {
+        "proposal_id": "af2dc964-ac3d-44bf-9aee-52a381eb9907",
+        "passed": false,
+        "failed": [
+          [
+            "nan_inf",
+            "Kernel raised an exception: too many values to unpack (expected 2)"
+          ],
+          [
+            "dtype_preserved",
+            "Kernel raised an exception: too many values to unpack (expected 2)"
+          ]
+        ]
+      },
+      {
+        "proposal_id": "793d3f0a-a128-4b5c-abbd-c9a43bb99ef1",
+        "passed": false,
+        "failed": [
+          [
+            "nan_inf",
+            "Kernel raised an exception: at 18:16:\n    N,\n    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr\n):\n    \"\"\"Same tiling / online-softmax structure as flash_attention_kernel,\n    with a co"
+          ],
+          [
+            "dtype_preserved",
+            "Kernel raised an exception: at 18:16:\n    N,\n    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr\n):\n    \"\"\"Same tiling / online-softmax structure as flash_attention_kernel,\n    with a co"
+          ]
+        ]
+      }
+    ]
+  },
+  "spawn_2": {
+    "arm": "spawn",
+    "wall_s": 126.3684344291687,
+    "n": 40,
+    "n_ref_failed": 6,
+    "failures": [
+      {
+        "proposal_id": "aff0c7f8-719d-40ad-88c1-2c8881e46836",
+        "passed": false,
+        "failed": [
+          [
+            "kernel_executed",
+            "Output is bit-identical to reference AND candidate is 15.3x faster. Likely delegating to reference."
+          ]
+        ]
+      },
+      {
+        "proposal_id": "51a0e4b1-ef4f-4e2f-acbd-f6de1a5310fd",
+        "passed": false,
+        "failed": [
+          [
+            "nan_inf",
+            "Kernel raised an exception: at 18:16:\n    N,\n    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr\n):\n    \"\"\"Same tiling / online-softmax structure as flash_attention_kernel,\n    with a co"
+          ],
+          [
+            "dtype_preserved",
+            "Kernel raised an exception: at 18:16:\n    N,\n    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr\n):\n    \"\"\"Same tiling / online-softmax structure as flash_attention_kernel,\n    with a co"
+          ]
+        ]
+      },
+      {
+        "proposal_id": "65c17fa2-94d5-4fac-a537-9f54c6cea370",
+        "passed": false,
+        "failed": [
+          [
+            "nan_inf",
+            "Kernel raised an exception: too many values to unpack (expected 2)"
+          ],
+          [
+            "dtype_preserved",
+            "Kernel raised an exception: too many values to unpack (expected 2)"
+          ]
+        ]
+      },
+      {
+        "proposal_id": "68b8c987-9964-45d8-9bb7-f64d565fcce8",
+        "passed": false,
+        "failed": [
+          [
+            "nan_inf",
+            "Kernel raised an exception: at 18:16:\n    N,\n    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr\n):\n    \"\"\"Same tiling / online-softmax structure as flash_attention_kernel,\n    with a co"
+          ],
+          [
+            "dtype_preserved",
+            "Kernel raised an exception: at 18:16:\n    N,\n    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr\n):\n    \"\"\"Same tiling / online-softmax structure as flash_attention_kernel,\n    with a co"
+          ]
+        ]
+      },
+      {
+        "proposal_id": "af2dc964-ac3d-44bf-9aee-52a381eb9907",
+        "passed": false,
+        "failed": [
+          [
+            "nan_inf",
+            "Kernel raised an exception: too many values to unpack (expected 2)"
+          ],
+          [
+            "dtype_preserved",
+            "Kernel raised an exception: too many values to unpack (expected 2)"
+          ]
+        ]
+      },
+      {
+        "proposal_id": "793d3f0a-a128-4b5c-abbd-c9a43bb99ef1",
+        "passed": false,
+        "failed": [
+          [
+            "nan_inf",
+            "Kernel raised an exception: at 18:16:\n    N,\n    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr\n):\n    \"\"\"Same tiling / online-softmax structure as flash_attention_kernel,\n    with a co"
+          ],
+          [
+            "dtype_preserved",
+            "Kernel raised an exception: at 18:16:\n    N,\n    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr\n):\n    \"\"\"Same tiling / online-softmax structure as flash_attention_kernel,\n    with a co"
+          ]
+        ]
+      }
+    ]
+  },
+  "forkserver_3": {
+    "arm": "forkserver",
+    "wall_s": 72.39244961738586,
+    "n": 40,
+    "n_ref_failed": 6,
+    "failures": [
+      {
+        "proposal_id": "8bb756a5-b575-4171-9ddb-bf0cf69207b5",
+        "passed": false,
+        "failed": [
+          [
+            "kernel_executed",
+            "Output is bit-identical to reference AND candidate is 10.9x faster. Likely delegating to reference."
+          ]
+        ]
+      },
+      {
+        "proposal_id": "51a0e4b1-ef4f-4e2f-acbd-f6de1a5310fd",
+        "passed": false,
+        "failed": [
+          [
+            "nan_inf",
+            "Kernel raised an exception: at 18:16:\n    N,\n    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr\n):\n    \"\"\"Same tiling / online-softmax structure as flash_attention_kernel,\n    with a co"
+          ],
+          [
+            "dtype_preserved",
+            "Kernel raised an exception: at 18:16:\n    N,\n    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr\n):\n    \"\"\"Same tiling / online-softmax structure as flash_attention_kernel,\n    with a co"
+          ]
+        ]
+      },
+      {
+        "proposal_id": "65c17fa2-94d5-4fac-a537-9f54c6cea370",
+        "passed": false,
+        "failed": [
+          [
+            "nan_inf",
+            "Kernel raised an exception: too many values to unpack (expected 2)"
+          ],
+          [
+            "dtype_preserved",
+            "Kernel raised an exception: too many values to unpack (expected 2)"
+          ]
+        ]
+      },
+      {
+        "proposal_id": "68b8c987-9964-45d8-9bb7-f64d565fcce8",
+        "passed": false,
+        "failed": [
+          [
+            "nan_inf",
+            "Kernel raised an exception: at 18:16:\n    N,\n    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr\n):\n    \"\"\"Same tiling / online-softmax structure as flash_attention_kernel,\n    with a co"
+          ],
+          [
+            "dtype_preserved",
+            "Kernel raised an exception: at 18:16:\n    N,\n    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr\n):\n    \"\"\"Same tiling / online-softmax structure as flash_attention_kernel,\n    with a co"
+          ]
+        ]
+      },
+      {
+        "proposal_id": "af2dc964-ac3d-44bf-9aee-52a381eb9907",
+        "passed": false,
+        "failed": [
+          [
+            "nan_inf",
+            "Kernel raised an exception: too many values to unpack (expected 2)"
+          ],
+          [
+            "dtype_preserved",
+            "Kernel raised an exception: too many values to unpack (expected 2)"
+          ]
+        ]
+      },
+      {
+        "proposal_id": "793d3f0a-a128-4b5c-abbd-c9a43bb99ef1",
+        "passed": false,
+        "failed": [
+          [
+            "nan_inf",
+            "Kernel raised an exception: at 18:16:\n    N,\n    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr\n):\n    \"\"\"Same tiling / online-softmax structure as flash_attention_kernel,\n    with a co"
+          ],
+          [
+            "dtype_preserved",
+            "Kernel raised an exception: at 18:16:\n    N,\n    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr\n):\n    \"\"\"Same tiling / online-softmax structure as flash_attention_kernel,\n    with a co"
+          ]
+        ]
+      }
+    ]
+  },
+  "spawn_4": {
+    "arm": "spawn",
+    "wall_s": 129.29741764068604,
+    "n": 40,
+    "n_ref_failed": 5,
+    "failures": [
+      {
+        "proposal_id": "51a0e4b1-ef4f-4e2f-acbd-f6de1a5310fd",
+        "passed": false,
+        "failed": [
+          [
+            "nan_inf",
+            "Kernel raised an exception: at 18:16:\n    N,\n    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr\n):\n    \"\"\"Same tiling / online-softmax structure as flash_attention_kernel,\n    with a co"
+          ],
+          [
+            "dtype_preserved",
+            "Kernel raised an exception: at 18:16:\n    N,\n    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr\n):\n    \"\"\"Same tiling / online-softmax structure as flash_attention_kernel,\n    with a co"
+          ]
+        ]
+      },
+      {
+        "proposal_id": "65c17fa2-94d5-4fac-a537-9f54c6cea370",
+        "passed": false,
+        "failed": [
+          [
+            "nan_inf",
+            "Kernel raised an exception: too many values to unpack (expected 2)"
+          ],
+          [
+            "dtype_preserved",
+            "Kernel raised an exception: too many values to unpack (expected 2)"
+          ]
+        ]
+      },
+      {
+        "proposal_id": "68b8c987-9964-45d8-9bb7-f64d565fcce8",
+        "passed": false,
+        "failed": [
+          [
+            "nan_inf",
+            "Kernel raised an exception: at 18:16:\n    N,\n    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr\n):\n    \"\"\"Same tiling / online-softmax structure as flash_attention_kernel,\n    with a co"
+          ],
+          [
+            "dtype_preserved",
+            "Kernel raised an exception: at 18:16:\n    N,\n    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr\n):\n    \"\"\"Same tiling / online-softmax structure as flash_attention_kernel,\n    with a co"
+          ]
+        ]
+      },
+      {
+        "proposal_id": "af2dc964-ac3d-44bf-9aee-52a381eb9907",
+        "passed": false,
+        "failed": [
+          [
+            "nan_inf",
+            "Kernel raised an exception: too many values to unpack (expected 2)"
+          ],
+          [
+            "dtype_preserved",
+            "Kernel raised an exception: too many values to unpack (expected 2)"
+          ]
+        ]
+      },
+      {
+        "proposal_id": "793d3f0a-a128-4b5c-abbd-c9a43bb99ef1",
+        "passed": false,
+        "failed": [
+          [
+            "nan_inf",
+            "Kernel raised an exception: at 18:16:\n    N,\n    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr\n):\n    \"\"\"Same tiling / online-softmax structure as flash_attention_kernel,\n    with a co"
+          ],
+          [
+            "dtype_preserved",
+            "Kernel raised an exception: at 18:16:\n    N,\n    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr\n):\n    \"\"\"Same tiling / online-softmax structure as flash_attention_kernel,\n    with a co"
+          ]
+        ]
+      }
+    ]
+  },
+  "forkserver_5": {
+    "arm": "forkserver",
+    "wall_s": 71.57698583602905,
+    "n": 40,
+    "n_ref_failed": 6,
+    "failures": [
+      {
+        "proposal_id": "51a0e4b1-ef4f-4e2f-acbd-f6de1a5310fd",
+        "passed": false,
+        "failed": [
+          [
+            "nan_inf",
+            "Kernel raised an exception: at 18:16:\n    N,\n    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr\n):\n    \"\"\"Same tiling / online-softmax structure as flash_attention_kernel,\n    with a co"
+          ],
+          [
+            "dtype_preserved",
+            "Kernel raised an exception: at 18:16:\n    N,\n    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr\n):\n    \"\"\"Same tiling / online-softmax structure as flash_attention_kernel,\n    with a co"
+          ]
+        ]
+      },
+      {
+        "proposal_id": "25fc1d7f-be50-46c3-b55a-1766df731365",
+        "passed": false,
+        "failed": [
+          [
+            "kernel_executed",
+            "Output is bit-identical to reference AND candidate is 12.9x faster. Likely delegating to reference."
+          ]
+        ]
+      },
+      {
+        "proposal_id": "65c17fa2-94d5-4fac-a537-9f54c6cea370",
+        "passed": false,
+        "failed": [
+          [
+            "nan_inf",
+            "Kernel raised an exception: too many values to unpack (expected 2)"
+          ],
+          [
+            "dtype_preserved",
+            "Kernel raised an exception: too many values to unpack (expected 2)"
+          ]
+        ]
+      },
+      {
+        "proposal_id": "68b8c987-9964-45d8-9bb7-f64d565fcce8",
+        "passed": false,
+        "failed": [
+          [
+            "nan_inf",
+            "Kernel raised an exception: at 18:16:\n    N,\n    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr\n):\n    \"\"\"Same tiling / online-softmax structure as flash_attention_kernel,\n    with a co"
+          ],
+          [
+            "dtype_preserved",
+            "Kernel raised an exception: at 18:16:\n    N,\n    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr\n):\n    \"\"\"Same tiling / online-softmax structure as flash_attention_kernel,\n    with a co"
+          ]
+        ]
+      },
+      {
+        "proposal_id": "af2dc964-ac3d-44bf-9aee-52a381eb9907",
+        "passed": false,
+        "failed": [
+          [
+            "nan_inf",
+            "Kernel raised an exception: too many values to unpack (expected 2)"
+          ],
+          [
+            "dtype_preserved",
+            "Kernel raised an exception: too many values to unpack (expected 2)"
+          ]
+        ]
+      },
+      {
+        "proposal_id": "793d3f0a-a128-4b5c-abbd-c9a43bb99ef1",
+        "passed": false,
+        "failed": [
+          [
+            "nan_inf",
+            "Kernel raised an exception: at 18:16:\n    N,\n    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr\n):\n    \"\"\"Same tiling / online-softmax structure as flash_attention_kernel,\n    with a co"
+          ],
+          [
+            "dtype_preserved",
+            "Kernel raised an exception: at 18:16:\n    N,\n    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr\n):\n    \"\"\"Same tiling / online-softmax structure as flash_attention_kernel,\n    with a co"
+          ]
+        ]
+      }
+    ]
+  }
+}

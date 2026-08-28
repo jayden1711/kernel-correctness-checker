@@ -34,24 +34,41 @@ def check_all_tiles_visited(
         block_size:  Unused, kept for API compatibility.
 
     Returns:
-        (True,  -1,       n_cols)           all columns written
-        (False, first_bad_row, n_visited)   first row with missing columns
+        (passed: bool, detail: str | None)
+
+    This is a two-element return by design, matching
+    `check_all_tiles_visited_generic` below and every other Layer-1 check.
+    It previously returned a THIRD element carrying a column count, which
+    collided with the checker-adapter convention where a 3rd element means
+    "per-sub-check records for a compound check" (a list). Only two of the
+    322 records in a full corpus run ever populated it -- the partial-
+    coverage branch below -- and those two crashed
+    benchmarks/analyze_check_ablation.py with
+    `TypeError: 'int' object is not iterable`. The column count was never
+    read by any caller (verification/checker.py's _run_check consumes slots
+    0 and 1 only); it is preserved where it was always actually useful, in
+    the detail string. Do not reintroduce a 3rd element here unless this
+    check genuinely becomes compound.
+
+    The `passed` values below are deliberately unchanged from the previous
+    contract, so catch_rate / false_positive_rate stay comparable to earlier
+    runs; only the shape of the reported detail changed.
     """
     if kernel_fn is None:
-        return True, -1, -1
+        return True, None
 
     if x.dim() != 2:
-        return False, -1, -1
+        return False, f"Expected a 2-D input, got {x.dim()}-D; cannot check tile coverage."
 
     n_rows, n_cols = x.shape
 
     try:
         y = kernel_fn(x)
     except Exception as e:
-        return False, -1, -1
+        return False, f"Kernel raised during tile-coverage check: {type(e).__name__}: {e}"
 
     if y.shape != x.shape:
-        return False, -1, -1
+        return False, f"Kernel output shape {tuple(y.shape)} != input shape {tuple(x.shape)}; cannot check tile coverage."
 
     # For softmax, all output values must be positive since exp() > 0 always.
     # Zero columns indicate that the kernel skipped those tiles entirely.
@@ -62,9 +79,9 @@ def check_all_tiles_visited(
         for row_idx in range(n_rows):
             row_cols = (y[row_idx] > 0).sum().item()
             if row_cols < n_cols:
-                return False, f"Row {row_idx} only has {int(row_cols)}/{n_cols} columns written — partial tile coverage detected.", int(row_cols)
+                return False, f"Row {row_idx} only has {int(row_cols)}/{n_cols} columns written — partial tile coverage detected."
 
-    return True, -1, n_cols
+    return True, None
 
 def check_all_tiles_visited_generic(spec, candidate_fn, inputs, sentinel: float = float('nan')) -> tuple:
     """

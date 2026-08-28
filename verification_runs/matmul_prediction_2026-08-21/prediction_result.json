@@ -1,0 +1,187 @@
+[
+  {
+    "label": "P1  square, tile-aligned, zeroed tail",
+    "proposal_id": "pred-P1-square-zeroed",
+    "reference_passed": true,
+    "is_hit": true,
+    "predicted": [
+      "partial_k_reduct",
+      "skip_boundary",
+      "swapped_strides",
+      "wrong_dtype"
+    ],
+    "credited": [
+      "partial_k_reduct",
+      "skip_boundary",
+      "swapped_strides",
+      "wrong_dtype"
+    ],
+    "match": true,
+    "mutants": [
+      {
+        "mutant": "skip_boundary",
+        "passed_checker": false,
+        "passed_naive": true,
+        "gap": true,
+        "error": null
+      },
+      {
+        "mutant": "partial_k_reduct",
+        "passed_checker": false,
+        "passed_naive": true,
+        "gap": true,
+        "error": null
+      },
+      {
+        "mutant": "swapped_strides",
+        "passed_checker": false,
+        "passed_naive": true,
+        "gap": true,
+        "error": null
+      },
+      {
+        "mutant": "wrong_dtype",
+        "passed_checker": false,
+        "passed_naive": true,
+        "gap": true,
+        "error": null
+      }
+    ]
+  },
+  {
+    "label": "P2  M,N=100 (breaks align+strides), zeroed tail",
+    "proposal_id": "pred-P2-unaligned-zeroed",
+    "reference_passed": true,
+    "is_hit": true,
+    "predicted": [
+      "partial_k_reduct"
+    ],
+    "credited": [
+      "partial_k_reduct",
+      "skip_boundary",
+      "wrong_dtype"
+    ],
+    "match": false,
+    "mutants": [
+      {
+        "mutant": "skip_boundary",
+        "passed_checker": false,
+        "passed_naive": true,
+        "gap": true,
+        "error": null
+      },
+      {
+        "mutant": "partial_k_reduct",
+        "passed_checker": false,
+        "passed_naive": true,
+        "gap": true,
+        "error": null
+      },
+      {
+        "mutant": "swapped_strides",
+        "passed_checker": false,
+        "passed_naive": false,
+        "gap": false,
+        "error": null
+      },
+      {
+        "mutant": "wrong_dtype",
+        "passed_checker": false,
+        "passed_naive": true,
+        "gap": true,
+        "error": null
+      }
+    ]
+  },
+  {
+    "label": "P3  CONTROL: same as P2, NOT zeroed",
+    "proposal_id": "pred-P3-unaligned-control",
+    "reference_passed": true,
+    "is_hit": true,
+    "predicted": [
+      "skip_boundary",
+      "wrong_dtype"
+    ],
+    "credited": [
+      "skip_boundary",
+      "wrong_dtype"
+    ],
+    "match": true,
+    "mutants": [
+      {
+        "mutant": "skip_boundary",
+        "passed_checker": false,
+        "passed_naive": true,
+        "gap": true,
+        "error": null
+      },
+      {
+        "mutant": "partial_k_reduct",
+        "passed_checker": false,
+        "passed_naive": false,
+        "gap": false,
+        "error": null
+      },
+      {
+        "mutant": "swapped_strides",
+        "passed_checker": false,
+        "passed_naive": false,
+        "gap": false,
+        "error": null
+      },
+      {
+        "mutant": "wrong_dtype",
+        "passed_checker": false,
+        "passed_naive": true,
+        "gap": true,
+        "error": null
+      }
+    ]
+  },
+  {
+    "label": "P4  DISAMBIGUATOR: non-constant C, unaligned, zeroed tail",
+    "proposal_id": "pred-P4-nonconstant",
+    "reference_passed": true,
+    "is_hit": true,
+    "predicted": [
+      "partial_k_reduct",
+      "wrong_dtype"
+    ],
+    "credited": [
+      "partial_k_reduct",
+      "skip_boundary",
+      "wrong_dtype"
+    ],
+    "match": false,
+    "mutants": [
+      {
+        "mutant": "skip_boundary",
+        "passed_checker": false,
+        "passed_naive": true,
+        "gap": true,
+        "error": null
+      },
+      {
+        "mutant": "partial_k_reduct",
+        "passed_checker": false,
+        "passed_naive": true,
+        "gap": true,
+        "error": null
+      },
+      {
+        "mutant": "swapped_strides",
+        "passed_checker": false,
+        "passed_naive": false,
+        "gap": false,
+        "error": null
+      },
+      {
+        "mutant": "wrong_dtype",
+        "passed_checker": false,
+        "passed_naive": true,
+        "gap": true,
+        "error": null
+      }
+    ]
+  }
+]

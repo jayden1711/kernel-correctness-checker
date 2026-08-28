@@ -1,0 +1,16 @@
+{"op": "conv1d", "mutant": "flipped_kernel", "caught": true, "config": 0, "by": "L3:adv_zero_border_probe"}
+{"op": "conv1d", "mutant": "ignores_dilation", "caught": true, "config": 2, "by": "L3:adv_zero_border_probe"}
+{"op": "conv2d", "mutant": "flipped_kernel", "caught": true, "config": 0, "by": "L3:adv_zero_border_probe"}
+{"op": "conv2d", "mutant": "ignores_dilation", "caught": true, "config": 2, "by": "L3:adv_zero_border_probe"}
+{"op": "conv3d", "mutant": "flipped_kernel", "caught": true, "config": 0, "by": "L3:adv_zero_border_probe"}
+{"op": "conv3d", "mutant": "ignores_dilation", "caught": true, "config": 2, "by": "L3:adv_zero_border_probe"}
+{"op": "conv_transpose1d", "mutant": "flipped_kernel", "caught": true, "config": 0, "by": "L3:adv_zero_border_probe"}
+{"op": "conv_transpose1d", "mutant": "wrong_padding", "caught": true, "config": 0, "by": "L3:adv_zero_border_probe"}
+{"op": "conv_transpose2d", "mutant": "flipped_kernel", "caught": true, "config": 0, "by": "L3:adv_zero_border_probe"}
+{"op": "conv_transpose2d", "mutant": "wrong_padding", "caught": true, "config": 0, "by": "L3:adv_zero_border_probe"}
+{"op": "conv_transpose3d", "mutant": "flipped_kernel", "caught": true, "config": 0, "by": "L3:adv_zero_border_probe"}
+{"op": "conv_transpose3d", "mutant": "wrong_padding", "caught": true, "config": 0, "by": "L3:adv_zero_border_probe"}
+{"op": "depthwise_conv2d", "mutant": "not_grouped", "caught": true, "config": 0, "by": "L3:adv_zero_border_probe"}
+{"op": "depthwise_conv2d", "mutant": "flipped_kernel", "caught": true, "config": 0, "by": "L3:adv_zero_border_probe"}
+{"op": "pointwise_conv2d", "mutant": "partial_channels", "caught": true, "config": 0, "by": "L3:adv_zero_border_probe"}
+{"op": "pointwise_conv2d", "mutant": "transposed_weight", "caught": true, "config": 0, "by": "L3:adv_zero_border_probe"}

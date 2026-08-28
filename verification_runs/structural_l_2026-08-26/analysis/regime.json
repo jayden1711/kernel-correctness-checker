@@ -1,0 +1,250 @@
+[
+ {
+  "op": "sum_reduction",
+  "variant": "<ordinary>",
+  "tol_mc": 0.10650556907057762,
+  "tol_struct": 0.1104748776752439,
+  "ratio": 1.0372685544925444,
+  "ordinary": true
+ },
+ {
+  "op": "sum_reduction",
+  "variant": "second_half_dominant",
+  "tol_mc": 0.8340127766132355,
+  "tol_struct": 0.791937503514561,
+  "ratio": 0.9495508051213148,
+  "ordinary": false
+ },
+ {
+  "op": "sum_reduction",
+  "variant": "large_magnitude",
+  "tol_mc": 55.366716384887695,
+  "tol_struct": 55.2374381015243,
+  "ratio": 0.9976650541732562,
+  "ordinary": false
+ },
+ {
+  "op": "mean_reduction",
+  "variant": "<ordinary>",
+  "tol_mc": 0.0008516661473549902,
+  "tol_struct": 0.0008546666863805391,
+  "ratio": 1.0035231399473463,
+  "ordinary": true
+ },
+ {
+  "op": "mean_reduction",
+  "variant": "second_half_dominant",
+  "tol_mc": 0.005802231375128031,
+  "tol_struct": 0.006077917307965898,
+  "ratio": 1.0475137778923516,
+  "ordinary": false
+ },
+ {
+  "op": "mean_reduction",
+  "variant": "large_magnitude",
+  "tol_mc": 0.4194222539663315,
+  "tol_struct": 0.42733334729795736,
+  "ratio": 1.0188618826416895,
+  "ordinary": false
+ },
+ {
+  "op": "max_reduction",
+  "variant": "<ordinary>",
+  "tol_mc": 0.00887356954626739,
+  "tol_struct": 0.009815941526537055,
+  "ratio": 1.1061998754115887,
+  "ordinary": true
+ },
+ {
+  "op": "max_reduction",
+  "variant": "all_negative_nonpow2",
+  "tol_mc": 0.002651532122399658,
+  "tol_struct": 0.002833946354891159,
+  "ratio": 1.0687957845015337,
+  "ordinary": false
+ },
+ {
+  "op": "max_reduction",
+  "variant": "large_magnitude",
+  "tol_mc": 4.6347105503082275,
+  "tol_struct": 4.907970907335397,
+  "ratio": 1.0589595302794035,
+  "ordinary": false
+ },
+ {
+  "op": "min_reduction",
+  "variant": "<ordinary>",
+  "tol_mc": 0.010060715256258845,
+  "tol_struct": 0.009765011564617824,
+  "ratio": 0.970608084603422,
+  "ordinary": true
+ },
+ {
+  "op": "min_reduction",
+  "variant": "all_positive_nonpow2",
+  "tol_mc": 0.002737679227720946,
+  "tol_struct": 0.002829449783919403,
+  "ratio": 1.0335212961654583,
+  "ordinary": false
+ },
+ {
+  "op": "min_reduction",
+  "variant": "large_magnitude",
+  "tol_mc": 5.35471773147583,
+  "tol_struct": 4.882505684715226,
+  "ratio": 0.9118138302631955,
+  "ordinary": false
+ },
+ {
+  "op": "gelu",
+  "variant": "<ordinary>",
+  "tol_mc": 0.013555131386965513,
+  "tol_struct": 0.01349624662703651,
+  "ratio": 0.9956559063687405,
+  "ordinary": true
+ },
+ {
+  "op": "gelu",
+  "variant": "large_magnitude",
+  "tol_mc": 1.3214065432548523,
+  "tol_struct": 1.2892701611051727,
+  "ratio": 0.9756801702596976,
+  "ordinary": false
+ },
+ {
+  "op": "gelu",
+  "variant": "near_global_min",
+  "tol_mc": 1.341104507446289e-06,
+  "tol_struct": 1.3822252565227345e-06,
+  "ratio": 1.0306618528594367,
+  "ordinary": false
+ },
+ {
+  "op": "swish",
+  "variant": "<ordinary>",
+  "tol_mc": 0.012961909174919128,
+  "tol_struct": 0.012623553346518785,
+  "ratio": 0.973896142625729,
+  "ordinary": true
+ },
+ {
+  "op": "swish",
+  "variant": "large_magnitude",
+  "tol_mc": 1.2909570336341858,
+  "tol_struct": 1.293674516100657,
+  "ratio": 1.0021050138739485,
+  "ordinary": false
+ },
+ {
+  "op": "swish",
+  "variant": "near_global_min",
+  "tol_mc": 1e-06,
+  "tol_struct": 1e-06,
+  "ratio": 1.0,
+  "ordinary": false
+ },
+ {
+  "op": "softmax",
+  "variant": "<ordinary>",
+  "tol_mc": 0.0007177154766395688,
+  "tol_struct": 0.0007855291159541261,
+  "ratio": 1.0944854075490595,
+  "ordinary": true
+ },
+ {
+  "op": "softmax",
+  "variant": "equal_logits",
+  "tol_mc": 0.00010602576003293507,
+  "tol_struct": 0.00010352747608784536,
+  "ratio": 0.9764370097954153,
+  "ordinary": false
+ },
+ {
+  "op": "softmax",
+  "variant": "non_power_of_two",
+  "tol_mc": 0.0007160043023759499,
+  "tol_struct": 0.0006941504708535709,
+  "ratio": 0.9694780723385873,
+  "ordinary": false
+ },
+ {
+  "op": "softmax",
+  "variant": "near_zero_variance",
+  "tol_mc": 1e-06,
+  "tol_struct": 1e-06,
+  "ratio": 1.0,
+  "ordinary": false
+ },
+ {
+  "op": "log_softmax",
+  "variant": "<ordinary>",
+  "tol_mc": 0.01344795199111104,
+  "tol_struct": 0.013561213902180638,
+  "ratio": 1.0084222423715123,
+  "ordinary": true
+ },
+ {
+  "op": "log_softmax",
+  "variant": "large_magnitude",
+  "tol_mc": 3.8107266426086426,
+  "tol_struct": 3.816947779873257,
+  "ratio": 1.0016325330699543,
+  "ordinary": false
+ },
+ {
+  "op": "log_softmax",
+  "variant": "near_zero_variance",
+  "tol_mc": 1e-06,
+  "tol_struct": 1e-06,
+  "ratio": 1.0,
+  "ordinary": false
+ },
+ {
+  "op": "l1norm",
+  "variant": "<ordinary>",
+  "tol_mc": 0.00013472539649228565,
+  "tol_struct": 0.00013821080076806735,
+  "ratio": 1.0258704324984582,
+  "ordinary": true
+ },
+ {
+  "op": "l1norm",
+  "variant": "second_half_dominant",
+  "tol_mc": 0.00030267384136095643,
+  "tol_struct": 0.000203562420886803,
+  "ratio": 0.6725471219167658,
+  "ordinary": false
+ },
+ {
+  "op": "l2norm",
+  "variant": "<ordinary>",
+  "tol_mc": 0.0011856696219183505,
+  "tol_struct": 0.001211649859629301,
+  "ratio": 1.021911869234632,
+  "ordinary": true
+ },
+ {
+  "op": "l2norm",
+  "variant": "high_variance_row",
+  "tol_mc": 0.0012364450085442513,
+  "tol_struct": 0.0012467305781482688,
+  "ratio": 1.008318663210204,
+  "ordinary": false
+ },
+ {
+  "op": "frobenius_norm",
+  "variant": "<ordinary>",
+  "tol_mc": 0.00014938630556571297,
+  "tol_struct": 0.00014696838893067183,
+  "ratio": 0.9838143354179307,
+  "ordinary": true
+ },
+ {
+  "op": "frobenius_norm",
+  "variant": "dominant_outlier",
+  "tol_mc": 0.0001523858809377998,
+  "tol_struct": 0.00014698045190052972,
+  "ratio": 0.9645280192363986,
+  "ordinary": false
+ }
+]

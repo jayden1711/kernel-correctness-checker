@@ -1,0 +1,20 @@
+R1 outcome diff (must be exactly the cross_shape flip):
+  PASS  A-arm: 1 outcome diff(s): [(('layernorm', 'wrong_variance_estimate', 'mutant', 'cross_shape'), 'fail', '->', 'pass')]
+  PASS  A-arm summary: catch 40/40, fp 0/200 (pre: 40/40, 0/200)
+  PASS  G-arm: 1 outcome diff(s): [(('layernorm', 'wrong_variance_estimate', 'mutant', 'cross_shape'), 'fail', '->', 'pass')]
+  PASS  G-arm summary: catch 40/40, fp 0/200 (pre: 40/40, 0/200)
+
+R2 catch attribution:
+  PASS  A-arm: 1 attribution change(s): [(('layernorm', 'wrong_variance_estimate', '[L3]cross_shape; [L3]adversarial_wrong_variance_trigger'), ('layernorm', 'wrong_variance_estimate', '[L3]adversarial_wrong_variance_trigger'))]
+  PASS  G-arm: 1 attribution change(s): [(('layernorm', 'wrong_variance_estimate', '[L3]cross_shape; [L3]adversarial_wrong_variance_trigger'), ('layernorm', 'wrong_variance_estimate', '[L3]adversarial_wrong_variance_trigger'))]
+
+R3 cross_shape subchecks, layernorm/wrong_variance_estimate:
+  PASS  subchecks: [('shape=(512, 512)', 'pass'), ('shape=(256, 1024)', 'pass'), ('shape=(1, 512)', 'pass'), ('shape=(1000, 333)', 'pass'), ('shape=(2048, 128)', 'pass')]
+
+R4 layernorm adversarial_non_power_of_two (width 127):
+  PASS  verdicts unchanged (True), gram fires 0; worst |log10 r| pre 4.312075817355917e-05 -> post 3.648629782778097e-05
+
+R5 value-level bit identity (scope records):
+  PASS  changed: 23 (layernorm non_pow2 16, frobenius flake 7); UNEXPLAINED: []
+
+ALL CRITERIA MET

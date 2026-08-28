@@ -1,0 +1,69 @@
+1. VERDICTS IDENTICAL WITH DETECTOR ON : YES
+   summary A {'n_mutants': 40, 'n_caught': 40, 'catch_rate': 1.0, 'n_ref': 200, 'n_fp': 0, 'fp_rate': 0.0}
+   summary B {'n_mutants': 40, 'n_caught': 40, 'catch_rate': 1.0, 'n_ref': 200, 'n_fp': 0, 'fp_rate': 0.0}
+
+   scope records in `scope_flags` (promoted) : 854
+   scope records in `subchecks`   (source)   : 854
+
+2. FIRED
+   operator/check                                            reasons                             defect%      s/ulp
+   argmax/perturbation_tolerance                             structural_exclusion                      -          -
+   argmin/perturbation_tolerance                             structural_exclusion                      -          -
+   causal_flash_attention/adversarial_large_magnitude_qk     saturation                             16.0  642588.50
+   cross_entropy/adversarial_large_magnitude_logits          saturation                            100.0     426.00
+   flash_attention/adversarial_equal_attention_weights       quantisation_floor,saturation         900.0       5.00
+   flash_attention/adversarial_last_tile_dropped             quantisation_floor,saturation        1900.0       2.00
+   flash_attention/adversarial_multi_tile_rescaling          saturation                            854.5     210.00
+   flash_attention/adversarial_skip_rescaling                quantisation_floor,saturation         900.0       2.00
+   gelu/adversarial_near_global_min                          quantisation_floor,saturation          42.9      24.00
+   groupnorm/adversarial_near_zero_variance                  quantisation_floor                        -       0.00
+   instancenorm/adversarial_near_zero_variance               quantisation_floor                        -       0.00
+   layernorm/adversarial_wrong_variance_trigger              saturation                             11.0    8043.50
+   log_softmax/adversarial_near_zero_variance                quantisation_floor                        -       0.00
+   scaled_dot_product_attention/adversarial_large_magnitude_qksaturation                             26.6    3311.50
+   softmax/adversarial_extreme_range                         quantisation_floor                        -       0.00
+   softmax/adversarial_max_in_last_tile                      quantisation_floor                        -       0.00
+   softmax/adversarial_near_zero_variance                    quantisation_floor,saturation         900.0       1.00
+   swish/adversarial_near_global_min                         quantisation_floor,saturation         150.0       7.00
+
+   expected-out-of-scope attention variants caught : 6/6
+   argmax/argmin flagged structurally              : ['argmax', 'argmin']
+   in-scope attention variants wrongly flagged     : none
+
+3. SILENT -- margin to each threshold (this is the false-alarm headroom)
+   operator                            worst defect%  x margin    min s/ulp  x margin
+   avg_pool1d                                  0.035    286.7x        5,574      174x
+   avg_pool2d                                  0.057    173.9x       10,014      313x
+   avg_pool3d                                  0.038    259.9x        8,337      261x
+   batchnorm                                   0.045    220.7x        4,228      132x
+   causal_flash_attention                      5.736      1.7x        6,311      197x
+   cross_entropy                               4.255      2.4x          296        9x
+   flash_attention                             0.573     17.4x        3,681      115x
+   frobenius_norm                              0.021    471.5x          731       23x
+   gelu                                        0.042    238.3x       12,198      381x
+   groupnorm                                   0.037    272.7x        6,532      204x
+   instancenorm                                0.063    158.7x        9,199      287x
+   l1norm                                      0.119     83.9x       10,663      333x
+   l2norm                                      0.035    287.4x        6,087      190x
+   layernorm                                   8.091      1.2x        7,345      230x
+   log_softmax                                 0.065    154.0x        4,116      129x
+   matmul                                      1.077      9.3x        1,207       38x
+   max_pool1d                                  0.014    734.7x       10,009      313x
+   max_pool2d                                  0.024    414.7x       10,750      336x
+   max_pool3d                                  0.030    332.8x        8,110      253x
+   max_reduction                               0.038    260.1x        5,142      161x
+   mean_reduction                              0.056    178.7x        7,318      229x
+   min_reduction                               0.029    345.4x        4,826      151x
+   rmsnorm                                     1.243      8.0x        6,911      216x
+   scaled_dot_product_attention                8.613      1.2x        9,355      292x
+   softmax                                     0.200     50.1x        7,630      238x
+   sum_reduction                               0.065    152.9x        7,248      226x
+   swish                                       0.057    176.0x        7,406      231x
+
+   A margin below ~2x on either column means the threshold is too
+   close to a real in-scope operator and must be revisited before
+   the detector is proposed for adoption.
+
+ERR 
+
+[exited with code 0]

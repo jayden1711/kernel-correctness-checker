@@ -43,6 +43,12 @@ def sdpa_kernel(
 
         S = tl.dot(Q_block, tl.trans(K_block)) * (1.0 / (D ** 0.5))
 
+        #Mask padded key columns (kv >= N). Without this, every padded column
+        #contributes exp(0 - m) to the softmax denominator whenever N is not a
+        #multiple of BLOCK_N. Same fix as flash_attention.py; see
+        #verification_runs/attention_mask_bug_impact_2026-08-27/.
+        S = tl.where(kv_offsets[None, :] < N, S, float('-inf'))
+
         m_new = tl.maximum(m, tl.max(S, axis=1))
         acc = acc * tl.exp(m - m_new)[:, None]
         P = tl.exp(S - m_new[:, None])

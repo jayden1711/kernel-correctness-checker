@@ -1,0 +1,4029 @@
+{
+ "_README": "Recorded adversarial-search input descriptors for the check_kernel_executed false-positive fix. Every entry is REAL output from a real run, not hand-authored: recorded_outcome is what the OLD check actually returned when the search ran the CORRECT reference kernel on these inputs. FAIL entries are therefore false positives by definition.",
+ "counts": {
+  "argmax:FAIL": 3,
+  "causal_flash_attention:FAIL": 20,
+  "causal_flash_attention:PASS": 51,
+  "flash_attention:FAIL": 1,
+  "softmax:FAIL": 1
+ },
+ "cases": [
+  {
+   "id": "84a7f6f7-3748-44d4-81f0-eed38b355848",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "FAIL",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "ones",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "zeros",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[1::2, :]",
+       "value": 100.0
+      },
+      {
+       "indices": "[0::2, :]",
+       "value": -100.0
+      }
+     ]
+    },
+    "V": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "zeros",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[1::2, :]",
+       "value": 1000.0
+      },
+      {
+       "indices": "[0::2, :]",
+       "value": -1000.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "aff0c7f8-719d-40ad-88c1-2c8881e46836",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "PASS",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "ones",
+     "scale": 100.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[0, :]",
+       "value": 0.1
+      }
+     ]
+    },
+    "V": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "zeros",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[1::2, :]",
+       "value": 100.0
+      },
+      {
+       "indices": "[0::2, :]",
+       "value": -100.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "d592c244-6902-43b6-b1db-9e5ed688d25d",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "PASS",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "zeros",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[1::2, :]",
+       "value": 50.0
+      },
+      {
+       "indices": "[0::2, :]",
+       "value": -50.0
+      }
+     ]
+    },
+    "V": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "zeros",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[1::2, :]",
+       "value": 1000.0
+      },
+      {
+       "indices": "[0::2, :]",
+       "value": 0.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "225493a0-165e-4620-aa00-d2eede780143",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "FAIL",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "zeros",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[:, 0]",
+       "value": 50.0
+      }
+     ]
+    },
+    "V": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "zeros",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[::2, :]",
+       "value": 100.0
+      },
+      {
+       "indices": "[1::2, :]",
+       "value": -100.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "32e58b8e-622e-4b82-9352-fef4be2a9206",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "PASS",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 0.1,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[1::2, :]",
+       "value": 50.0
+      },
+      {
+       "indices": "[0::2, :]",
+       "value": -50.0
+      }
+     ]
+    },
+    "V": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "zeros",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[1::2, :]",
+       "value": 500.0
+      },
+      {
+       "indices": "[0::2, :]",
+       "value": -500.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "2e429b94-e83f-436e-84b3-7e70c37b5c3d",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "FAIL",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "arange",
+     "scale": 0.1,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "zeros",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[32, :]",
+       "value": 100.0
+      },
+      {
+       "indices": "[33, :]",
+       "value": -100.0
+      }
+     ]
+    },
+    "V": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "zeros",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[32:, :]",
+       "value": 500.0
+      },
+      {
+       "indices": "[:32, :]",
+       "value": 0.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "08c39f46-4595-4635-b787-1b445aa42614",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "FAIL",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "arange",
+     "scale": 0.1,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "arange",
+     "scale": 0.1,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[33, :]",
+       "value": 5.0
+      },
+      {
+       "indices": "[34, :]",
+       "value": 5.0
+      },
+      {
+       "indices": "[35, :]",
+       "value": 5.0
+      }
+     ]
+    },
+    "V": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "zeros",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[32, :]",
+       "value": 0.0
+      },
+      {
+       "indices": "[33, :]",
+       "value": 50.0
+      },
+      {
+       "indices": "[34, :]",
+       "value": -50.0
+      },
+      {
+       "indices": "[35, :]",
+       "value": 50.0
+      },
+      {
+       "indices": "[36, :]",
+       "value": -50.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "5040d834-6fa3-47fb-a437-4a7c939f1324",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "PASS",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 0.1,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[1::2, 0]",
+       "value": 80.0
+      },
+      {
+       "indices": "[0::2, 0]",
+       "value": -80.0
+      }
+     ]
+    },
+    "V": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 0.1,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[::2, :]",
+       "value": 50.0
+      },
+      {
+       "indices": "[1::2, :]",
+       "value": -50.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "dd99c73c-5c8b-45f1-a764-b5f707456350",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "PASS",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[31, :]",
+       "value": 5.0
+      },
+      {
+       "indices": "[32, :]",
+       "value": 5.0
+      }
+     ]
+    },
+    "K": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[32, :]",
+       "value": 5.0
+      },
+      {
+       "indices": "[33, :]",
+       "value": 5.0
+      }
+     ]
+    },
+    "V": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "zeros",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[:32, :]",
+       "value": 1.0
+      },
+      {
+       "indices": "[32:, :]",
+       "value": -1.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "75f2dba6-368d-40df-af51-a810b9899653",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "PASS",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 0.1,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[32, :]",
+       "value": 50.0
+      }
+     ]
+    },
+    "V": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 0.1,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[32, :]",
+       "value": 1000.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "95e5b2ab-21f2-4bdc-9ad8-7603bbefd781",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "PASS",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 0.5,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "V": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[32, :]",
+       "value": 100.0
+      },
+      {
+       "indices": "[33, :]",
+       "value": -100.0
+      },
+      {
+       "indices": "[34, :]",
+       "value": 100.0
+      },
+      {
+       "indices": "[35, :]",
+       "value": -100.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "981ae6d1-db21-439d-bcfb-164b5751bb28",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "PASS",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[:, 0]",
+       "value": 1.0
+      }
+     ]
+    },
+    "K": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 0.01,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[1::2, 0]",
+       "value": 30.0
+      },
+      {
+       "indices": "[0::2, 0]",
+       "value": -30.0
+      }
+     ]
+    },
+    "V": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 0.01,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[::2, :]",
+       "value": 10.0
+      },
+      {
+       "indices": "[1::2, :]",
+       "value": -10.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "8bb756a5-b575-4171-9ddb-bf0cf69207b5",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "PASS",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      33,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      33,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[32, :]",
+       "value": 10.0
+      }
+     ]
+    },
+    "V": {
+     "shape": [
+      33,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "zeros",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[:32, :]",
+       "value": 1.0
+      },
+      {
+       "indices": "[32, :]",
+       "value": -100.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "2df138b8-a36e-46d1-ada7-921ec36624d7",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "PASS",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      65,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      65,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "V": {
+     "shape": [
+      65,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    }
+   }
+  },
+  {
+   "id": "f1789970-f1b9-4868-8123-1eabe455ca6d",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "PASS",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      33,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      33,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "V": {
+     "shape": [
+      33,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    }
+   }
+  },
+  {
+   "id": "6d343df5-67d4-447a-877c-d0a3765dd1ce",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "PASS",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      33,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      33,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "V": {
+     "shape": [
+      33,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    }
+   }
+  },
+  {
+   "id": "9287e744-77ce-4dad-98bf-231d2244f8fb",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "FAIL",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      48,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "ones",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      48,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "zeros",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[:32, :]",
+       "value": 0.1
+      },
+      {
+       "indices": "[32:, :]",
+       "value": 5.0
+      }
+     ]
+    },
+    "V": {
+     "shape": [
+      48,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "zeros",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[:32, :]",
+       "value": 1.0
+      },
+      {
+       "indices": "[32:, :]",
+       "value": -1000.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "4f1a90aa-6edc-464b-9e88-304d1b476513",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "PASS",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "arange",
+     "scale": 0.05,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "V": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    }
+   }
+  },
+  {
+   "id": "25fc1d7f-be50-46c3-b55a-1766df731365",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "FAIL",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "ones",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "ones",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "V": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "zeros",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[32:, :]",
+       "value": 100.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "d28174c8-c1cb-4788-b283-f8ddc482545e",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "PASS",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      48,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      48,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "V": {
+     "shape": [
+      48,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[32:, :]",
+       "value": 1000.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "4aff5bf2-5f92-4a45-b27e-1ef40bc16ce7",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "FAIL",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "ones",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "zeros",
+     "scale": 0.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[32, :]",
+       "value": 10.0
+      }
+     ]
+    },
+    "V": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "zeros",
+     "scale": 0.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[32, :]",
+       "value": 100.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "5f5dfdcf-3bb3-48ef-9c84-fe5c7810642b",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "FAIL",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      8,
+      16
+     ],
+     "dtype": "float32",
+     "fill": "ones",
+     "scale": 10.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      8,
+      16
+     ],
+     "dtype": "float32",
+     "fill": "ones",
+     "scale": 10.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "V": {
+     "shape": [
+      8,
+      16
+     ],
+     "dtype": "float32",
+     "fill": "zeros",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[1:, :]",
+       "value": 1000.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "18fd01df-0870-4226-9157-12f4b19e18bf",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "PASS",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 3.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 3.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "V": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "zeros",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[::2, :]",
+       "value": 100.0
+      },
+      {
+       "indices": "[1::2, :]",
+       "value": -100.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "216b90d8-1317-4e58-8bb1-413a6c65d63b",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "PASS",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      65,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      65,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[64, :]",
+       "value": 5.0
+      }
+     ]
+    },
+    "V": {
+     "shape": [
+      65,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 0.1,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[64, :]",
+       "value": 500.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "2b7abcc7-7a19-432b-ab14-d044dda2b983",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "PASS",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[32, :]",
+       "value": 5.0
+      }
+     ]
+    },
+    "V": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "zeros",
+     "scale": 0.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[32, :]",
+       "value": 1000.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "cef60aa3-d8bc-483e-91d2-2eea684b6a9f",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "PASS",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      4,
+      16
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 2.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      4,
+      16
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 2.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "V": {
+     "shape": [
+      4,
+      16
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 10.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    }
+   }
+  },
+  {
+   "id": "9581a75d-6943-44a6-9cd1-87f6c4304534",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "PASS",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      33,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 2.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      33,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 2.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "V": {
+     "shape": [
+      33,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "zeros",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[-1, :]",
+       "value": 1000.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "5fc5a3f0-0bb2-471a-bd1b-29d71e7ebedf",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "PASS",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      128,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[64:, :]",
+       "value": 2.0
+      }
+     ]
+    },
+    "K": {
+     "shape": [
+      128,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "V": {
+     "shape": [
+      128,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[64:, :]",
+       "value": 500.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "4f874a50-52ca-4b4d-ba33-9403edf83e75",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "PASS",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      16,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      16,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "V": {
+     "shape": [
+      16,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "zeros",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[1:, :]",
+       "value": 1000000.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "2d60bbe6-456c-4c22-b9ff-f0c6ce0c05ff",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "PASS",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      33,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      33,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[32, :]",
+       "value": 10.0
+      }
+     ]
+    },
+    "V": {
+     "shape": [
+      33,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "zeros",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[32, :]",
+       "value": 100.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "59179721-3ca4-4196-a1bc-424038f29280",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "PASS",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      33,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      33,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[32:, :]",
+       "value": 10000.0
+      }
+     ]
+    },
+    "V": {
+     "shape": [
+      33,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[32:, :]",
+       "value": 10000.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "02df180b-a9b1-4c54-b154-a0db5267b797",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "PASS",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      33,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      33,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "V": {
+     "shape": [
+      33,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 5.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    }
+   }
+  },
+  {
+   "id": "29796446-7443-472c-8328-6ecc8fabae4d",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "FAIL",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      64,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "ones",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      64,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "ones",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "V": {
+     "shape": [
+      64,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "zeros",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[32:, :]",
+       "value": 500.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "b77b6f89-22e5-4142-bcd3-cb7799317a2c",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "PASS",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      48,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      48,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "V": {
+     "shape": [
+      48,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "ones",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[1::2, :]",
+       "value": -1.0
+      },
+      {
+       "indices": "[32:, :]",
+       "value": 50.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "a94e9f9e-d21b-44cc-a9ae-60717f2bf53b",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "PASS",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      65,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      65,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "V": {
+     "shape": [
+      65,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[33:, :]",
+       "value": 50.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "0dbd0191-f368-4248-82e5-757307efb0ab",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "FAIL",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      33,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "ones",
+     "scale": 100.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      33,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "zeros",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[32, :]",
+       "value": 1.0
+      }
+     ]
+    },
+    "V": {
+     "shape": [
+      33,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "zeros",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[32, :]",
+       "value": 1000.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "3c811b90-f585-4074-8c1b-1066fc0a7995",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "PASS",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      96,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      96,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "V": {
+     "shape": [
+      96,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    }
+   }
+  },
+  {
+   "id": "ebeb2edc-af3f-4373-8d4f-6b4211b5f7ee",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "FAIL",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      16,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "ones",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      16,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "ones",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "V": {
+     "shape": [
+      16,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "zeros",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[0, :]",
+       "value": 0.0
+      },
+      {
+       "indices": "[1, :]",
+       "value": 1000.0
+      },
+      {
+       "indices": "[2, :]",
+       "value": -1000.0
+      },
+      {
+       "indices": "[3, :]",
+       "value": 1000.0
+      },
+      {
+       "indices": "[4, :]",
+       "value": -1000.0
+      },
+      {
+       "indices": "[5, :]",
+       "value": 1000.0
+      },
+      {
+       "indices": "[6, :]",
+       "value": -1000.0
+      },
+      {
+       "indices": "[7, :]",
+       "value": 1000.0
+      },
+      {
+       "indices": "[8, :]",
+       "value": -1000.0
+      },
+      {
+       "indices": "[9, :]",
+       "value": 1000.0
+      },
+      {
+       "indices": "[10, :]",
+       "value": -1000.0
+      },
+      {
+       "indices": "[11, :]",
+       "value": 1000.0
+      },
+      {
+       "indices": "[12, :]",
+       "value": -1000.0
+      },
+      {
+       "indices": "[13, :]",
+       "value": 1000.0
+      },
+      {
+       "indices": "[14, :]",
+       "value": -1000.0
+      },
+      {
+       "indices": "[15, :]",
+       "value": 1000.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "8ac70877-1d7d-4280-a042-9369b9fb79b2",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "PASS",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      128,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      128,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "V": {
+     "shape": [
+      128,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "zeros",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[64:, :]",
+       "value": 100.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "8b28c04a-3061-4d79-96f5-27a203f0b0d7",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "FAIL",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      128,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "zeros",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[64:, :]",
+       "value": 1.0
+      },
+      {
+       "indices": "[:64, :]",
+       "value": 0.1
+      }
+     ]
+    },
+    "K": {
+     "shape": [
+      128,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "zeros",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[64:, :]",
+       "value": 1000.0
+      },
+      {
+       "indices": "[:64, :]",
+       "value": 0.0
+      }
+     ]
+    },
+    "V": {
+     "shape": [
+      128,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "zeros",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[64:, :]",
+       "value": 10000.0
+      },
+      {
+       "indices": "[:64, :]",
+       "value": -10000.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "fbb3c7b4-e7c8-482c-b76c-bcecabf78be0",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "PASS",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      33,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      33,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[32, :]",
+       "value": 5.0
+      }
+     ]
+    },
+    "V": {
+     "shape": [
+      33,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[32, :]",
+       "value": 500.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "eaa9f668-0bef-4f86-b866-e8dba05cf1de",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "PASS",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 10.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "V": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 100.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    }
+   }
+  },
+  {
+   "id": "fee2ddce-870b-4c09-aaf4-19bd092adada",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "PASS",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      33,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      33,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "V": {
+     "shape": [
+      33,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[-1, :]",
+       "value": 1000.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "00b32066-6a81-49ef-bb8d-2dbd54235437",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "PASS",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      96,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      96,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "V": {
+     "shape": [
+      96,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    }
+   }
+  },
+  {
+   "id": "619b9c65-60ab-49b4-9b9c-e8ffc302f4fd",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "PASS",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      48,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      48,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "V": {
+     "shape": [
+      48,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    }
+   }
+  },
+  {
+   "id": "28fd91e6-45d2-4fae-ba5b-e836be415616",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "PASS",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      64,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      64,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "V": {
+     "shape": [
+      64,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[32:, :]",
+       "value": 1000.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "c809e447-33f8-4849-ab0b-5f199199f472",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "FAIL",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      2,
+      16
+     ],
+     "dtype": "float32",
+     "fill": "ones",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      2,
+      16
+     ],
+     "dtype": "float32",
+     "fill": "ones",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "V": {
+     "shape": [
+      2,
+      16
+     ],
+     "dtype": "float32",
+     "fill": "zeros",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[0, :]",
+       "value": 1.0
+      },
+      {
+       "indices": "[1, :]",
+       "value": -1000.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "d6b633c9-7c66-4912-9904-63611f378545",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "PASS",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      65,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 3.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      65,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 3.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "V": {
+     "shape": [
+      65,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 3.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    }
+   }
+  },
+  {
+   "id": "ed85ad98-e22a-4660-b47e-377df16af520",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "FAIL",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      33,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "ones",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      33,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "ones",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "V": {
+     "shape": [
+      33,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "zeros",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[32, :]",
+       "value": 10000.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "b1ab8770-313b-4466-bbad-107b38023989",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "PASS",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      64,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      64,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "V": {
+     "shape": [
+      64,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "zeros",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[0::2, :]",
+       "value": 1.0
+      },
+      {
+       "indices": "[1::2, :]",
+       "value": -1.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "d92ac9b8-63e1-40e1-bec4-76c606fcee5f",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "PASS",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      128,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      128,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 0.1,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[-32:, :]",
+       "value": 100.0
+      }
+     ]
+    },
+    "V": {
+     "shape": [
+      128,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 0.1,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[-32:, :]",
+       "value": 1000.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "1514b824-88d6-4719-a13a-4d0adfd478b0",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "PASS",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 100.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 100.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "V": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    }
+   }
+  },
+  {
+   "id": "a971d9af-24d5-4848-b36e-6560dc05bc2d",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "PASS",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      33,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      33,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "V": {
+     "shape": [
+      33,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "zeros",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[:32, :]",
+       "value": 0.1
+      },
+      {
+       "indices": "[32, :]",
+       "value": 10000.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "dc02adaa-b2bd-4333-882d-dc619102fb65",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "FAIL",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      64,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "ones",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      64,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "ones",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "V": {
+     "shape": [
+      64,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "zeros",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[0:32, :]",
+       "value": -1000.0
+      },
+      {
+       "indices": "[32:64, :]",
+       "value": 1000.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "391b39d5-211b-4e51-afbf-73e2486a4734",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "FAIL",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      64,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "arange",
+     "scale": 0.1,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      64,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "arange",
+     "scale": 0.1,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "V": {
+     "shape": [
+      64,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "zeros",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[0, :]",
+       "value": 0.0
+      },
+      {
+       "indices": "[1, :]",
+       "value": 100.0
+      },
+      {
+       "indices": "[2, :]",
+       "value": 200.0
+      },
+      {
+       "indices": "[3, :]",
+       "value": 300.0
+      },
+      {
+       "indices": "[4:, :]",
+       "value": 500.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "eb54dac6-7ebc-483a-9707-b81ff6009e4a",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "FAIL",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "zeros",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[-32:, :]",
+       "value": 1.0
+      }
+     ]
+    },
+    "K": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "zeros",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[-32:, :]",
+       "value": 10000.0
+      }
+     ]
+    },
+    "V": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    }
+   }
+  },
+  {
+   "id": "e833d80f-4745-4f36-99b3-9b33188edc2c",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "PASS",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      64,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 0.1,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      64,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 0.1,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "V": {
+     "shape": [
+      64,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "zeros",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[:32, :]",
+       "value": 0.0
+      },
+      {
+       "indices": "[32:, :]",
+       "value": 5000.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "2693e056-c324-4673-bb59-1da230431808",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "PASS",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      97,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      97,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[64:, :]",
+       "value": 50.0
+      }
+     ]
+    },
+    "V": {
+     "shape": [
+      97,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[64:, :]",
+       "value": 50.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "ed3720b9-cc30-4191-be34-c61822b168d1",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "PASS",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      65,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      65,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "V": {
+     "shape": [
+      65,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    }
+   }
+  },
+  {
+   "id": "38f9a61c-96ed-480c-902d-edbfd0ce9176",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "PASS",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 0.1,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[-32:, :]",
+       "value": 50.0
+      }
+     ]
+    },
+    "V": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[:32, :]",
+       "value": 100.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "d0bcd9e9-4b30-484e-981a-fe228c24c743",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "PASS",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      128,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      128,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "V": {
+     "shape": [
+      128,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "zeros",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[:64, :]",
+       "value": 0.0
+      },
+      {
+       "indices": "[64:, :]",
+       "value": 1000.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "08d34223-3d80-4301-80de-3842fe79ab73",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "PASS",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      33,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      33,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 0.01,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[32:, :]",
+       "value": 10000.0
+      }
+     ]
+    },
+    "V": {
+     "shape": [
+      33,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "zeros",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[32:, :]",
+       "value": 10000.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "a8134efb-1838-41a6-bafe-23a8fa23f05f",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "PASS",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      100,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      100,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "V": {
+     "shape": [
+      100,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    }
+   }
+  },
+  {
+   "id": "71de6871-a9cc-4fee-afb1-7edfb324adcd",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "FAIL",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      64,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "ones",
+     "scale": 10.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      64,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "ones",
+     "scale": 10.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "V": {
+     "shape": [
+      64,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "zeros",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[32:, :]",
+       "value": 1000.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "beba675d-a5cd-4ae0-af94-bd9dda924261",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "PASS",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "V": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "zeros",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[0::2, :]",
+       "value": 100.0
+      },
+      {
+       "indices": "[1::2, :]",
+       "value": -100.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "596cac7a-e13c-4473-adf7-187b84709f02",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "PASS",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      128,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      128,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "V": {
+     "shape": [
+      128,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    }
+   }
+  },
+  {
+   "id": "61425882-5fd3-471a-a029-5d8523131f58",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "FAIL",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "arange",
+     "scale": 0.1,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "arange",
+     "scale": 0.1,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "V": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "zeros",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[0::2, :]",
+       "value": 100.0
+      },
+      {
+       "indices": "[1::2, :]",
+       "value": -100.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "9bfea403-1bec-45d3-9722-adfb1f19c4a7",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "FAIL",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      33,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "ones",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      33,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "ones",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "V": {
+     "shape": [
+      33,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "arange",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    }
+   }
+  },
+  {
+   "id": "71996433-d84d-43ed-b233-4255c2b15bad",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "PASS",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      65,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      65,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[64:, :]",
+       "value": 5.0
+      }
+     ]
+    },
+    "V": {
+     "shape": [
+      65,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[64:, :]",
+       "value": 5.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "e8d8f364-0144-4165-a4be-b73fa78d4698",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "PASS",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "zeros",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[0, 0]",
+       "value": 10.0
+      },
+      {
+       "indices": "[1, 1]",
+       "value": 10.0
+      },
+      {
+       "indices": "[2, 2]",
+       "value": 10.0
+      },
+      {
+       "indices": "[3, 3]",
+       "value": 10.0
+      },
+      {
+       "indices": "[4, 4]",
+       "value": 10.0
+      },
+      {
+       "indices": "[5, 5]",
+       "value": 10.0
+      },
+      {
+       "indices": "[6, 6]",
+       "value": 10.0
+      },
+      {
+       "indices": "[7, 7]",
+       "value": 10.0
+      }
+     ]
+    },
+    "K": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "zeros",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[0, 0]",
+       "value": 10.0
+      },
+      {
+       "indices": "[1, 1]",
+       "value": 10.0
+      },
+      {
+       "indices": "[2, 2]",
+       "value": 10.0
+      },
+      {
+       "indices": "[3, 3]",
+       "value": 10.0
+      },
+      {
+       "indices": "[4, 4]",
+       "value": 10.0
+      },
+      {
+       "indices": "[5, 5]",
+       "value": 10.0
+      },
+      {
+       "indices": "[6, 6]",
+       "value": 10.0
+      },
+      {
+       "indices": "[7, 7]",
+       "value": 10.0
+      }
+     ]
+    },
+    "V": {
+     "shape": [
+      64,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "arange",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    }
+   }
+  },
+  {
+   "id": "fb59f292-a22e-43d6-b8b3-587205bce7e5",
+   "operator": "causal_flash_attention",
+   "recorded_outcome": "PASS",
+   "source": "cfa_rerun_2026-08-20",
+   "tensors": {
+    "Q": {
+     "shape": [
+      33,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      33,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "V": {
+     "shape": [
+      33,
+      32
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[32:, :]",
+       "value": 1000.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "e251c3aa-aa73-4d55-af26-402ffbc5635d",
+   "operator": "softmax",
+   "recorded_outcome": "FAIL",
+   "source": "search_history.db (pre-2026-08-20)",
+   "tensors": {
+    "x": {
+     "shape": [
+      512,
+      2048
+     ],
+     "dtype": "float32",
+     "fill": "zeros",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[:, -1]",
+       "value": 10000.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "e45ff3fb-a05f-4963-87f0-e6933188bffd",
+   "operator": "flash_attention",
+   "recorded_outcome": "FAIL",
+   "source": "search_history.db (pre-2026-08-20)",
+   "tensors": {
+    "Q": {
+     "shape": [
+      256,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "ones",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": []
+    },
+    "K": {
+     "shape": [
+      256,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "zeros",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[128:, :]",
+       "value": 10.0
+      }
+     ]
+    },
+    "V": {
+     "shape": [
+      256,
+      64
+     ],
+     "dtype": "float32",
+     "fill": "zeros",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[:128, :]",
+       "value": 1.0
+      },
+      {
+       "indices": "[128:, :]",
+       "value": -1.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "cfc1ac87-2cde-422a-bd1b-ed3f8d858a35",
+   "operator": "argmax",
+   "recorded_outcome": "FAIL",
+   "source": "search_history.db (pre-2026-08-20)",
+   "tensors": {
+    "x": {
+     "shape": [
+      64,
+      513
+     ],
+     "dtype": "float32",
+     "fill": "zeros",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[:, 256]",
+       "value": 5.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "c70ceefc-540a-49fb-bbdd-7490259a3e9a",
+   "operator": "argmax",
+   "recorded_outcome": "FAIL",
+   "source": "search_history.db (pre-2026-08-20)",
+   "tensors": {
+    "x": {
+     "shape": [
+      64,
+      128
+     ],
+     "dtype": "float32",
+     "fill": "randn",
+     "scale": 0.1,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[:, 127]",
+       "value": 100.0
+      }
+     ]
+    }
+   }
+  },
+  {
+   "id": "24ed9f13-ce71-463b-8e3b-9b3b0d9d9b04",
+   "operator": "argmax",
+   "recorded_outcome": "FAIL",
+   "source": "search_history.db (pre-2026-08-20)",
+   "tensors": {
+    "x": {
+     "shape": [
+      32,
+      128
+     ],
+     "dtype": "float32",
+     "fill": "ones",
+     "scale": 1.0,
+     "shift": 0.0,
+     "literal_values": null,
+     "patches": [
+      {
+       "indices": "[:, 63]",
+       "value": 2.0
+      }
+     ]
+    }
+   }
+  }
+ ]
+}

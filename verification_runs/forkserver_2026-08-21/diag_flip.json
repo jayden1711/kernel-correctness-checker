@@ -1,0 +1,70 @@
+{
+  "2e429b94-e83f-436e-84b3-7e70c37b5c3d|spawn": [
+    {
+      "passed": true,
+      "n_checks": 15,
+      "failed": []
+    },
+    {
+      "passed": true,
+      "n_checks": 15,
+      "failed": []
+    },
+    {
+      "passed": true,
+      "n_checks": 15,
+      "failed": []
+    }
+  ],
+  "2e429b94-e83f-436e-84b3-7e70c37b5c3d|forkserver": [
+    {
+      "passed": true,
+      "n_checks": 15,
+      "failed": []
+    },
+    {
+      "passed": true,
+      "n_checks": 15,
+      "failed": []
+    },
+    {
+      "passed": true,
+      "n_checks": 15,
+      "failed": []
+    }
+  ],
+  "981ae6d1-db21-439d-bcfb-164b5751bb28|spawn": [
+    {
+      "passed": true,
+      "n_checks": 15,
+      "failed": []
+    },
+    {
+      "passed": true,
+      "n_checks": 15,
+      "failed": []
+    },
+    {
+      "passed": true,
+      "n_checks": 15,
+      "failed": []
+    }
+  ],
+  "981ae6d1-db21-439d-bcfb-164b5751bb28|forkserver": [
+    {
+      "passed": true,
+      "n_checks": 15,
+      "failed": []
+    },
+    {
+      "passed": true,
+      "n_checks": 15,
+      "failed": []
+    },
+    {
+      "passed": true,
+      "n_checks": 15,
+      "failed": []
+    }
+  ]
+}

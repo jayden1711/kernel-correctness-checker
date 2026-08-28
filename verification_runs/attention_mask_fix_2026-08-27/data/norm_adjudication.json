@@ -1,0 +1,795 @@
+[
+ {
+  "pid": "e678721f",
+  "op": "in",
+  "shape": [
+   4,
+   8,
+   16,
+   16
+  ],
+  "recorded": [
+   "unit_variance"
+  ],
+  "reproduced": "1/1",
+  "emulated_failed": [
+   "unit_variance"
+  ],
+  "ideal_failed": [
+   "unit_variance"
+  ],
+  "verdicts": {
+   "unit_variance": "check-domain false alarm"
+  },
+  "detail": {
+   "unit_variance": "max |var - 1| across (n,c) instances: 1.000000"
+  }
+ },
+ {
+  "pid": "65948e8d",
+  "op": "in",
+  "shape": [
+   8,
+   16,
+   32
+  ],
+  "recorded": [
+   "unit_variance"
+  ],
+  "reproduced": "1/1",
+  "emulated_failed": [
+   "unit_variance"
+  ],
+  "ideal_failed": [
+   "unit_variance"
+  ],
+  "verdicts": {
+   "unit_variance": "check-domain false alarm"
+  },
+  "detail": {
+   "unit_variance": "max |var - 1| across (n,c) instances: 1.000000"
+  }
+ },
+ {
+  "pid": "646a25ef",
+  "op": "in",
+  "shape": [
+   4,
+   8,
+   16
+  ],
+  "recorded": [
+   "unit_variance"
+  ],
+  "reproduced": "1/1",
+  "emulated_failed": [
+   "unit_variance"
+  ],
+  "ideal_failed": [
+   "unit_variance"
+  ],
+  "verdicts": {
+   "unit_variance": "check-domain false alarm"
+  },
+  "detail": {
+   "unit_variance": "max |var - 1| across (n,c) instances: 1.000000"
+  }
+ },
+ {
+  "pid": "4dcf4ad3",
+  "op": "in",
+  "shape": [
+   4,
+   8,
+   16,
+   16
+  ],
+  "recorded": [
+   "unit_variance"
+  ],
+  "reproduced": "1/1",
+  "emulated_failed": [
+   "unit_variance"
+  ],
+  "ideal_failed": [
+   "unit_variance"
+  ],
+  "verdicts": {
+   "unit_variance": "check-domain false alarm"
+  },
+  "detail": {
+   "unit_variance": "max |var - 1| across (n,c) instances: 1.000000"
+  }
+ },
+ {
+  "pid": "66a284c1",
+  "op": "in",
+  "shape": [
+   4,
+   8,
+   16
+  ],
+  "recorded": [
+   "unit_variance"
+  ],
+  "reproduced": "1/1",
+  "emulated_failed": [
+   "unit_variance"
+  ],
+  "ideal_failed": [
+   "unit_variance"
+  ],
+  "verdicts": {
+   "unit_variance": "check-domain false alarm"
+  },
+  "detail": {
+   "unit_variance": "max |var - 1| across (n,c) instances: 1.000000"
+  }
+ },
+ {
+  "pid": "e93dfc17",
+  "op": "in",
+  "shape": [
+   4,
+   8,
+   16,
+   16
+  ],
+  "recorded": [
+   "unit_variance"
+  ],
+  "reproduced": "1/1",
+  "emulated_failed": [
+   "unit_variance"
+  ],
+  "ideal_failed": [
+   "unit_variance"
+  ],
+  "verdicts": {
+   "unit_variance": "check-domain false alarm"
+  },
+  "detail": {
+   "unit_variance": "max |var - 1| across (n,c) instances: 1.000000"
+  }
+ },
+ {
+  "pid": "096858bc",
+  "op": "in",
+  "shape": [
+   4,
+   8,
+   16
+  ],
+  "recorded": [
+   "unit_variance"
+  ],
+  "reproduced": "1/1",
+  "emulated_failed": [
+   "unit_variance"
+  ],
+  "ideal_failed": [
+   "unit_variance"
+  ],
+  "verdicts": {
+   "unit_variance": "check-domain false alarm"
+  },
+  "detail": {
+   "unit_variance": "max |var - 1| across (n,c) instances: 1.000000"
+  }
+ },
+ {
+  "pid": "f6039549",
+  "op": "in",
+  "shape": [
+   4,
+   8,
+   16,
+   16
+  ],
+  "recorded": [
+   "unit_variance"
+  ],
+  "reproduced": "1/1",
+  "emulated_failed": [
+   "unit_variance"
+  ],
+  "ideal_failed": [
+   "unit_variance"
+  ],
+  "verdicts": {
+   "unit_variance": "check-domain false alarm"
+  },
+  "detail": {
+   "unit_variance": "max |var - 1| across (n,c) instances: 1.000000"
+  }
+ },
+ {
+  "pid": "2dc26e8d",
+  "op": "in",
+  "shape": [
+   4,
+   8,
+   16
+  ],
+  "recorded": [
+   "unit_variance"
+  ],
+  "reproduced": "1/1",
+  "emulated_failed": [
+   "unit_variance"
+  ],
+  "ideal_failed": [
+   "unit_variance"
+  ],
+  "verdicts": {
+   "unit_variance": "check-domain false alarm"
+  },
+  "detail": {
+   "unit_variance": "max |var - 1| across (n,c) instances: 1.000000"
+  }
+ },
+ {
+  "pid": "e7a28a3a",
+  "op": "in",
+  "shape": [
+   4,
+   8,
+   16,
+   16
+  ],
+  "recorded": [
+   "unit_variance"
+  ],
+  "reproduced": "1/1",
+  "emulated_failed": [
+   "unit_variance"
+  ],
+  "ideal_failed": [
+   "unit_variance"
+  ],
+  "verdicts": {
+   "unit_variance": "check-domain false alarm"
+  },
+  "detail": {
+   "unit_variance": "max |var - 1| across (n,c) instances: 1.000000"
+  }
+ },
+ {
+  "pid": "e59b42a1",
+  "op": "in",
+  "shape": [
+   4,
+   8,
+   16,
+   16
+  ],
+  "recorded": [
+   "unit_variance"
+  ],
+  "reproduced": "1/1",
+  "emulated_failed": [
+   "unit_variance"
+  ],
+  "ideal_failed": [
+   "unit_variance"
+  ],
+  "verdicts": {
+   "unit_variance": "check-domain false alarm"
+  },
+  "detail": {
+   "unit_variance": "max |var - 1| across (n,c) instances: 1.000000"
+  }
+ },
+ {
+  "pid": "55d57718",
+  "op": "in",
+  "shape": [
+   8,
+   16,
+   32
+  ],
+  "recorded": [
+   "unit_variance"
+  ],
+  "reproduced": "1/1",
+  "emulated_failed": [
+   "unit_variance"
+  ],
+  "ideal_failed": [
+   "unit_variance"
+  ],
+  "verdicts": {
+   "unit_variance": "check-domain false alarm"
+  },
+  "detail": {
+   "unit_variance": "max |var - 1| across (n,c) instances: 1.000000"
+  }
+ },
+ {
+  "pid": "7bfc0f13",
+  "op": "in",
+  "shape": [
+   4,
+   8,
+   16,
+   16
+  ],
+  "recorded": [
+   "positive_scale_invariance",
+   "unit_variance"
+  ],
+  "reproduced": "10/10",
+  "emulated_failed": [
+   "positive_scale_invariance",
+   "unit_variance"
+  ],
+  "ideal_failed": [
+   "positive_scale_invariance",
+   "unit_variance"
+  ],
+  "verdicts": {
+   "positive_scale_invariance": "check-domain false alarm",
+   "unit_variance": "check-domain false alarm"
+  },
+  "detail": {
+   "positive_scale_invariance": "max diff under positive rescale of x: 0.267262",
+   "unit_variance": "max |var - 1| across (n,c) instances: 0.999152"
+  }
+ },
+ {
+  "pid": "bfd36998",
+  "op": "in",
+  "shape": [
+   4,
+   8,
+   16,
+   16
+  ],
+  "recorded": [
+   "positive_scale_invariance",
+   "unit_variance",
+   "zero_mean"
+  ],
+  "reproduced": "10/10",
+  "emulated_failed": [
+   "positive_scale_invariance",
+   "unit_variance",
+   "zero_mean"
+  ],
+  "ideal_failed": [
+   "positive_scale_invariance",
+   "unit_variance",
+   "zero_mean"
+  ],
+  "verdicts": {
+   "positive_scale_invariance": "check-domain false alarm",
+   "unit_variance": "check-domain false alarm",
+   "zero_mean": "check-domain false alarm"
+  },
+  "detail": {
+   "positive_scale_invariance": "max diff under positive rescale of x: 0.273171",
+   "unit_variance": "max |var - 1| across (n,c) instances: 0.999151",
+   "zero_mean": "max |mean| across (n,c) instances: 0.002929"
+  }
+ },
+ {
+  "pid": "075400e4",
+  "op": "in",
+  "shape": [
+   8,
+   16,
+   64
+  ],
+  "recorded": [
+   "positive_scale_invariance",
+   "unit_variance"
+  ],
+  "reproduced": "10/10",
+  "emulated_failed": [
+   "positive_scale_invariance",
+   "unit_variance"
+  ],
+  "ideal_failed": [
+   "positive_scale_invariance",
+   "unit_variance"
+  ],
+  "verdicts": {
+   "positive_scale_invariance": "check-domain false alarm",
+   "unit_variance": "check-domain false alarm"
+  },
+  "detail": {
+   "positive_scale_invariance": "max diff under positive rescale of x: 0.002714",
+   "unit_variance": "max |var - 1| across (n,c) instances: 1.000000"
+  }
+ },
+ {
+  "pid": "2d7f4f3e",
+  "op": "ln",
+  "shape": [
+   512,
+   512
+  ],
+  "recorded": [
+   "scale_invariance",
+   "unit_variance",
+   "zero_mean"
+  ],
+  "reproduced": "0/10",
+  "emulated_failed": [
+   "affine_correctness",
+   "precision_coercion",
+   "scale_invariance",
+   "unit_variance",
+   "zero_mean"
+  ],
+  "ideal_failed": [
+   "affine_correctness",
+   "precision_coercion",
+   "scale_invariance",
+   "unit_variance",
+   "zero_mean"
+  ],
+  "verdicts": {
+   "scale_invariance": "check-domain false alarm",
+   "unit_variance": "check-domain false alarm",
+   "zero_mean": "check-domain false alarm"
+  },
+  "detail": {
+   "scale_invariance": "Scale invariance violated; max_err=0.215037.",
+   "unit_variance": "Row variances deviate from 1.0; max deviation=0.106775.",
+   "zero_mean": "Row means are not zero; max |mean|=0.010740."
+  }
+ },
+ {
+  "pid": "35205e68",
+  "op": "ln",
+  "shape": [
+   512,
+   512
+  ],
+  "recorded": [
+   "affine_correctness",
+   "precision_coercion"
+  ],
+  "reproduced": "5/10",
+  "emulated_failed": [
+   "affine_correctness",
+   "precision_coercion",
+   "zero_mean"
+  ],
+  "ideal_failed": [
+   "affine_correctness",
+   "precision_coercion",
+   "zero_mean"
+  ],
+  "verdicts": {
+   "affine_correctness": "check-domain false alarm",
+   "precision_coercion": "check-domain false alarm"
+  },
+  "detail": {
+   "affine_correctness": "Affine transform incorrect; max_err=0.000273.",
+   "precision_coercion": "fp32 layernorm error=7.577432 exceeds atol=0.001. Possible fp16 coercion in variance computation."
+  }
+ },
+ {
+  "pid": "a7e94cf9",
+  "op": "ln",
+  "shape": [
+   512,
+   512
+  ],
+  "recorded": [
+   "precision_coercion"
+  ],
+  "reproduced": "10/10",
+  "emulated_failed": [
+   "precision_coercion"
+  ],
+  "ideal_failed": [
+   "precision_coercion"
+  ],
+  "verdicts": {
+   "precision_coercion": "check-domain false alarm"
+  },
+  "detail": {
+   "precision_coercion": "fp32 layernorm error=7.577293 exceeds atol=0.001. Possible fp16 coercion in variance computation."
+  }
+ },
+ {
+  "pid": "f2fac9f6",
+  "op": "ln",
+  "shape": [
+   512,
+   512
+  ],
+  "recorded": [
+   "precision_coercion",
+   "unit_variance"
+  ],
+  "reproduced": "1/1",
+  "emulated_failed": [
+   "precision_coercion",
+   "unit_variance"
+  ],
+  "ideal_failed": [
+   "precision_coercion",
+   "unit_variance"
+  ],
+  "verdicts": {
+   "precision_coercion": "check-domain false alarm",
+   "unit_variance": "check-domain false alarm"
+  },
+  "detail": {
+   "precision_coercion": "fp32 layernorm error=3.000000 exceeds atol=0.001. Possible fp16 coercion in variance computation.",
+   "unit_variance": "Row variances deviate from 1.0; max deviation=1.000000."
+  }
+ },
+ {
+  "pid": "15b63912",
+  "op": "ln",
+  "shape": [
+   512,
+   512
+  ],
+  "recorded": [
+   "scale_invariance",
+   "unit_variance",
+   "zero_mean"
+  ],
+  "reproduced": "0/10",
+  "emulated_failed": [
+   "affine_correctness",
+   "precision_coercion",
+   "scale_invariance",
+   "unit_variance",
+   "zero_mean"
+  ],
+  "ideal_failed": [
+   "affine_correctness",
+   "precision_coercion",
+   "scale_invariance",
+   "unit_variance",
+   "zero_mean"
+  ],
+  "verdicts": {
+   "scale_invariance": "check-domain false alarm",
+   "unit_variance": "check-domain false alarm",
+   "zero_mean": "check-domain false alarm"
+  },
+  "detail": {
+   "scale_invariance": "Scale invariance violated; max_err=0.209386.",
+   "unit_variance": "Row variances deviate from 1.0; max deviation=0.106735.",
+   "zero_mean": "Row means are not zero; max |mean|=0.001265."
+  }
+ },
+ {
+  "pid": "3b2a37a6",
+  "op": "ln",
+  "shape": [
+   256,
+   512
+  ],
+  "recorded": [
+   "precision_coercion",
+   "scale_invariance",
+   "unit_variance"
+  ],
+  "reproduced": "10/10",
+  "emulated_failed": [
+   "precision_coercion",
+   "scale_invariance",
+   "unit_variance"
+  ],
+  "ideal_failed": [
+   "precision_coercion",
+   "scale_invariance",
+   "unit_variance"
+  ],
+  "verdicts": {
+   "precision_coercion": "check-domain false alarm",
+   "scale_invariance": "check-domain false alarm",
+   "unit_variance": "check-domain false alarm"
+  },
+  "detail": {
+   "precision_coercion": "fp32 layernorm error=7.474702 exceeds atol=0.001. Possible fp16 coercion in variance computation.",
+   "scale_invariance": "Scale invariance violated; max_err=0.004467.",
+   "unit_variance": "Row variances deviate from 1.0; max deviation=0.001193."
+  }
+ },
+ {
+  "pid": "d8eb4716",
+  "op": "ln",
+  "shape": [
+   512,
+   512
+  ],
+  "recorded": [
+   "precision_coercion"
+  ],
+  "reproduced": "10/10",
+  "emulated_failed": [
+   "precision_coercion"
+  ],
+  "ideal_failed": [
+   "precision_coercion"
+  ],
+  "verdicts": {
+   "precision_coercion": "check-domain false alarm"
+  },
+  "detail": {
+   "precision_coercion": "fp32 layernorm error=7.577298 exceeds atol=0.001. Possible fp16 coercion in variance computation."
+  }
+ },
+ {
+  "pid": "16c0b6eb",
+  "op": "ln",
+  "shape": [
+   512,
+   512
+  ],
+  "recorded": [
+   "unit_variance"
+  ],
+  "reproduced": "1/1",
+  "emulated_failed": [
+   "unit_variance"
+  ],
+  "ideal_failed": [
+   "unit_variance"
+  ],
+  "verdicts": {
+   "unit_variance": "check-domain false alarm"
+  },
+  "detail": {
+   "unit_variance": "Row variances deviate from 1.0; max deviation=1.000000."
+  }
+ },
+ {
+  "pid": "a7867d2c",
+  "op": "ln",
+  "shape": [
+   256,
+   512
+  ],
+  "recorded": [
+   "precision_coercion",
+   "scale_invariance",
+   "unit_variance"
+  ],
+  "reproduced": "10/10",
+  "emulated_failed": [
+   "precision_coercion",
+   "scale_invariance",
+   "unit_variance"
+  ],
+  "ideal_failed": [
+   "precision_coercion",
+   "scale_invariance",
+   "unit_variance"
+  ],
+  "verdicts": {
+   "precision_coercion": "check-domain false alarm",
+   "scale_invariance": "check-domain false alarm",
+   "unit_variance": "check-domain false alarm"
+  },
+  "detail": {
+   "precision_coercion": "fp32 layernorm error=7.278717 exceeds atol=0.001. Possible fp16 coercion in variance computation.",
+   "scale_invariance": "Scale invariance violated; max_err=0.415759.",
+   "unit_variance": "Row variances deviate from 1.0; max deviation=0.106735."
+  }
+ },
+ {
+  "pid": "f322abe4",
+  "op": "ln",
+  "shape": [
+   512,
+   333
+  ],
+  "recorded": [
+   "affine_correctness",
+   "precision_coercion",
+   "unit_variance"
+  ],
+  "reproduced": "10/10",
+  "emulated_failed": [
+   "affine_correctness",
+   "precision_coercion",
+   "unit_variance"
+  ],
+  "ideal_failed": [
+   "precision_coercion"
+  ],
+  "verdicts": {
+   "affine_correctness": "REFERENCE-BUG-CAUSED",
+   "precision_coercion": "check-domain false alarm",
+   "unit_variance": "REFERENCE-BUG-CAUSED"
+  },
+  "detail": {
+   "affine_correctness": "Affine transform incorrect; max_err=7.854332.",
+   "precision_coercion": "fp32 layernorm error=6.343874 exceeds atol=0.001. Possible fp16 coercion in variance computation.",
+   "unit_variance": "Row variances deviate from 1.0; max deviation=0.986430."
+  }
+ },
+ {
+  "pid": "a47a431b",
+  "op": "ln",
+  "shape": [
+   64,
+   64
+  ],
+  "recorded": [
+   "unit_variance"
+  ],
+  "reproduced": "10/10",
+  "emulated_failed": [
+   "unit_variance"
+  ],
+  "ideal_failed": [
+   "unit_variance"
+  ],
+  "verdicts": {
+   "unit_variance": "check-domain false alarm"
+  },
+  "detail": {
+   "unit_variance": "Row variances deviate from 1.0; max deviation=1.000000."
+  }
+ },
+ {
+  "pid": "0eb28274",
+  "op": "rms",
+  "shape": [
+   512,
+   512
+  ],
+  "recorded": [
+   "precision_coercion",
+   "scale_invariance",
+   "unit_rms"
+  ],
+  "reproduced": "10/10",
+  "emulated_failed": [
+   "precision_coercion",
+   "scale_invariance",
+   "unit_rms"
+  ],
+  "ideal_failed": [
+   "precision_coercion",
+   "scale_invariance",
+   "unit_rms"
+  ],
+  "verdicts": {
+   "precision_coercion": "check-domain false alarm",
+   "scale_invariance": "check-domain false alarm",
+   "unit_rms": "check-domain false alarm"
+  },
+  "detail": {
+   "precision_coercion": "Precision coercion suspected: fp32_err=0.004639, fp16_err=0.004635.",
+   "scale_invariance": "Scale invariance violated; max_err=0.001458.",
+   "unit_rms": "Row RMS deviates from 1.0; max deviation=0.999997."
+  }
+ },
+ {
+  "pid": "dc510d61",
+  "op": "rms",
+  "shape": [
+   512,
+   512
+  ],
+  "recorded": [
+   "precision_coercion"
+  ],
+  "reproduced": "10/10",
+  "emulated_failed": [
+   "precision_coercion"
+  ],
+  "ideal_failed": [
+   "precision_coercion"
+  ],
+  "verdicts": {
+   "precision_coercion": "check-domain false alarm"
+  },
+  "detail": {
+   "precision_coercion": "Precision coercion suspected: fp32_err=4.590254, fp16_err=4.597292."
+  }
+ }
+]

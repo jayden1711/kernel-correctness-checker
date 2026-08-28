@@ -65,3 +65,10 @@ litellm_cache/
 
 # SQLite history DB (runtime artifact, not source)
 search_history.db
+
+#Agents
+.claude
+
+# GPU-session cache store + downloaded results (scripts/colab_bench.sh)
+.triton_cache_store/
+results_gpu/

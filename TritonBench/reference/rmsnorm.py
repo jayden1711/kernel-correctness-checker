@@ -35,6 +35,16 @@ def rmsnorm_kernel(
 
 def rmsnorm(x, gamma, eps=1e-5):
     n_rows, n_cols = x.shape
+    # Companion-length contract, enforced LOUDLY -- same rationale and same
+    # byte-level proof as layernorm's check
+    # (verification_runs/oob_adjudication_2026-08-28/): the kernel masks its
+    # gamma load at n_cols, so a shorter gamma is read past its allocation
+    # and the output absorbs adjacent memory.
+    if gamma.numel() != n_cols:
+        raise ValueError(
+            f"rmsnorm: companion length mismatch -- gamma {gamma.numel()}, "
+            f"n_cols {n_cols}; a short gamma would be read out of bounds "
+            f"(oob_adjudication_2026-08-28)")
     BLOCK_SIZE = triton.next_power_of_2(n_cols)
     y = torch.empty_like(x)
 

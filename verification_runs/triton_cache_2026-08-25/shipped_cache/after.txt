@@ -1,0 +1,3 @@
+after-run files: 8730
+after-run cubins: 1086
+after-run bytes: 118584224

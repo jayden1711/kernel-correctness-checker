@@ -1,0 +1,343 @@
+{
+ "cases": [
+  {
+   "case": "softmax/randn",
+   "op": "softmax",
+   "rel_dev": 1.4409282402864564e-16,
+   "pass": true
+  },
+  {
+   "case": "log_softmax/randn",
+   "op": "log_softmax",
+   "rel_dev": 0.0,
+   "pass": true
+  },
+  {
+   "case": "gelu/randn",
+   "op": "gelu",
+   "rel_dev": 4.355234666624516e-17,
+   "pass": true
+  },
+  {
+   "case": "swish/randn",
+   "op": "swish",
+   "rel_dev": 1.866681258254883e-16,
+   "pass": true
+  },
+  {
+   "case": "l1norm/randn",
+   "op": "l1norm",
+   "rel_dev": 1.4511411314689072e-16,
+   "pass": true
+  },
+  {
+   "case": "l2norm/randn",
+   "op": "l2norm",
+   "rel_dev": 0.0,
+   "pass": true
+  },
+  {
+   "case": "frobenius_norm/randn",
+   "op": "frobenius_norm",
+   "rel_dev": 1.3945987544658493e-16,
+   "pass": true
+  },
+  {
+   "case": "sum_reduction/randn",
+   "op": "sum_reduction",
+   "rel_dev": 8.393004546835691e-17,
+   "pass": true
+  },
+  {
+   "case": "mean_reduction/randn",
+   "op": "mean_reduction",
+   "rel_dev": 8.655285938924306e-17,
+   "pass": true
+  },
+  {
+   "case": "max_reduction/randn",
+   "op": "max_reduction",
+   "rel_dev": 0.0,
+   "pass": true
+  },
+  {
+   "case": "min_reduction/randn",
+   "op": "min_reduction",
+   "rel_dev": 0.0,
+   "pass": true
+  },
+  {
+   "case": "softmax/small_1e-5",
+   "op": "softmax",
+   "rel_dev": 2.289763899966526e-16,
+   "pass": true
+  },
+  {
+   "case": "log_softmax/small_1e-5",
+   "op": "log_softmax",
+   "rel_dev": 1.270083700180189e-16,
+   "pass": true
+  },
+  {
+   "case": "gelu/small_1e-5",
+   "op": "gelu",
+   "rel_dev": 0.0,
+   "pass": true
+  },
+  {
+   "case": "swish/small_1e-5",
+   "op": "swish",
+   "rel_dev": 2.16196156564246e-16,
+   "pass": true
+  },
+  {
+   "case": "l1norm/small_1e-5",
+   "op": "l1norm",
+   "rel_dev": 1.4396881062205988e-16,
+   "pass": true
+  },
+  {
+   "case": "l2norm/small_1e-5",
+   "op": "l2norm",
+   "rel_dev": 2.60253372477547e-16,
+   "pass": true
+  },
+  {
+   "case": "frobenius_norm/small_1e-5",
+   "op": "frobenius_norm",
+   "rel_dev": 0.0,
+   "pass": true
+  },
+  {
+   "case": "sum_reduction/small_1e-5",
+   "op": "sum_reduction",
+   "rel_dev": 1.818363446916833e-16,
+   "pass": true
+  },
+  {
+   "case": "mean_reduction/small_1e-5",
+   "op": "mean_reduction",
+   "rel_dev": 1.875187304632984e-16,
+   "pass": true
+  },
+  {
+   "case": "max_reduction/small_1e-5",
+   "op": "max_reduction",
+   "rel_dev": 0.0,
+   "pass": true
+  },
+  {
+   "case": "min_reduction/small_1e-5",
+   "op": "min_reduction",
+   "rel_dev": 0.0,
+   "pass": true
+  },
+  {
+   "case": "layernorm/randn",
+   "op": "layernorm",
+   "rel_dev": 1.2191607505392676e-16,
+   "pass": true
+  },
+  {
+   "case": "rmsnorm/randn",
+   "op": "rmsnorm",
+   "rel_dev": 1.4684754710287932e-16,
+   "pass": true
+  },
+  {
+   "case": "layernorm/small_1e-3",
+   "op": "layernorm",
+   "rel_dev": 9.327790164957695e-17,
+   "pass": true
+  },
+  {
+   "case": "rmsnorm/small_1e-3",
+   "op": "rmsnorm",
+   "rel_dev": 0.0,
+   "pass": true
+  },
+  {
+   "case": "layernorm/near_const",
+   "op": "layernorm",
+   "rel_dev": 1.393403817204902e-13,
+   "pass": true
+  },
+  {
+   "case": "rmsnorm/near_const",
+   "op": "rmsnorm",
+   "rel_dev": 1.9233758395286103e-16,
+   "pass": true
+  },
+  {
+   "case": "groupnorm/G3",
+   "op": "groupnorm",
+   "rel_dev": 1.6514752660486016e-16,
+   "pass": true
+  },
+  {
+   "case": "groupnorm/G1",
+   "op": "groupnorm",
+   "rel_dev": 1.5004305749948506e-16,
+   "pass": true
+  },
+  {
+   "case": "groupnorm/G6",
+   "op": "groupnorm",
+   "rel_dev": 1.6686828370495883e-16,
+   "pass": true
+  },
+  {
+   "case": "instancenorm",
+   "op": "instancenorm",
+   "rel_dev": 1.6686828370495883e-16,
+   "pass": true
+  },
+  {
+   "case": "batchnorm",
+   "op": "batchnorm",
+   "rel_dev": 2.0645868366558032e-16,
+   "pass": true
+  },
+  {
+   "case": "cross_entropy",
+   "op": "cross_entropy",
+   "rel_dev": 0.0,
+   "pass": true
+  },
+  {
+   "case": "cross_entropy/large",
+   "op": "cross_entropy",
+   "rel_dev": 0.0,
+   "pass": true
+  },
+  {
+   "case": "matmul",
+   "op": "matmul",
+   "rel_dev": 1.3940876559471783e-16,
+   "pass": true
+  },
+  {
+   "case": "flash_attention/N7",
+   "op": "flash_attention",
+   "rel_dev": 3.242815220489709e-16,
+   "pass": true
+  },
+  {
+   "case": "sdpa/N7",
+   "op": "scaled_dot_product_attention",
+   "rel_dev": 3.242815220489709e-16,
+   "pass": true
+  },
+  {
+   "case": "causal/N7",
+   "op": "causal_flash_attention",
+   "rel_dev": 2.574610445499338e-16,
+   "pass": true
+  },
+  {
+   "case": "flash_attention/N33",
+   "op": "flash_attention",
+   "rel_dev": 8.628819642515533e-16,
+   "pass": true
+  },
+  {
+   "case": "sdpa/N33",
+   "op": "scaled_dot_product_attention",
+   "rel_dev": 8.628819642515533e-16,
+   "pass": true
+  },
+  {
+   "case": "causal/N33",
+   "op": "causal_flash_attention",
+   "rel_dev": 2.8753612396463716e-16,
+   "pass": true
+  },
+  {
+   "case": "flash_attention/large",
+   "op": "flash_attention",
+   "rel_dev": 1.2890775186037034e-14,
+   "pass": true
+  },
+  {
+   "case": "avg_pool1d/p1",
+   "op": "avg_pool1d",
+   "rel_dev": 1.269090197247624e-16,
+   "pass": true
+  },
+  {
+   "case": "avg_pool1d/p0",
+   "op": "avg_pool1d",
+   "rel_dev": 0.0,
+   "pass": true
+  },
+  {
+   "case": "max_pool1d/p1",
+   "op": "max_pool1d",
+   "rel_dev": 0.0,
+   "pass": true
+  },
+  {
+   "case": "max_pool1d/s1",
+   "op": "max_pool1d",
+   "rel_dev": 0.0,
+   "pass": true
+  },
+  {
+   "case": "avg_pool2d/p1",
+   "op": "avg_pool2d",
+   "rel_dev": 1.9249830321841457e-16,
+   "pass": true
+  },
+  {
+   "case": "max_pool2d/p1",
+   "op": "max_pool2d",
+   "rel_dev": 0.0,
+   "pass": true
+  },
+  {
+   "case": "avg_pool3d/p1",
+   "op": "avg_pool3d",
+   "rel_dev": 3.193907382942731e-16,
+   "pass": true
+  },
+  {
+   "case": "max_pool3d/p1",
+   "op": "max_pool3d",
+   "rel_dev": 0.0,
+   "pass": true
+  }
+ ],
+ "n_fail": 0,
+ "worst_case": "layernorm/near_const",
+ "worst_rel_dev": 1.393403817204902e-13,
+ "ops_covered": [
+  "avg_pool1d",
+  "avg_pool2d",
+  "avg_pool3d",
+  "batchnorm",
+  "causal_flash_attention",
+  "cross_entropy",
+  "flash_attention",
+  "frobenius_norm",
+  "gelu",
+  "groupnorm",
+  "instancenorm",
+  "l1norm",
+  "l2norm",
+  "layernorm",
+  "log_softmax",
+  "matmul",
+  "max_pool1d",
+  "max_pool2d",
+  "max_pool3d",
+  "max_reduction",
+  "mean_reduction",
+  "min_reduction",
+  "rmsnorm",
+  "scaled_dot_product_attention",
+  "softmax",
+  "sum_reduction",
+  "swish"
+ ],
+ "ops_missing": []
+}

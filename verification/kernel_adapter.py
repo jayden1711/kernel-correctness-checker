@@ -85,6 +85,13 @@ def _load_module(path_or_src: str, tag: str, from_source: bool) -> dict:
     return module.__dict__
 
 
+def _to_device(args, device: str) -> list:
+    """Move every tensor in `args` to `device`, passing non-tensor
+    elements (ints, floats, etc. -- e.g. groupnorm's num_groups) through
+    unchanged."""
+    return [a.to(device) if isinstance(a, torch.Tensor) else a for a in args]
+
+
 def _first_tensor(args: tuple, kwargs: dict) -> Optional[torch.Tensor]:
     for a in args:
         if isinstance(a, torch.Tensor):
@@ -327,7 +334,7 @@ class CandidateConvention:
         raise NotImplementedError
 
     @classmethod
-    def build_candidate_fn(cls, cand_ns: dict, ref_model, init_args: tuple) -> Callable:
+    def build_candidate_fn(cls, cand_ns: dict, ref_model, init_args: tuple, device: str) -> Callable:
         raise NotImplementedError
 
 
@@ -340,8 +347,18 @@ class ModelNewConvention(CandidateConvention):
         return "ModelNew" in cand_ns and isinstance(cand_ns["ModelNew"], type)
 
     @classmethod
-    def build_candidate_fn(cls, cand_ns: dict, ref_model, init_args: tuple) -> Callable:
-        cand_model = cand_ns["ModelNew"](*init_args)
+    def build_candidate_fn(cls, cand_ns: dict, ref_model, init_args: tuple, device: str) -> Callable:
+        # FIXED: cand_model used to stay on whatever device __init__
+        # happened to allocate it on (CPU by default) while the actual
+        # forward() call receives inputs moved to `device` by
+        # _run_model_based -- for a real load_inline CUDA-kernel
+        # ModelNew this means the kernel launch dereferences a CPU
+        # tensor's pointer from device code (illegal memory access, or
+        # silently reads garbage), confirmed via a real run: every check
+        # downstream got either a CUDA illegal-access error or wildly
+        # wrong "allclose" numbers -- on the REFERENCE candidate too,
+        # since nothing anywhere in this file ever called .to(device).
+        cand_model = cand_ns["ModelNew"](*init_args).to(device)
 
         def candidate_fn(*args, _m=cand_model):
             return _m(*args)
@@ -367,8 +384,10 @@ class KernelFunctionConvention(CandidateConvention):
         return "kernel_function" in cand_ns and callable(cand_ns["kernel_function"])
 
     @classmethod
-    def build_candidate_fn(cls, cand_ns: dict, ref_model, init_args: tuple) -> Callable:
+    def build_candidate_fn(cls, cand_ns: dict, ref_model, init_args: tuple, device: str) -> Callable:
         kernel_fn = cand_ns["kernel_function"]
+        # weight_args inherit ref_model's device -- ref_model is already
+        # moved to `device` by _run_model_based before this is called.
         weight_args = tuple(p.detach() for _, p in ref_model.named_parameters())
 
         def candidate_fn(*args, _fn=kernel_fn, _w=weight_args):
@@ -408,9 +427,25 @@ def _run_known_operator_properties(operator_key: str, candidate_fn: Callable, ca
     run_checker.py uses via KernelChecker, no duplicated logic. Returns
     a dict of {check_name: (bool, detail)}, same shape _check_one_call
     already produces for Layers 1/2, so results merge cleanly.
+
+    operator_key with NO matching spec file is a legitimate, silent
+    no-op (empty dict, zero checks) -- registering an operator in
+    kernelbench_operator_registry.py under a key that intentionally
+    doesn't match any verification/specs/*.py file is how a caller
+    opts an operator OUT of the shape-guessed try_*_layer3 detectors
+    (see resolve_operator_key's callers: operator_key is not None is
+    what sets skip_shape_guessed_layer3) without needing an existing
+    per-operator spec whose candidate_fn calling convention might not
+    match -- e.g. a KernelBench-format layernorm candidate takes only
+    (x,), not the TritonBench spec's (x, gamma, beta). A spec file that
+    DOES exist but fails to load or run is still a real failure, not
+    silenced -- only "no such file" is treated as "nothing to check."
     """
+    spec_path = f"verification/specs/{operator_key}.py"
+    if not os.path.exists(spec_path):
+        return {}
+
     try:
-        spec_path = f"verification/specs/{operator_key}.py"
         spec_module_spec = importlib.util.spec_from_file_location(f"_spec_{operator_key}", spec_path)
         spec_module = importlib.util.module_from_spec(spec_module_spec)
         spec_module_spec.loader.exec_module(spec_module)
@@ -418,10 +453,23 @@ def _run_known_operator_properties(operator_key: str, candidate_fn: Callable, ca
     except Exception as e:
         return {f"known_operator_spec_load[{operator_key}]": (False, f"{type(e).__name__}: {e}")}
 
+    # FIXED: single-tensor specs (SingleTensorSpec-based -- softmax,
+    # swish, gelu, ...) expect `inputs` to be the bare tensor itself,
+    # matching SingleTensorSpec.primary_input's own convention (inputs
+    # IS the tensor, not a 1-tuple wrapping it); multi-arg specs
+    # (matmul, layernorm, ...) expect the tuple as-is, which already
+    # matches call_args unchanged. Passing call_args as a raw tuple
+    # unconditionally used to crash every single-arg operator's
+    # known-operator properties with AttributeError ('tuple' object has
+    # no attribute 'contiguous'/'shape'/...) -- confirmed via a real
+    # run: matmul (2-arg) was unaffected, softmax/swish/gelu (1-arg)
+    # failed every property check this way, every trial.
+    prop_inputs = call_args[0] if len(call_args) == 1 else call_args
+
     results = {}
     for prop_name, prop_fn in spec.algebraic_properties:
         try:
-            outcome = prop_fn(candidate_fn, call_args)
+            outcome = prop_fn(candidate_fn, prop_inputs)
             if isinstance(outcome, (list, tuple)):
                 ok, detail = bool(outcome[0]), str(outcome[1]) if len(outcome) > 1 else None
             else:
@@ -484,16 +532,28 @@ def _run_model_based(problem_path: str, candidate_src: str, n_trials: int) -> Ad
     get_inputs = ref_ns["get_inputs"]
     get_init_inputs = ref_ns["get_init_inputs"]
 
+    # FIXED: nothing in this function used to move models or inputs to
+    # CUDA -- get_inputs()/get_init_inputs() return plain CPU tensors
+    # (matches real KernelBench problem files, which never call .cuda()
+    # themselves; KernelBench's own eval.py does the device placement
+    # centrally instead, see its load_original_model_and_inputs /
+    # eval_kernel_against_ref). Without it, a real load_inline
+    # CUDA-kernel ModelNew launches its kernel against a CPU tensor's
+    # pointer -- confirmed via a real run: illegal memory access errors,
+    # or wildly wrong numeric output, on BOTH reference and candidate,
+    # for every operator.
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+
     for trial in range(n_trials):
         try:
-            init_args = get_init_inputs()
-            call_args = get_inputs()
-            ref_model = ModelRef(*init_args)
+            init_args = _to_device(get_init_inputs(), device)
+            call_args = _to_device(get_inputs(), device)
+            ref_model = ModelRef(*init_args).to(device)
 
             def reference_fn(*args, _m=ref_model):
                 return _m(*args)
 
-            candidate_fn = convention.build_candidate_fn(cand_ns, ref_model, init_args)
+            candidate_fn = convention.build_candidate_fn(cand_ns, ref_model, init_args, device)
 
             record = _check_one_call(
                 candidate_fn, reference_fn, tuple(call_args), {},

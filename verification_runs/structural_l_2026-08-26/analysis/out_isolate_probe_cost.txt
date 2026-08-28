@@ -1,0 +1,29 @@
+exact-match ops (argmax/argmin path): ['argmax', 'argmin']
+perturbation-routed ops: 27
+
+  n  all checks ms  pert path ms  pert calls  pert share
+  3         4613.4        1120.5         856       24.3%
+  5         4667.6        1276.1         856       27.3%
+ 10         5340.1        1825.6         856       34.2%
+ 15         5444.4        2187.4         856       40.2%
+ 20         6335.4        2943.6         856       46.5%
+ 40         8386.5        4936.3         856       58.9%
+
+OLS  pert_path_ms(n) = 765.8 + 104.245 * n     R^2 = 0.9969
+     per-call fixed  = 0.8946 ms   (856 calls)
+     per-sample cost = 0.1218 ms/sample/call
+
+=== THE NUMBER ASKED FOR, at the shipped default n_samples=20 ===
+  sensitivity-loop (probing) cost      : 2084.9 ms
+  perturbation-path total              : 2943.6 ms   -> probing is 70.8% of it
+  all instrumented check time          : 6335.4 ms   -> probing is 32.9% of it
+
+per-check share of measured check time (n=20 arm):
+  weight_magnitude                   11.8%
+  perturbation_tolerance             11.2%
+  precision_coercion                  9.4%
+  cross_shape                         7.3%
+  kernel_executed                     6.6%
+  determinism                         2.9%
+  ghost_optimization                  2.5%
+  all adversarial_* combined         35.4%

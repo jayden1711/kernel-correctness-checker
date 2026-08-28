@@ -26,9 +26,31 @@ def check_shift_invariance(kernel_fn, x: torch.Tensor, atol: float = 1e-3):
     return ok, f"max diff after shift: {max_err:.6f}"
 
 
-def check_monotonicity(kernel_fn, x: torch.Tensor):
+def check_monotonicity(kernel_fn, x: torch.Tensor, atol: float = 1e-4):
+    """
+    log_softmax(x)_i = x_i - C (a per-row constant), so sorting the
+    output by the SAME permutation that sorts x must give a
+    non-decreasing sequence.
+
+    FIXED: this used to require torch.equal on the two argsort index
+    permutations -- exact equality of a DISCRETE ordering extracted from
+    a continuous computation. With ~128 random columns per row, some
+    pair of values will occasionally land close enough that the real
+    kernel's floating-point rounding (in the exp/sum/log chain) flips
+    their relative order by a fraction of a ULP -- correct numerical
+    behavior, not a bug, but a big enough surface (any of ~n^2/2 pairs)
+    that it fired intermittently (1/5 trials) on the correct reference.
+    Comparing sorted-by-x output steps with a small tolerance keeps the
+    property (order is preserved) while not punishing noise-level
+    near-tie flips that carry no real information.
+    """
     out = kernel_fn(x)
     input_order = x.argsort(dim=-1)
-    output_order = out.argsort(dim=-1)
-    ok = torch.equal(input_order, output_order)
-    return ok, "relative order preserved" if ok else "relative order NOT preserved"
+    out_sorted_by_input = torch.gather(out, -1, input_order)
+    diffs = out_sorted_by_input[..., 1:] - out_sorted_by_input[..., :-1]
+    violation = diffs < -atol
+    ok = not violation.any().item()
+    worst = diffs.min().item()
+    if ok:
+        return True, f"relative order preserved (worst step={worst:.6f})"
+    return False, f"relative order NOT preserved (worst negative step={worst:.6f}, atol={atol})"

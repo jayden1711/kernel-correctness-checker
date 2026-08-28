@@ -11,6 +11,19 @@ from verification.layer3_properties.norm_properties import (
 
 
 class FrobeniusNormSpec(SingleTensorSpec):
+    # EXPLICIT OVERRIDE back to the safe default. This kernel reduces across
+    # the WHOLE tensor rather than within a row (see
+    # TritonBench/reference/frobenius_norm.py: "every other operator reduces
+    # within one row/instance per program; this one reduces across the WHOLE
+    # tensor"). Stacking 20 perturbation samples would compute ONE norm over
+    # 20x the data and return it as if it were 20 sensitivities -- a
+    # plausible wrong number, not an error. Measured on a stand-in with the
+    # real semantics: adaptive_tol went 0.001218 -> 0.778163, a 639x LOOSER
+    # tolerance, with no exception raised. Do not remove this.
+    @property
+    def batch_samples(self) -> bool:
+        return False
+
     name: str = "frobenius_norm"
     requires_backward: bool = False
 

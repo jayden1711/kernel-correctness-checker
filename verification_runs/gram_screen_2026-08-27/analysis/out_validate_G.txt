@@ -1,0 +1,76 @@
+1. VERDICTS IDENTICAL WITH DETECTOR ON : YES
+   summary A {'n_mutants': 40, 'n_caught': 40, 'catch_rate': 1.0, 'n_ref': 200, 'n_fp': 0, 'fp_rate': 0.0}
+   summary G {'n_mutants': 40, 'n_caught': 40, 'catch_rate': 1.0, 'n_ref': 200, 'n_fp': 0, 'fp_rate': 0.0}
+
+   scope records promoted/source: 854/854
+
+2. KNOWN OUT-OF-SCOPE (saturation) -- must carry gram_divergence
+   causal_flash_attention/adversarial_large_magnitude_qk               0/5 fired   min|log10 r| = 0.015
+   flash_attention/adversarial_multi_tile_rescaling             22/22 fired   min|log10 r| = 0.355
+   scaled_dot_product_attention/adversarial_large_magnitude_qk               0/5 fired   min|log10 r| = 0.008
+   => *** MISSES ***
+
+3. KNOWN IN-SCOPE -- must be gram-silent; margin = log10(2) - |log10 r|
+   avg_pool1d/perturbation_tolerance                          n=6   gram_on=6   worst|log10 r|=0.0000         margin +0.301
+   avg_pool2d/perturbation_tolerance                          n=6   gram_on=6   worst|log10 r|=0.0000         margin +0.301
+   avg_pool3d/perturbation_tolerance                          n=6   gram_on=6   worst|log10 r|=0.0000         margin +0.301
+   batchnorm/perturbation_tolerance                           n=6   gram_on=6   worst|log10 r|=0.0000         margin +0.301
+   causal_flash_attention/perturbation_tolerance              n=5   gram_on=5   worst|log10 r|=0.0001         margin +0.301
+   cross_entropy/perturbation_tolerance                       n=6   gram_on=6   worst|log10 r|=0.0016         margin +0.299
+   flash_attention/adversarial_approx_denominator             n=22  gram_on=22  worst|log10 r|=0.0001         margin +0.301
+   flash_attention/adversarial_wrong_causal_mask              n=22  gram_on=22  worst|log10 r|=0.0001         margin +0.301
+   flash_attention/perturbation_tolerance                     n=22  gram_on=22  worst|log10 r|=0.0002         margin +0.301
+   frobenius_norm/perturbation_tolerance                      n=5   gram_on=5   worst|log10 r|=0.0000         margin +0.301
+   gelu/perturbation_tolerance                                n=6   gram_on=6   worst|log10 r|=0.0000         margin +0.301
+   groupnorm/perturbation_tolerance                           n=6   gram_on=6   worst|log10 r|=0.0000         margin +0.301
+   instancenorm/perturbation_tolerance                        n=6   gram_on=6   worst|log10 r|=0.0001         margin +0.301
+   l1norm/perturbation_tolerance                              n=5   gram_on=5   worst|log10 r|=0.0000         margin +0.301
+   l2norm/perturbation_tolerance                              n=5   gram_on=5   worst|log10 r|=0.0000         margin +0.301
+   layernorm/perturbation_tolerance                           n=16  gram_on=16  worst|log10 r|=0.0000         margin +0.301
+   log_softmax/perturbation_tolerance                         n=6   gram_on=6   worst|log10 r|=0.0000         margin +0.301
+   matmul/perturbation_tolerance                              n=22  gram_on=22  worst|log10 r|=0.0000         margin +0.301
+   max_pool1d/perturbation_tolerance                          n=6   gram_on=6   worst|log10 r|=0.0000         margin +0.301
+   max_pool2d/perturbation_tolerance                          n=6   gram_on=6   worst|log10 r|=0.0000         margin +0.301
+   max_pool3d/perturbation_tolerance                          n=6   gram_on=6   worst|log10 r|=0.0000         margin +0.301
+   max_reduction/perturbation_tolerance                       n=6   gram_on=6   worst|log10 r|=0.0000         margin +0.301
+   mean_reduction/perturbation_tolerance                      n=5   gram_on=5   worst|log10 r|=0.0000         margin +0.301
+   min_reduction/perturbation_tolerance                       n=6   gram_on=6   worst|log10 r|=0.0000         margin +0.301
+   rmsnorm/perturbation_tolerance                             n=15  gram_on=15  worst|log10 r|=0.0000         margin +0.301
+   scaled_dot_product_attention/perturbation_tolerance        n=5   gram_on=5   worst|log10 r|=0.0001         margin +0.301
+   softmax/perturbation_tolerance                             n=10  gram_on=10  worst|log10 r|=0.0002         margin +0.301
+   sum_reduction/perturbation_tolerance                       n=5   gram_on=5   worst|log10 r|=0.0000         margin +0.301
+   swish/perturbation_tolerance                               n=6   gram_on=6   worst|log10 r|=0.0001         margin +0.301
+   in-scope gram fires: NONE
+   worst in-scope: ('cross_entropy', 'perturbation_tolerance') |log10 r| = 0.0016
+
+4. FLOOR SCREEN regression -- 2026-08-26 fire set must reproduce
+   flash_attention/adversarial_equal_attention_weights          22/22 floor-fired
+   flash_attention/adversarial_last_tile_dropped                22/22 floor-fired
+   flash_attention/adversarial_skip_rescaling                   22/22 floor-fired
+
+5. FORMERLY-UNSCORED classes (2026-08-26 had no ground truth) --
+   adjudicated by the exact-derivative evidence, not by a label
+   cross_entropy/adversarial_large_magnitude_logits           gram fires 0/5, floor 0/5, median log10 r = -0.001
+   gelu/adversarial_near_global_min                  gram fires 0/6, floor 6/6, median log10 r =   -  
+   groupnorm/adversarial_near_zero_variance               gram fires 0/6, floor 6/6, median log10 r =   -  
+   instancenorm/adversarial_near_zero_variance               gram fires 0/6, floor 6/6, median log10 r =   -  
+   layernorm/adversarial_wrong_variance_trigger           gram fires 0/16, floor 0/16, median log10 r = +0.001
+   log_softmax/adversarial_near_zero_variance               gram fires 0/6, floor 6/6, median log10 r =   -  
+   softmax/adversarial_extreme_range                    gram fires 0/10, floor 10/10, median log10 r =   -  
+   softmax/adversarial_max_in_last_tile                 gram fires 0/10, floor 10/10, median log10 r =   -  
+   softmax/adversarial_near_zero_variance               gram fires 0/10, floor 10/10, median log10 r =   -  
+   swish/adversarial_near_global_min                  gram fires 0/6, floor 6/6, median log10 r =   -  
+
+6. SEPARATION (the number that killed the defect screen)
+   worst in-scope |log10 r|      : 0.0016  ('cross_entropy', 'perturbation_tolerance')
+   least out-of-scope |log10 r|  : 0.0084
+   separation factor             : 5.1x (SEPARATED)
+   threshold log10(2) margins    : in-scope 183.8x below, out-of-scope 0.0x above
+
+7. PROBE-SIZE CONVERGENCE -- classification at k vs k=20
+   k=3   classification differs from k=20 on 22/684 records
+   k=5   classification differs from k=20 on 0/684 records
+   k=8   classification differs from k=20 on 22/684 records
+   k=10  classification differs from k=20 on 22/684 records
+   k=15  classification differs from k=20 on 0/684 records
+   k=20  classification differs from k=20 on 0/684 records

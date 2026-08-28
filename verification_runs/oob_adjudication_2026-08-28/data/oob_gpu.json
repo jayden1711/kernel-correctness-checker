@@ -1,0 +1,112 @@
+{
+ "A_layernorm": {
+  "recovered_inbounds_gamma_maxerr": [
+   4.588599700205975e-08,
+   true
+  ],
+  "recovered_inbounds_beta_maxerr": [
+   4.206910420023746e-08,
+   true
+  ],
+  "gamma_leak": {
+   "n_mapped": 205,
+   "n_unmapped": 0,
+   "max_rel_err": 0.02900262889791546,
+   "agree": false,
+   "sources": [
+    "beta",
+    "poisonA"
+   ]
+  },
+  "beta_leak": {
+   "n_mapped": 205,
+   "n_unmapped": 0,
+   "max_rel_err": 1.6266803647831474e-08,
+   "agree": true,
+   "sources": [
+    "poisonA",
+    "poisonB"
+   ]
+  },
+  "addr_gaps": {
+   "beta_minus_gamma": 512,
+   "poisA_minus_beta": 512
+  },
+  "g_rec_sample": [
+   -1.272302952317842,
+   -0.0911585160206809,
+   -0.7690425104389977,
+   1.5758754877920673,
+   -0.698640976442867,
+   1.5875975362600931,
+   0.3721079628377143,
+   -0.2798290894560879
+  ]
+ },
+ "A_rmsnorm": {
+  "inbounds_maxerr": [
+   3.1405556821795244e-08,
+   true
+  ],
+  "leak": {
+   "n_mapped": 205,
+   "n_unmapped": 0,
+   "max_rel_err": 2.427219782217775e-08,
+   "agree": true,
+   "sources": [
+    "poisonR",
+    "poisonR2"
+   ]
+  },
+  "g_eff_sample": [
+   0.7280635829143337,
+   2.237992255276572,
+   444444.003623957,
+   444443.99694215035,
+   444444.00494125637,
+   444443.99212343985,
+   444443.9965466236,
+   444443.99555624474
+  ]
+ },
+ "B_inbounds": {
+  "512": {
+   "layernorm_vs_kernel_faithful": 9.458844179022208e-07,
+   "layernorm_vs_ideal": 0.032888043947481904,
+   "rmsnorm_vs_math": 9.077641012211757e-07
+  },
+  "333": {
+   "layernorm_vs_kernel_faithful": 7.196390274799569e-07,
+   "layernorm_vs_ideal": 0.03447067268734738,
+   "rmsnorm_vs_math": 1.0414704423311605e-06
+  }
+ },
+ "C_stability": {
+  "rerun_bitwise_identical": true,
+  "poison_realloc_same_slot": true,
+  "inbounds_cols_unchanged": true,
+  "leaked_cols_changed": true
+ },
+ "D_exposure": {
+  "64": {
+   "oob": true,
+   "leaked_cols": 269
+  },
+  "128": {
+   "oob": true,
+   "leaked_cols": 205
+  },
+  "256": {
+   "oob": true,
+   "leaked_cols": 77
+  },
+  "333": {
+   "oob": false,
+   "leaked_cols": 0
+  },
+  "512": {
+   "oob": false,
+   "leaked_cols": 0
+  }
+ }
+}

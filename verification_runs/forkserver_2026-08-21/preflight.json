@@ -1,0 +1,284 @@
+{
+  "env": {
+    "torch": "2.11.0+cu128",
+    "cuda_available": true,
+    "device": "Tesla T4",
+    "start_methods": [
+      "fork",
+      "spawn",
+      "forkserver"
+    ],
+    "python": "3.12.13"
+  },
+  "probe1_cuda_after_fork": [
+    {
+      "idx": 0,
+      "pid": 963,
+      "torch_already_imported": true,
+      "cuda_init_ms": 307.2206974029541,
+      "kernel_ms": 2755.5525302886963,
+      "max_err": 1.1175870895385742e-08,
+      "ok": true,
+      "total_ms": 3797.426462173462,
+      "wall_ms": 5604.170560836792
+    },
+    {
+      "idx": 1,
+      "pid": 998,
+      "torch_already_imported": true,
+      "cuda_init_ms": 219.35606002807617,
+      "kernel_ms": 1967.8423404693604,
+      "max_err": 1.4901161193847656e-08,
+      "ok": true,
+      "total_ms": 2346.442222595215,
+      "wall_ms": 2489.616870880127
+    },
+    {
+      "idx": 2,
+      "pid": 1014,
+      "torch_already_imported": true,
+      "cuda_init_ms": 266.8423652648926,
+      "kernel_ms": 1171.9856262207031,
+      "max_err": 1.4901161193847656e-08,
+      "ok": true,
+      "total_ms": 1631.4425468444824,
+      "wall_ms": 1760.005235671997
+    },
+    {
+      "idx": 3,
+      "pid": 1030,
+      "torch_already_imported": true,
+      "cuda_init_ms": 218.73927116394043,
+      "kernel_ms": 1190.2027130126953,
+      "max_err": 1.1175870895385742e-08,
+      "ok": true,
+      "total_ms": 1559.098482131958,
+      "wall_ms": 1684.0908527374268
+    },
+    {
+      "idx": 4,
+      "pid": 1046,
+      "torch_already_imported": true,
+      "cuda_init_ms": 217.14210510253906,
+      "kernel_ms": 1185.9190464019775,
+      "max_err": 1.4901161193847656e-08,
+      "ok": true,
+      "total_ms": 1551.6622066497803,
+      "wall_ms": 1675.933837890625
+    },
+    {
+      "idx": 5,
+      "pid": 1062,
+      "torch_already_imported": true,
+      "cuda_init_ms": 220.322847366333,
+      "kernel_ms": 1187.8979206085205,
+      "max_err": 7.450580596923828e-09,
+      "ok": true,
+      "total_ms": 1553.5058975219727,
+      "wall_ms": 1678.32350730896
+    }
+  ],
+  "probe2_concurrency": {
+    "wall_s": 31.026219844818115,
+    "completed": 20,
+    "ok": 20,
+    "expected": 20,
+    "stuck_threads": 0,
+    "errors": [],
+    "hangs": []
+  },
+  "probe3_rng": {
+    "forkserver_draws": [
+      [
+        -0.22193453,
+        -0.4135631,
+        1.49266148,
+        -0.75363588
+      ],
+      [
+        -0.22193453,
+        -0.4135631,
+        1.49266148,
+        -0.75363588
+      ],
+      [
+        -0.22193453,
+        -0.4135631,
+        1.49266148,
+        -0.75363588
+      ],
+      [
+        -0.22193453,
+        -0.4135631,
+        1.49266148,
+        -0.75363588
+      ],
+      [
+        -0.22193453,
+        -0.4135631,
+        1.49266148,
+        -0.75363588
+      ],
+      [
+        -0.22193453,
+        -0.4135631,
+        1.49266148,
+        -0.75363588
+      ]
+    ],
+    "spawn_draws": [
+      [
+        -1.09960508,
+        -0.21241719,
+        -0.72957408,
+        -0.94660658
+      ],
+      [
+        -1.5801518,
+        -0.78759074,
+        -1.37989426,
+        -0.893287
+      ],
+      [
+        -0.37325147,
+        -0.04100547,
+        1.45457184,
+        -0.95166874
+      ]
+    ],
+    "forkserver_distinct": 1,
+    "spawn_distinct": 3
+  },
+  "probe4_phases": {
+    "spawn": [
+      {
+        "idx": 0,
+        "pid": 1422,
+        "pre_module_ms": 73.50373268127441,
+        "torch_import_ms": 1662.182092666626,
+        "cuda_init_ms": 239.43376541137695,
+        "total_to_ready_ms": 1975.1291275024414,
+        "ok": true,
+        "wall_ms": 2398.2205390930176
+      },
+      {
+        "idx": 1,
+        "pid": 1439,
+        "pre_module_ms": 103.1794548034668,
+        "torch_import_ms": 2388.937473297119,
+        "cuda_init_ms": 260.7755661010742,
+        "total_to_ready_ms": 2752.9044151306152,
+        "ok": true,
+        "wall_ms": 3186.737298965454
+      },
+      {
+        "idx": 2,
+        "pid": 1459,
+        "pre_module_ms": 66.79821014404297,
+        "torch_import_ms": 1542.6397323608398,
+        "cuda_init_ms": 215.7881259918213,
+        "total_to_ready_ms": 1825.2367973327637,
+        "ok": true,
+        "wall_ms": 2267.859935760498
+      },
+      {
+        "idx": 3,
+        "pid": 1472,
+        "pre_module_ms": 67.15059280395508,
+        "torch_import_ms": 1516.7996883392334,
+        "cuda_init_ms": 240.159273147583,
+        "total_to_ready_ms": 1824.120283126831,
+        "ok": true,
+        "wall_ms": 2270.3959941864014
+      },
+      {
+        "idx": 4,
+        "pid": 1485,
+        "pre_module_ms": 65.79732894897461,
+        "torch_import_ms": 1526.5049934387207,
+        "cuda_init_ms": 244.45104598999023,
+        "total_to_ready_ms": 1836.7643356323242,
+        "ok": true,
+        "wall_ms": 2272.186279296875
+      },
+      {
+        "idx": 5,
+        "pid": 1498,
+        "pre_module_ms": 68.16959381103516,
+        "torch_import_ms": 1527.3208618164062,
+        "cuda_init_ms": 215.1014804840088,
+        "total_to_ready_ms": 1810.6017112731934,
+        "ok": true,
+        "wall_ms": 2247.666597366333
+      }
+    ],
+    "forkserver": [
+      {
+        "idx": 0,
+        "pid": 1515,
+        "pre_module_ms": 14.675140380859375,
+        "torch_import_ms": 0.002384185791015625,
+        "cuda_init_ms": 215.3756618499756,
+        "total_to_ready_ms": 230.06677627563477,
+        "ok": true,
+        "wall_ms": 335.4966640472412
+      },
+      {
+        "idx": 1,
+        "pid": 1519,
+        "pre_module_ms": 13.837814331054688,
+        "torch_import_ms": 0.002384185791015625,
+        "cuda_init_ms": 260.2574825286865,
+        "total_to_ready_ms": 274.181604385376,
+        "ok": true,
+        "wall_ms": 383.2213878631592
+      },
+      {
+        "idx": 2,
+        "pid": 1523,
+        "pre_module_ms": 18.155574798583984,
+        "torch_import_ms": 0.0026226043701171875,
+        "cuda_init_ms": 233.53290557861328,
+        "total_to_ready_ms": 251.7077922821045,
+        "ok": true,
+        "wall_ms": 359.3783378601074
+      },
+      {
+        "idx": 3,
+        "pid": 1531,
+        "pre_module_ms": 19.652605056762695,
+        "torch_import_ms": 0.00286102294921875,
+        "cuda_init_ms": 232.2978973388672,
+        "total_to_ready_ms": 251.9674301147461,
+        "ok": true,
+        "wall_ms": 356.7197322845459
+      },
+      {
+        "idx": 4,
+        "pid": 1535,
+        "pre_module_ms": 16.987323760986328,
+        "torch_import_ms": 0.0021457672119140625,
+        "cuda_init_ms": 231.2338352203369,
+        "total_to_ready_ms": 248.23904037475586,
+        "ok": true,
+        "wall_ms": 353.8522720336914
+      },
+      {
+        "idx": 5,
+        "pid": 1539,
+        "pre_module_ms": 17.0745849609375,
+        "torch_import_ms": 0.0026226043701171875,
+        "cuda_init_ms": 233.75511169433594,
+        "total_to_ready_ms": 250.84638595581055,
+        "ok": true,
+        "wall_ms": 359.1046333312988
+      }
+    ]
+  },
+  "gate": "PASS",
+  "probe_verdicts": {
+    "cuda_after_fork": true,
+    "concurrent_forks": true,
+    "rng_hazard_confirmed": true
+  }
+}

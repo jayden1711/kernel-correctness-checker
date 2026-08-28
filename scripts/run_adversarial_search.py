@@ -37,6 +37,7 @@ if CHECKER_ROOT not in sys.path:
     sys.path.insert(0, CHECKER_ROOT)
 
 from verification.adversarial_search.coordinator import SearchCoordinator
+from verification.adversarial_search.prompts.base import validate_bug_pattern_hints
 from verification.adversarial_search.strategy import STRATEGIES
 from verification.adversarial_search.history.store import SearchHistoryStore
 
@@ -49,6 +50,27 @@ _REFERENCE_MAP = {
     "matmul":          "TritonBench/reference/mat_mult.py",
     "flash_attention": "TritonBench/reference/flash_attention.py",
     "rmsnorm":         "TritonBench/reference/rmsnorm.py",
+
+    # Front-door wiring for the 16 operators executor.py/materializer.py
+    # already support at the execution layer -- paths verified against
+    # TritonBench/reference/ and TritonBench/cheating/ directly (same
+    # mapping used in benchmarks/autokernel/files/tritonbench_registry.py).
+    "log_softmax":                  "TritonBench/reference/log_softmax.py",
+    "swish":                        "TritonBench/reference/swish.py",
+    "gelu":                         "TritonBench/reference/gelu.py",
+    "sum_reduction":                "TritonBench/reference/sum_reduction.py",
+    "mean_reduction":               "TritonBench/reference/mean_reduction.py",
+    "max_reduction":                "TritonBench/reference/max_reduction.py",
+    "min_reduction":                "TritonBench/reference/min_reduction.py",
+    "l1norm":                       "TritonBench/reference/l1norm.py",
+    "l2norm":                       "TritonBench/reference/l2norm.py",
+    "frobenius_norm":               "TritonBench/reference/frobenius_norm.py",
+    "argmax":                       "TritonBench/reference/argmax.py",
+    "argmin":                       "TritonBench/reference/argmin.py",
+    "instancenorm":                 "TritonBench/reference/instancenorm.py",
+    "batchnorm":                    "TritonBench/reference/batchnorm.py",
+    "scaled_dot_product_attention": "TritonBench/reference/scaled_dot_product_attention.py",
+    "causal_flash_attention":       "TritonBench/reference/causal_flash_attention.py",
 }
 
 _MUTANT_MAP = {
@@ -77,6 +99,59 @@ _MUTANT_MAP = {
         "ignore_gamma":      "TritonBench/cheating/rmsnorm/ignore_gamma.py",
         "wrong_norm":        "TritonBench/cheating/rmsnorm/wrong_norm.py",
         "partial_reduction": "TritonBench/cheating/rmsnorm/partial_reduction.py",
+    },
+
+    # Each of these 16 has exactly one mutant on disk (see
+    # TritonBench/cheating/<dir>/) -- unlike the original 5, which were
+    # hand-built with several named bugs apiece.
+    "log_softmax": {
+        "skip_max_subtraction": "TritonBench/cheating/log_softmax/skip_max_subtraction.py",
+    },
+    "swish": {
+        "linear_sigmoid_approx": "TritonBench/cheating/swish/linear_sigmoid_approx.py",
+    },
+    "gelu": {
+        "sigmoid_approx": "TritonBench/cheating/gelu/sigmoid_approx.py",
+    },
+    "sum_reduction": {
+        "partial_reduction": "TritonBench/cheating/sum_reduction/partial_reduction.py",
+    },
+    "mean_reduction": {
+        "partial_reduction": "TritonBench/cheating/mean_reduction/partial_reduction.py",
+    },
+    "max_reduction": {
+        "wrong_padding": "TritonBench/cheating/max_reduction/wrong_padding.py",
+    },
+    "min_reduction": {
+        "wrong_padding": "TritonBench/cheating/min_reduction/wrong_padding.py",
+    },
+    "l1norm": {
+        "partial_reduction": "TritonBench/cheating/l1norm/partial_reduction.py",
+    },
+    "l2norm": {
+        "wrong_norm": "TritonBench/cheating/l2norm/wrong_norm.py",
+    },
+    "frobenius_norm": {
+        "wrong_norm": "TritonBench/cheating/frobenius_norm/wrong_norm.py",
+    },
+    "argmax": {
+        "tiebreak": "TritonBench/cheating/argmax/tiebreak.py",
+    },
+    "argmin": {
+        "tiebreak": "TritonBench/cheating/argmin/tiebreak.py",
+    },
+    "instancenorm": {
+        "skip_eps": "TritonBench/cheating/instancenorm/skip_eps.py",
+    },
+    "batchnorm": {
+        "wrong_running_stats_broadcast":
+            "TritonBench/cheating/batchnorm/wrong_running_stats_broadcast.py",
+    },
+    "scaled_dot_product_attention": {
+        "wrong_mask": "TritonBench/cheating/scaled_dot_product_attention/wrong_mask.py",
+    },
+    "causal_flash_attention": {
+        "wrong_causal_mask": "TritonBench/cheating/causal_flash_attention/wrong_causal_mask.py",
     },
 }
 
@@ -107,6 +182,22 @@ def _resolve_paths(operator: str, filter_mutants=None):
             f"Check TritonBench/cheating/{operator}/"
         )
 
+    # Fail fast if any mutant has no bug-pattern hint. The hint lookup in
+    # prompts/base.py is a silent `.get(key, "")`, so a missing entry costs a
+    # whole search run's worth of unguided proposals and reports nothing --
+    # exactly how "wrong_causal_mask" went unnoticed across 120 proposals
+    # (adversarial_results/CFA_NONHIT_ROOTCAUSE.md). Startup is the only place
+    # this is cheap to catch.
+    missing_hints = validate_bug_pattern_hints(mutant_paths.keys())
+    if missing_hints:
+        raise ValueError(
+            f"No BUG_PATTERN_HINTS entry for mutant(s) {missing_hints} of "
+            f"operator '{operator}'. The prompt's hint lookup fails silently to "
+            f"an empty string, so the worker would get no bug-specific guidance "
+            f"for the entire run. Add an entry to BUG_PATTERN_HINTS in "
+            f"verification/adversarial_search/prompts/base.py."
+        )
+
     return ref_path, mutant_paths
 
 
@@ -130,7 +221,13 @@ def _set_api_key(model: str, api_key: Optional[str] = None):
 
 # ── CLI ───────────────────────────────────────────────────────────────────────
 
-ALL_OPERATORS = ["softmax", "layernorm", "matmul", "flash_attention", "rmsnorm"]
+ALL_OPERATORS = [
+    "softmax", "layernorm", "matmul", "flash_attention", "rmsnorm",
+    "log_softmax", "swish", "gelu", "sum_reduction", "mean_reduction",
+    "max_reduction", "min_reduction", "l1norm", "l2norm", "frobenius_norm",
+    "argmax", "argmin", "instancenorm", "batchnorm",
+    "scaled_dot_product_attention", "causal_flash_attention",
+]
 DEFAULT_MODEL  = "claude-sonnet-4-6"
 
 from typing import Optional
@@ -174,6 +271,29 @@ Examples:
                         dest="diversity_weight",
                         help="λ for diverse beam strategy (default 3.0).")
     parser.add_argument("--temperature", type=float, default=0.7)
+    parser.add_argument("--no-batch", action="store_true", dest="no_batch",
+                        help="Run each kernel in its own subprocess (the "
+                             "pre-batching path). Default is one subprocess "
+                             "per proposal. Use this for the unbatched arm of "
+                             "a latency A/B, or as an escape hatch: it also "
+                             "leaves the RNG unseeded, so reference and "
+                             "mutants draw different tensors, which is the "
+                             "old semantics and NOT verdict-equivalent to the "
+                             "batched path.")
+    parser.add_argument("--forkserver",
+                        action=argparse.BooleanOptionalAction, dest="forkserver",
+                        default=True,
+                        help="Create batched subprocesses by forking a "
+                             "torch-preloaded server instead of booting a fresh "
+                             "interpreter, removing the 85%% of startup that is "
+                             "`import torch`. Independent of --no-batch and "
+                             "ignored when it is set: the single-kernel path is "
+                             "spawn-only by design, because it does not seed and "
+                             "a fork would hand every child the SAME generator "
+                             "state. DEFAULT ON since 2026-08-28 (GPU A/B in "
+                             "verification_runs/forkserver_ab/: 36-41%% "
+                             "end-to-end, gates green; re-verified at the new "
+                             "default). --no-forkserver restores spawn.")
     parser.add_argument("--history",   action="store_true",
                         help="Print search history summary and exit.")
     parser.add_argument("--coverage",  action="store_true",
@@ -233,6 +353,8 @@ Examples:
             model=args.model,
             strategy=args.strategy,
             n_workers=n_workers,
+            batch_executions=not args.no_batch,
+            use_forkserver=args.forkserver,
             max_iterations=args.max_iter,
             timeout_per_exec=args.timeout,
             output_dir=args.output_dir,

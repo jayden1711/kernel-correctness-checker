@@ -1,0 +1,76 @@
+==========================================================================
+  forkserver vs spawn: the delegation-detector race
+==========================================================================
+  trials recorded          3160
+  reached the detector     2765   (395 out-of-domain, excluded)
+  passes                   79
+
+  arm            trials    flips       rate
+  forkserver       1365       22      1.61%   95% CI [1.07%, 2.43%]
+  spawn            1400       12      0.86%   95% CI [0.49%, 1.49%]
+
+--------------------------------------------------------------------------
+  BINARY ENDPOINT — the flip rate
+--------------------------------------------------------------------------
+  spawn      12/1400 = 0.86%
+  forkserver 22/1365 = 1.61%
+  two-proportion z = +1.800   p = 0.072
+  MINIMUM DETECTABLE EFFECT at n=1365/arm, 80% power:
+    a rise from 0.86% to >= 2.17% (2.53x) would have been detected.
+    Anything smaller is NOT ruled out by this experiment.
+
+--------------------------------------------------------------------------
+  CONTINUOUS ENDPOINT — the delegation_ratio distribution
+--------------------------------------------------------------------------
+  arm                 n      p50      p90      p99      max     >=10
+  spawn            1400     0.91     4.50     9.77    51.24       12
+  forkserver       1365     0.91     4.58    10.32    15.29       22
+
+  Mann-Whitney z = -0.032   p = 0.9745
+  (non-parametric on purpose: the ratio is heavy-tailed, so a mean comparison
+   would be dominated by whichever arm happened to draw the worst outlier)
+
+--------------------------------------------------------------------------
+  SURVIVAL CURVE — the same comparison at every threshold
+--------------------------------------------------------------------------
+    thresh      spawn   forkserver     ratio p (uncorr)
+         2        401          390     0.97x    0.967
+         3        356          349     0.98x    0.933
+         4        222          209     0.94x    0.692
+         5         99          114     1.15x    0.207
+         6         69           92     1.33x    0.042
+         7         41           56     1.37x    0.093
+         8         24           36     1.50x    0.096
+         9         17           27     1.59x    0.109
+        10         12           22     1.83x    0.072  <- production threshold
+        11         11           13     1.18x    0.637
+        12          8            5     0.62x    0.431
+        15          3            1     0.33x    0.329
+  (nested tests: do NOT take the minimum p as a result. Bonferroni across 12
+   thresholds multiplies any single p by ~12.)
+
+--------------------------------------------------------------------------
+  ORDER CONTROL — first half vs second half, within each arm
+--------------------------------------------------------------------------
+  spawn        first half  9/700 (1.29%)   second half  3/700 (0.43%)
+  forkserver   first half 14/700 (2.00%)   second half  8/665 (1.20%)
+
+--------------------------------------------------------------------------
+  WHAT THIS COSTS, AND WHAT REMOVES IT
+--------------------------------------------------------------------------
+  forkserver   1.29 spurious reference failures per 80-proposal search
+  spawn        0.69 spurious reference failures per 80-proposal search
+
+  Highest ratio seen anywhere in 2765 executions: 51.24
+    threshold  20x -> 2 flips across BOTH arms
+    threshold  25x -> 1 flips across BOTH arms
+    threshold  50x -> 1 flips across BOTH arms
+  A kernel that genuinely delegates CALLS the reference, so its ratio
+  is ~1.0 and this check never flags it. Raising the threshold therefore costs
+  no detection power against the thing the message names.
+
+==========================================================================
+  VERDICT: NO RESOLVABLE DIFFERENCE
+  Both endpoints agree. Effects at or above 2.53x the spawn rate are ruled out;
+  smaller ones are not. Report as a bound, never as 'no effect'.
+==========================================================================

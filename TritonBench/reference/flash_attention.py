@@ -46,6 +46,13 @@ def flash_attention_kernel(
         #Attention scores for this tile: [BLOCK_M, BLOCK_N]
         S = tl.dot(Q_block, tl.trans(K_block)) * (1.0 / (D ** 0.5))
 
+        #Mask padded key columns (kv >= N). Without this, every padded column
+        #contributes exp(0 - m) to the softmax denominator whenever N is not a
+        #multiple of BLOCK_N -- up to ~97% output error at N=1. Found and
+        #bounded in verification_runs/adaptive_tol_theory_2026-08-25/
+        #attention_gram/ and .../attention_mask_bug_impact_2026-08-27/.
+        S = tl.where(kv_offsets[None, :] < N, S, float('-inf'))
+
         #Update running max
         m_new = tl.maximum(m, tl.max(S, axis=1))
 

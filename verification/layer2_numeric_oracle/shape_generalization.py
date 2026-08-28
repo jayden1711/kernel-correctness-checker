@@ -8,11 +8,43 @@ Tests that the candidate kernel:
   4. Has correct gradients (for training-context kernels).
 """
 
+import os as _os
+import time as _time
 import torch
 from typing import Callable
 
 
 # check_output_shape
+
+# ---------------------------------------------------------------------------
+# OPT-IN INSTRUMENTATION (2026-08-25). Defaults OFF; see verification/checker.py
+# for the rationale on why timing is opt-in rather than always-on.
+#
+#   KCC_CHECK_TIMING=1            per-variant duration_ms + input statistics
+#   KCC_DISABLE_VARIANTS=a,b      drop named check_weight_magnitude variants
+#                                 (ablation only)
+# ---------------------------------------------------------------------------
+_WM_TIMING = _os.environ.get("KCC_CHECK_TIMING") == "1"
+_WM_DISABLED = {n.strip() for n in _os.environ.get("KCC_DISABLE_VARIANTS", "").split(",") if n.strip()}
+
+
+def _wm_sync():
+    if _WM_TIMING and torch.cuda.is_available():
+        torch.cuda.synchronize()
+
+
+def _tensor_stats(t):
+    """Numeric-regime fingerprint of a variant input, so 'do these two checks
+    exercise the same regime?' is answered from the tensors themselves rather
+    than from the variants' names."""
+    if not _WM_TIMING:
+        return None
+    f = t.detach().float()
+    return {"shape": list(t.shape), "dtype": str(t.dtype),
+            "min": f.min().item(), "max": f.max().item(),
+            "absmax": f.abs().max().item(),
+            "mean": f.mean().item(), "std": f.std().item() if f.numel() > 1 else 0.0}
+
 
 def check_output_shape(
     candidate_fn: Callable,
@@ -186,7 +218,26 @@ def check_weight_magnitude(
     primary = spec.primary_input(base_inputs)
     variants = _make_weight_variants(primary)
 
+    # Per-variant outcomes, returned as an optional THIRD element. The four
+    # variants collapse into a single pass/fail, which hides which one did
+    # the catching -- and large_uniform/large_random overlap heavily with
+    # the per-spec adversarial battery's large_magnitude inputs, so this is
+    # the most likely source of redundancy inside Layer 2. Callers that only
+    # unpack [0] and [1] are unaffected.
+    subs = []
+
     for variant_name, adv_primary in variants.items():
+        if variant_name in _WM_DISABLED:
+            subs.append({"name": variant_name, "outcome": "skip",
+                         "detail": "skipped -- KCC_DISABLE_VARIANTS",
+                         "duration_ms": None, "input_stats": None})
+            continue
+        _v_stats = _tensor_stats(adv_primary)
+        _wm_sync()
+        _v_t0 = _time.perf_counter() if _WM_TIMING else None
+
+        def _v_ms():
+            return (1000 * (_time.perf_counter() - _v_t0)) if _WM_TIMING else None
         try:
             if isinstance(base_inputs, tuple):
                 adv_inputs = (adv_primary,) + base_inputs[1:]
@@ -197,10 +248,23 @@ def check_weight_magnitude(
             cand_out = spec.run_candidate(candidate_fn, adv_inputs)
         except Exception as e:
             failures.append(f"{variant_name}: exception — {e}")
+            # "error", not "fail" -- see the monotone_rows note above: that
+            # variant used to raise RuntimeError on 1-D primaries and the
+            # crash coincidentally matched the expected mutant-catch
+            # verdict. Counting a crash as a catch is exactly how a broken
+            # check looks healthy in an ablation table.
+            _wm_sync()
+            subs.append({"name": variant_name, "outcome": "error",
+                         "detail": f"{type(e).__name__}: {e}",
+                         "duration_ms": _v_ms(), "input_stats": _v_stats})
             continue
 
         if cand_out.shape != ref_out.shape:
             failures.append(f"{variant_name}: shape mismatch")
+            _wm_sync()
+            subs.append({"name": variant_name, "outcome": "fail",
+                         "detail": "shape mismatch",
+                         "duration_ms": _v_ms(), "input_stats": _v_stats})
             continue
 
         if not torch.allclose(cand_out.float(), ref_out.float(),
@@ -209,11 +273,20 @@ def check_weight_magnitude(
             failures.append(
                 f"{variant_name}: numeric mismatch, max_err={max_err:.6f}"
             )
+            _wm_sync()
+            subs.append({"name": variant_name, "outcome": "fail",
+                         "detail": f"max_err={max_err:.6f}",
+                         "duration_ms": _v_ms(), "input_stats": _v_stats})
+        else:
+            _wm_sync()
+            subs.append({"name": variant_name, "outcome": "pass",
+                         "detail": None,
+                         "duration_ms": _v_ms(), "input_stats": _v_stats})
 
     if failures:
-        return False, "Weight-magnitude failures: " + "; ".join(failures)
+        return False, "Weight-magnitude failures: " + "; ".join(failures), subs
 
-    return True, "Weight-magnitude check passed on all variants."
+    return True, "Weight-magnitude check passed on all variants.", subs
 
 
 # check_backward_pass

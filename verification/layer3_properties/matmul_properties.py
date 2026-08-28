@@ -30,13 +30,28 @@ def check_distributivity(
     A: torch.Tensor,
     B: torch.Tensor,
     C: torch.Tensor,
-    atol: float = 1e-4,
+    atol: float = 2e-3,
+    rtol: float = 1e-3,
 ) -> tuple:
     """
     A @ (B + C) == A @ B + A @ C.
 
     Exposes kernels with incorrect tile accumulation that happens to pass
     on a single pair of matrices.
+
+    FIXED: atol=1e-4 with torch.allclose's default rtol=1e-5 used to
+    false-positive on a CORRECT reference matmul -- confirmed via a real
+    run (max_err=0.001221-0.001465 on both CPU and GPU, ~10-15x the old
+    atol). The failure is concentrated on individual near-zero output
+    elements: summing K signed products that happen to net close to
+    zero is exactly where fp32 catastrophic cancellation produces
+    disproportionate error relative to that element's own tiny
+    magnitude, so a bare small atol (with no rtol floor worth anything)
+    isn't a safe comparison here. atol=2e-3 gives those elements a
+    reasonable floor; rtol=1e-3 handles larger-magnitude elements --
+    both comfortably tighter than what an actual accumulation bug
+    produces (partial_k_reduct's real signal shows up as max_err=23+ on
+    the numeric layer, not a few-thousandths-scale rounding gap).
     """
     try:
         lhs = kernel_fn(A, B + C).float()
@@ -44,7 +59,7 @@ def check_distributivity(
     except Exception as e:
         return False, f"Exception during distributivity check: {e}"
 
-    if not torch.allclose(lhs, rhs, atol=atol):
+    if not torch.allclose(lhs, rhs, atol=atol, rtol=rtol):
         max_err = (lhs - rhs).abs().max().item()
         return False, f"Distributivity violated; max_err={max_err:.6f}."
     return True, "Distributivity A@(B+C) == A@B + A@C holds."
@@ -54,12 +69,18 @@ def check_scalar_associativity(
     kernel_fn: Callable,
     A: torch.Tensor,
     B: torch.Tensor,
-    atol: float = 1e-4,
+    atol: float = 2e-3,
+    rtol: float = 1e-3,
 ) -> tuple:
     """
     (c·A) @ B == c · (A @ B) for scalar c.
 
     A kernel that accumulates incorrectly will fail this for large c.
+
+    FIXED: same issue and same fix as check_distributivity above --
+    confirmed false-positiving on a correct reference matmul
+    (max_err=0.001221-0.001465, both CPU and GPU) from ordinary fp32
+    cancellation on near-zero output elements, not a real bug.
     """
     c = 100.0
     try:
@@ -68,7 +89,7 @@ def check_scalar_associativity(
     except Exception as e:
         return False, f"Exception during scalar-associativity check: {e}"
 
-    if not torch.allclose(lhs, rhs, atol=atol):
+    if not torch.allclose(lhs, rhs, atol=atol, rtol=rtol):
         max_err = (lhs - rhs).abs().max().item()
         return False, f"Scalar associativity violated; max_err={max_err:.6f}."
     return True, "Scalar associativity (c·A)@B == c·(A@B) holds."

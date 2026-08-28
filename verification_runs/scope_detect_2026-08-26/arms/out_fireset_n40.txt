@@ -1,0 +1,24 @@
+THE 6 BANKED OUT-OF-SCOPE VARIANTS, at the converged 40 samples
+  variant                                                          fired  /tot  reasons
+  flash_attention/adversarial_multi_tile_rescaling                    22    22  ['saturation']
+  causal_flash_attention/adversarial_large_magnitude_qk                4     5  ['quantisation_floor', 'saturation']
+  scaled_dot_product_attention/adversarial_large_magnitude_qk          5     5  ['saturation']
+  flash_attention/adversarial_last_tile_dropped                       22    22  ['quantisation_floor', 'saturation']
+  flash_attention/adversarial_skip_rescaling                          22    22  ['quantisation_floor', 'saturation']
+  flash_attention/adversarial_equal_attention_weights                 22    22  ['quantisation_floor', 'saturation']
+
+  all 6 flagged on EVERY invocation: False
+
+Fired records by reason set (all 854):
+    89  ('quantisation_floor', 'saturation')
+    38  ('quantisation_floor',)
+    30  ('saturation',)
+    12  ('structural_exclusion',)
+
+Records where SATURATION is the ONLY reason (i.e. the defect screen is
+load-bearing, s/ulp would not have caught them): 30
+   causal_flash_attention/adversarial_large_magnitude_qk
+   flash_attention/adversarial_multi_tile_rescaling
+   scaled_dot_product_attention/adversarial_large_magnitude_qk
+
+[exited with code 0]

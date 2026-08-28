@@ -47,7 +47,30 @@ from verification.adversarial_search.prompts.base import (
     SYSTEM_PROMPT,
     format_first_turn,
     format_refine_turn,
+    format_rejection_turn,
 )
+
+
+class ProposalRejected(Exception):
+    """
+    The model produced output, but it could not be turned into a valid proposal
+    within MAX_RETRIES + 1 attempts (bad JSON, missing keys, or a shape-contract
+    violation).
+
+    RECOVERABLE, and distinct from an LLM outage on purpose. A transport or API
+    failure raises out of _llm_call uncaught and still kills the worker, which is
+    correct -- there is nothing to recover from. This exception means the worker
+    is healthy and merely produced a bad proposal, so the coordinator resets it
+    and keeps going rather than forfeiting the rest of its budget.
+
+    Why this exists: before 2026-08-21 exhaustion raised a bare RuntimeError and
+    coordinator._worker_loop caught it with a plain `return`, abandoning every
+    remaining iteration. That was measured -- in the 2026-08-21
+    causal_flash_attention run, worker w0 died at iteration 13 and forfeited 6
+    iterations, which is why that run produced 74 proposals instead of 80. Adding
+    shape constraints raises the rejection rate, so leaving that path in place
+    would have made 1b a net throughput LOSS.
+    """
 
 
 class AdversarialWorker:
@@ -110,16 +133,24 @@ class AdversarialWorker:
                         {"role": "assistant", "content": raw},
                         {
                             "role": "user",
-                            "content": (
-                                f"Your response failed schema validation: {e}\n"
-                                f"Respond with ONLY the JSON proposal schema. "
-                                f"No markdown, no text outside the JSON object."
-                            ),
+                            "content": format_rejection_turn(e, self.operator),
                         },
                     ]
 
-        raise RuntimeError(
-            f"Worker {self.worker_id} failed to produce valid JSON after "
+        # Leave the worker in a CLEAN state so the caller can retry.
+        #
+        # _call_and_parse appends the user message to self._history on entry but
+        # appends the assistant reply only on SUCCESS. Without this pop, a failed
+        # call leaves a dangling user turn with no reply, and the next call
+        # appends a second user message straight after it -- two user turns in a
+        # row, which is malformed for most chat APIs and poisons every subsequent
+        # attempt by this worker. Recovery in coordinator._worker_loop depends on
+        # the worker still being usable after a rejection, so this matters.
+        if self._history and self._history[-1].get("role") == "user":
+            self._history.pop()
+
+        raise ProposalRejected(
+            f"Worker {self.worker_id} failed to produce a valid proposal after "
             f"{self.MAX_RETRIES + 1} attempts. Last error: {last_error}"
         )
 

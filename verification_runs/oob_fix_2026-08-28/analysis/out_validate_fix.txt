@@ -1,0 +1,32 @@
+C1 A-arm verdicts identical to banked pre-fix: YES
+   summary pre {'n_mutants': 40, 'n_caught': 40, 'catch_rate': 1.0, 'n_ref': 200, 'n_fp': 0, 'fp_rate': 0.0}  fix {'n_mutants': 40, 'n_caught': 40, 'catch_rate': 1.0, 'n_ref': 200, 'n_fp': 0, 'fp_rate': 0.0}
+C1 G-arm verdicts identical to banked pre-fix: YES
+   summary pre {'n_mutants': 40, 'n_caught': 40, 'catch_rate': 1.0, 'n_ref': 200, 'n_fp': 0, 'fp_rate': 0.0}  fix {'n_mutants': 40, 'n_caught': 40, 'catch_rate': 1.0, 'n_ref': 200, 'n_fp': 0, 'fp_rate': 0.0}
+
+C4 catch attribution identical: YES
+
+DRAW-THEN-SLICE: records changed outside the fixed classes: 10  *** STREAM SHIFTED ***
+   changed: ('frobenius_norm', 'wrong_norm', 'ref0', 'perturbation_tolerance')
+   changed: ('frobenius_norm', 'wrong_norm', 'ref0', 'adversarial_dominant_outlier')
+   changed: ('frobenius_norm', 'wrong_norm', 'ref1', 'perturbation_tolerance')
+   changed: ('frobenius_norm', 'wrong_norm', 'ref1', 'adversarial_dominant_outlier')
+   changed: ('frobenius_norm', 'wrong_norm', 'ref2', 'perturbation_tolerance')
+   records changed inside the two fixed classes: 31 (expected: all that carry measured values)
+
+C2 the two fixed classes, post-fix:
+   layernorm/adversarial_non_power_of_two: 16 records, 16 DISTINCT fingerprints (collapse RESOLVED), gram_n_valid={20: 16}, gram fires 0, worst |log10 r| = 0.0
+   rmsnorm/adversarial_non_power_of_two: 15 records, 15 DISTINCT fingerprints (collapse RESOLVED), gram_n_valid={20: 15}, gram fires 0, worst |log10 r| = 0.0
+
+--- follow-up: the 10 "changed outside fixed classes" records adjudicated ---
+All 10 are the frobenius_norm/wrong_norm entry (5 refs x 2 checks) -- the
+tl.atomic_add reference whose run-to-run nondeterminism is already documented
+(RESULTS_SUMMARY determinism-flake note). Cross-check on sulp/adaptive_tol
+pairs: pre-fix G (2026-08-27) vs pre-fix D (2026-08-26), same seeds, no code
+change: frobenius differs on 4/10 shared records -- the SAME instability as
+pre-fix-vs-post-fix (4/10). matmul control: 154 shared records, 0 differences
+across all three arms. The draw-then-slice bit-identity guarantee therefore
+holds on every deterministic-kernel record; nothing was stream-shifted.
+
+--- C2 precision ---
+layernorm/non_pow2 (width 127): 16 records, worst |log10 r| = 0.000043 (ratio 1.00010), s/ulp 7809-17943
+rmsnorm/non_pow2   (width 127): 15 records, worst |log10 r| = 0.000029 (ratio 1.00007), s/ulp 7216-16718

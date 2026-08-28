@@ -1,0 +1,14 @@
+OK  softmax      mutated=0  verdict True->True  tol 0.000936368 vs 0.000936
+OK  softmax      mutated=1  verdict False->False  tol 0.000936368 vs 0.000936
+OK  gelu         mutated=0  verdict True->True  tol 0.013310721 vs 0.013311
+OK  gelu         mutated=1  verdict False->False  tol 0.013310721 vs 0.013311
+OK  layernorm    mutated=0  verdict True->True  tol 0.013811507 vs 0.013812
+OK  layernorm    mutated=1  verdict False->False  tol 0.013811507 vs 0.013812
+OK  l2norm       mutated=0  verdict True->True  tol 0.001218355 vs 0.001218
+OK  l2norm       mutated=1  verdict False->False  tol 0.001218355 vs 0.001218
+OK  sum_red      mutated=0  verdict True->True  tol 0.106245227 vs 0.106245
+OK  sum_red      mutated=1  verdict False->False  tol 0.106245227 vs 0.106245
+
+FLAG-OFF IDENTITY: PASS
+
+[exited with code 0]

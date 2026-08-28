@@ -1,0 +1,22 @@
+D rc 0 19.6s ['[D_defect_n40] SUMMARY catch 40/40 fp 0/200']
+
+CONVERGENCE of the defect statistic
+   samples   worst in-scope defect  margin to 10%  records fired
+         3                  8.613%          1.16x            182
+        20                  9.605%          1.04x            169
+        40                  9.605%          1.04x            169
+
+  classification disagreements  3 vs 40 : 18 / 854
+  classification disagreements  20 vs 40 : 0 / 854
+
+GROUND-TRUTH out-of-scope defects (the 6 banked attention variants), at 40 samples
+  causal_flash_attention/adversarial_large_magnitude_qk           min       6.6%
+  flash_attention/adversarial_equal_attention_weights      min     900.0%
+  flash_attention/adversarial_last_tile_dropped            min     900.0%
+  flash_attention/adversarial_multi_tile_rescaling         min     100.0%
+  flash_attention/adversarial_skip_rescaling               min     900.0%
+  scaled_dot_product_attention/adversarial_large_magnitude_qk           min      11.1%
+
+  least out-of-scope 6.6%  vs  worst in-scope 9.6%   ->  separation 0.68x
+
+[exited with code 0]

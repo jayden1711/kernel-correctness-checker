@@ -1,0 +1,50 @@
+======================================================================
+SIGNAL 1 -- linearisation defect   (high = nonlinear = out of scope)
+======================================================================
+  in-scope, per-operator medians : 0.006% .. 1.518%  (worst: cross_entropy)
+  in-scope, worst SINGLE invocation over all 228 : 3.66%
+  in-scope attention variants    : 0.1% .. 0.3%
+  OUT-OF-SCOPE variants          : 23.7% .. 900.0%
+
+  defect
+    extreme in-scope     :         3.66 %
+    extreme out-of-scope :        23.70 %
+    separation           :          6.5x
+    THRESHOLD (geo mid)  :         9.31 %
+    margin either side   :          2.5x
+
+======================================================================
+SIGNAL 2 -- s/ulp   (low = below fp granularity = out of scope)
+======================================================================
+  out-of-scope (fp floor)        : 2.00 .. 3.00
+  in-scope attention variants    : 6,408 .. 91,595
+  in-scope non-attention MINIMUM : >= 3,350   (all 26 ops except cross_entropy)
+
+  Why the statistic must be the MEDIAN, not the MIN:
+    cross_entropy min s/ulp    = 2.00   (IN SCOPE)
+    fp-floor variants  s/ulp   = 2.00 .. 3.00   (OUT OF SCOPE)
+    -> on the MIN statistic the classes OVERLAP; no threshold separates them.
+    cross_entropy median s/ulp = 360
+    -> on the MEDIAN they separate by 120x.
+
+  s/ulp (median)
+    extreme in-scope     :       360.00 ulp
+    extreme out-of-scope :         3.00 ulp
+    separation           :        120.0x
+    THRESHOLD (geo mid)  :        32.86 ulp
+    margin either side   :         11.0x
+
+======================================================================
+REJECTED SIGNALS -- recorded so they are not re-proposed
+======================================================================
+  CV median  in-scope 0.181..0.270   out-of-scope 0.000..1.869
+    -> OVERLAPS. skip_rescaling (out of scope) has CV 0.080, BELOW every
+       in-scope variant. GPU_NATIVE.md Section 4 also measured CV ranging
+       0.080-3.333 across seeds on one variant. Unusable, as already found.
+  peak attn weight  in-scope 0.291..1.000   out-of-scope 0.016..1.000
+    -> OVERLAPS at 1.000. Falsified in GPU_NATIVE.md Section 4.
+
+======================================================================
+ADOPTED:  defect >= 9.31%   OR   median(s/ulp) < 32.86
+ROUNDED:  defect >= 10.0%            OR   median(s/ulp) < 32.0
+======================================================================

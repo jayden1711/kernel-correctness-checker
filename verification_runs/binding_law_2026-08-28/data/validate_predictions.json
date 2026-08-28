@@ -1,0 +1,292 @@
+{
+ "layernorm": {
+  "table": [
+   [
+    "zero_mean",
+    null,
+    " (crossing above bisection range)"
+   ],
+   [
+    "unit_variance",
+    0.0005085699260751753,
+    ""
+   ],
+   [
+    "scale_invariance",
+    null,
+    "derived inert (comparator is scaled-vs-scaled or zero)"
+   ],
+   [
+    "affine_correctness",
+    1.9313248963870678e-05,
+    ""
+   ],
+   [
+    "precision_coercion",
+    0.0002498312203961052,
+    ""
+   ],
+   [
+    "cross_shape",
+    0.00012159123597314851,
+    ""
+   ],
+   [
+    "weight_magnitude",
+    0.0012158938443418345,
+    ""
+   ],
+   [
+    "perturbation_tolerance",
+    0.003401373047583314,
+    ""
+   ],
+   [
+    "adversarial_skip_mean_subtract",
+    null,
+    " (above range)"
+   ],
+   [
+    "adversarial_zero_variance_rows",
+    null,
+    " (above range)"
+   ],
+   [
+    "adversarial_large_variance",
+    0.0037186716184596765,
+    ""
+   ],
+   [
+    "adversarial_wrong_variance_trigger",
+    0.0034575520554803734,
+    ""
+   ],
+   [
+    "adversarial_non_power_of_two",
+    0.0035023421803135747,
+    ""
+   ]
+  ],
+  "binding": [
+   "affine_correctness",
+   1.9313248963870678e-05
+  ],
+  "second": [
+   "cross_shape",
+   0.00012159123597314851
+  ],
+  "gap": 6.295742171636135
+ },
+ "softmax": {
+  "table": [
+   [
+    "rows_sum_to_one",
+    0.00010988077761163979,
+    ""
+   ],
+   [
+    "shift_invariance",
+    null,
+    "derived inert (comparator is scaled-vs-scaled or zero)"
+   ],
+   [
+    "monotonicity",
+    null,
+    "derived inert (comparator is scaled-vs-scaled or zero)"
+   ],
+   [
+    "precision_coercion",
+    0.0049787623434638115,
+    ""
+   ],
+   [
+    "cross_shape",
+    0.0004352549614427788,
+    ""
+   ],
+   [
+    "weight_magnitude",
+    0.002,
+    ""
+   ],
+   [
+    "perturbation_tolerance",
+    0.005322755504351124,
+    ""
+   ],
+   [
+    "adversarial_max_in_last_tile",
+    1e-06,
+    "floor-bound"
+   ],
+   [
+    "adversarial_equal_logits",
+    0.013251459810952987,
+    ""
+   ],
+   [
+    "adversarial_extreme_range",
+    1e-06,
+    "floor-bound"
+   ],
+   [
+    "adversarial_non_power_of_two",
+    0.005598918031906336,
+    ""
+   ],
+   [
+    "adversarial_near_zero_variance",
+    0.0001279995269792871,
+    "floor-bound"
+   ]
+  ],
+  "binding": [
+   "adversarial_max_in_last_tile",
+   1e-06
+  ],
+  "second": [
+   "adversarial_extreme_range",
+   1e-06
+  ],
+  "gap": 1.0
+ },
+ "gelu": {
+  "table": [
+   [
+    "zero_at_origin",
+    null,
+    "derived inert (comparator is scaled-vs-scaled or zero)"
+   ],
+   [
+    "monotonic_nonneg",
+    null,
+    "derived inert (comparator is scaled-vs-scaled or zero)"
+   ],
+   [
+    "cross_shape",
+    0.00012253455746819762,
+    ""
+   ],
+   [
+    "weight_magnitude",
+    0.001000002442002442,
+    ""
+   ],
+   [
+    "perturbation_tolerance",
+    0.0035721900589628895,
+    ""
+   ],
+   [
+    "adversarial_large_magnitude",
+    0.0034151913701059287,
+    ""
+   ],
+   [
+    "adversarial_near_global_min",
+    7.948718130559468e-06,
+    ""
+   ]
+  ],
+  "binding": [
+   "adversarial_near_global_min",
+   7.948718130559468e-06
+  ],
+  "second": [
+   "cross_shape",
+   0.00012253455746819762
+  ],
+  "gap": 15.415637522370298
+ },
+ "l2norm": {
+  "table": [
+   [
+    "unit_l2_norm",
+    0.001009880670323292,
+    ""
+   ],
+   [
+    "positive_scale_invariance",
+    null,
+    "derived inert (comparator is scaled-vs-scaled or zero)"
+   ],
+   [
+    "cross_shape",
+    0.0003412097627377337,
+    ""
+   ],
+   [
+    "weight_magnitude",
+    0.005906285437472827,
+    ""
+   ],
+   [
+    "perturbation_tolerance",
+    0.0033529204112087226,
+    ""
+   ],
+   [
+    "adversarial_high_variance_row",
+    0.002647239068582233,
+    ""
+   ]
+  ],
+  "binding": [
+   "cross_shape",
+   0.0003412097627377337
+  ],
+  "second": [
+   "unit_l2_norm",
+   0.001009880670323292
+  ],
+  "gap": 2.959706258755331
+ },
+ "sum_reduction": {
+  "table": [
+   [
+    "permutation_invariance",
+    null,
+    "derived inert (comparator is scaled-vs-scaled or zero)"
+   ],
+   [
+    "scale_linearity",
+    null,
+    "derived inert (comparator is scaled-vs-scaled or zero)"
+   ],
+   [
+    "cross_shape",
+    0.0001011832141245464,
+    ""
+   ],
+   [
+    "weight_magnitude",
+    0.0010000000764432485,
+    ""
+   ],
+   [
+    "perturbation_tolerance",
+    0.003601848613262912,
+    ""
+   ],
+   [
+    "adversarial_second_half_dominant",
+    0.0037488950472069817,
+    ""
+   ],
+   [
+    "adversarial_large_magnitude",
+    0.003601848452746636,
+    ""
+   ]
+  ],
+  "binding": [
+   "cross_shape",
+   0.0001011832141245464
+  ],
+  "second": [
+   "weight_magnitude",
+   0.0010000000764432485
+  ],
+  "gap": 9.883062967463639
+ }
+}
