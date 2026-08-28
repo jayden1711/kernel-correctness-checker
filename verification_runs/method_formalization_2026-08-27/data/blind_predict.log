@@ -1,0 +1,19 @@
+64x256_randn_s0            L=1.0000 y=3.2986+-0.1688 y_M3=3.3151 m3/gram=1.0050
+64x256_randn_s1            L=1.0000 y=3.3280+-0.1849 y_M3=3.3068 m3/gram=0.9936
+64x256_large_magnitude_s0  L=1.0000 y=3.7589+-0.1607 y_M3=4.5787 m3/gram=1.2181
+64x256_large_magnitude_s1  L=1.0000 y=3.7308+-0.1506 y_M3=4.5751 m3/gram=1.2263
+64x256_ascending_s0        L=1.0000 y=3.2907+-0.1819 y_M3=3.3039 m3/gram=1.0040
+64x256_ascending_s1        L=1.0000 y=3.3023+-0.1794 y_M3=3.3000 m3/gram=0.9993
+32x333_randn_s0            L=1.0000 y=3.1041+-0.1723 y_M3=3.1291 m3/gram=1.0081
+32x333_randn_s1            L=1.0000 y=3.1085+-0.1854 y_M3=3.1179 m3/gram=1.0030
+32x333_large_magnitude_s0  L=1.0000 y=3.6113+-0.1644 y_M3=4.4919 m3/gram=1.2439
+32x333_large_magnitude_s1  L=1.0000 y=3.5767+-0.1595 y_M3=4.4919 m3/gram=1.2559
+32x333_ascending_s0        L=1.0000 y=3.0867+-0.1824 y_M3=3.1038 m3/gram=1.0055
+32x333_ascending_s1        L=1.0000 y=3.0959+-0.1922 y_M3=3.0944 m3/gram=0.9995
+16x512_randn_s0            L=1.0000 y=2.9114+-0.1816 y_M3=2.9129 m3/gram=1.0005
+16x512_randn_s1            L=1.0000 y=2.9121+-0.1819 y_M3=2.9685 m3/gram=1.0193
+16x512_large_magnitude_s0  L=1.0000 y=3.4406+-0.1758 y_M3=4.4228 m3/gram=1.2855
+16x512_large_magnitude_s1  L=1.0000 y=3.4142+-0.1633 y_M3=4.4412 m3/gram=1.3008
+16x512_ascending_s0        L=1.0000 y=2.8801+-0.1950 y_M3=2.8925 m3/gram=1.0043
+16x512_ascending_s1        L=1.0000 y=2.8896+-0.1991 y_M3=2.8844 m3/gram=0.9982
+banked 18 pre-registered predictions

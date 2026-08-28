@@ -1,0 +1,85 @@
+e678721f in  (4, 8, 16, 16)   repro 1/1  unit_variance=check-domain false alarm
+    unit_variance: faithful[max |var - 1| across (n,c) instances: 1.000000]
+65948e8d in  (8, 16, 32)      repro 1/1  unit_variance=check-domain false alarm
+    unit_variance: faithful[max |var - 1| across (n,c) instances: 1.000000]
+646a25ef in  (4, 8, 16)       repro 1/1  unit_variance=check-domain false alarm
+    unit_variance: faithful[max |var - 1| across (n,c) instances: 1.000000]
+4dcf4ad3 in  (4, 8, 16, 16)   repro 1/1  unit_variance=check-domain false alarm
+    unit_variance: faithful[max |var - 1| across (n,c) instances: 1.000000]
+66a284c1 in  (4, 8, 16)       repro 1/1  unit_variance=check-domain false alarm
+    unit_variance: faithful[max |var - 1| across (n,c) instances: 1.000000]
+e93dfc17 in  (4, 8, 16, 16)   repro 1/1  unit_variance=check-domain false alarm
+    unit_variance: faithful[max |var - 1| across (n,c) instances: 1.000000]
+096858bc in  (4, 8, 16)       repro 1/1  unit_variance=check-domain false alarm
+    unit_variance: faithful[max |var - 1| across (n,c) instances: 1.000000]
+f6039549 in  (4, 8, 16, 16)   repro 1/1  unit_variance=check-domain false alarm
+    unit_variance: faithful[max |var - 1| across (n,c) instances: 1.000000]
+2dc26e8d in  (4, 8, 16)       repro 1/1  unit_variance=check-domain false alarm
+    unit_variance: faithful[max |var - 1| across (n,c) instances: 1.000000]
+e7a28a3a in  (4, 8, 16, 16)   repro 1/1  unit_variance=check-domain false alarm
+    unit_variance: faithful[max |var - 1| across (n,c) instances: 1.000000]
+e59b42a1 in  (4, 8, 16, 16)   repro 1/1  unit_variance=check-domain false alarm
+    unit_variance: faithful[max |var - 1| across (n,c) instances: 1.000000]
+55d57718 in  (8, 16, 32)      repro 1/1  unit_variance=check-domain false alarm
+    unit_variance: faithful[max |var - 1| across (n,c) instances: 1.000000]
+7bfc0f13 in  (4, 8, 16, 16)   repro 10/10  positive_scale_invariance=check-domain false alarm; unit_variance=check-domain false alarm
+    positive_scale_invariance: faithful[max diff under positive rescale of x: 0.267262]
+    unit_variance: faithful[max |var - 1| across (n,c) instances: 0.999152]
+bfd36998 in  (4, 8, 16, 16)   repro 10/10  positive_scale_invariance=check-domain false alarm; unit_variance=check-domain false alarm; zero_mean=check-domain false alarm
+    positive_scale_invariance: faithful[max diff under positive rescale of x: 0.273171]
+    unit_variance: faithful[max |var - 1| across (n,c) instances: 0.999151]
+    zero_mean: faithful[max |mean| across (n,c) instances: 0.002929]
+075400e4 in  (8, 16, 64)      repro 10/10  positive_scale_invariance=check-domain false alarm; unit_variance=check-domain false alarm
+    positive_scale_invariance: faithful[max diff under positive rescale of x: 0.002714]
+    unit_variance: faithful[max |var - 1| across (n,c) instances: 1.000000]
+2d7f4f3e ln  (512, 512)       repro 0/10  scale_invariance=check-domain false alarm; unit_variance=check-domain false alarm; zero_mean=check-domain false alarm
+    scale_invariance: faithful[Scale invariance violated; max_err=0.215037.]
+    unit_variance: faithful[Row variances deviate from 1.0; max deviation=0.106775.]
+    zero_mean: faithful[Row means are not zero; max |mean|=0.010740.]
+35205e68 ln  (512, 512)       repro 5/10  affine_correctness=check-domain false alarm; precision_coercion=check-domain false alarm
+    affine_correctness: faithful[Affine transform incorrect; max_err=0.000273.]
+    precision_coercion: faithful[fp32 layernorm error=7.577432 exceeds atol=0.001. Possible fp16 coercion in va]
+a7e94cf9 ln  (512, 512)       repro 10/10  precision_coercion=check-domain false alarm
+    precision_coercion: faithful[fp32 layernorm error=7.577293 exceeds atol=0.001. Possible fp16 coercion in va]
+f2fac9f6 ln  (512, 512)       repro 1/1  precision_coercion=check-domain false alarm; unit_variance=check-domain false alarm
+    precision_coercion: faithful[fp32 layernorm error=3.000000 exceeds atol=0.001. Possible fp16 coercion in va]
+    unit_variance: faithful[Row variances deviate from 1.0; max deviation=1.000000.]
+15b63912 ln  (512, 512)       repro 0/10  scale_invariance=check-domain false alarm; unit_variance=check-domain false alarm; zero_mean=check-domain false alarm
+    scale_invariance: faithful[Scale invariance violated; max_err=0.209386.]
+    unit_variance: faithful[Row variances deviate from 1.0; max deviation=0.106735.]
+    zero_mean: faithful[Row means are not zero; max |mean|=0.001265.]
+3b2a37a6 ln  (256, 512)       repro 10/10  precision_coercion=check-domain false alarm; scale_invariance=check-domain false alarm; unit_variance=check-domain false alarm
+    precision_coercion: faithful[fp32 layernorm error=7.474702 exceeds atol=0.001. Possible fp16 coercion in va]
+    scale_invariance: faithful[Scale invariance violated; max_err=0.004467.]
+    unit_variance: faithful[Row variances deviate from 1.0; max deviation=0.001193.]
+d8eb4716 ln  (512, 512)       repro 10/10  precision_coercion=check-domain false alarm
+    precision_coercion: faithful[fp32 layernorm error=7.577298 exceeds atol=0.001. Possible fp16 coercion in va]
+16c0b6eb ln  (512, 512)       repro 1/1  unit_variance=check-domain false alarm
+    unit_variance: faithful[Row variances deviate from 1.0; max deviation=1.000000.]
+a7867d2c ln  (256, 512)       repro 10/10  precision_coercion=check-domain false alarm; scale_invariance=check-domain false alarm; unit_variance=check-domain false alarm
+    precision_coercion: faithful[fp32 layernorm error=7.278717 exceeds atol=0.001. Possible fp16 coercion in va]
+    scale_invariance: faithful[Scale invariance violated; max_err=0.415759.]
+    unit_variance: faithful[Row variances deviate from 1.0; max deviation=0.106735.]
+f322abe4 ln  (512, 333)       repro 10/10  affine_correctness=REFERENCE-BUG-CAUSED; precision_coercion=check-domain false alarm; unit_variance=REFERENCE-BUG-CAUSED
+    affine_correctness: faithful[Affine transform incorrect; max_err=7.854332.]
+    affine_correctness: ideal   [Affine correctness holds.]
+    precision_coercion: faithful[fp32 layernorm error=6.343874 exceeds atol=0.001. Possible fp16 coercion in va]
+    precision_coercion: ideal   [fp32 layernorm error=7.506280 exceeds atol=0.001. Possible fp16 coercion in va]
+    unit_variance: faithful[Row variances deviate from 1.0; max deviation=0.986430.]
+    unit_variance: ideal   [Unit-variance property holds.]
+a47a431b ln  (64, 64)         repro 10/10  unit_variance=check-domain false alarm
+    unit_variance: faithful[Row variances deviate from 1.0; max deviation=1.000000.]
+0eb28274 rms (512, 512)       repro 10/10  precision_coercion=check-domain false alarm; scale_invariance=check-domain false alarm; unit_rms=check-domain false alarm
+    precision_coercion: faithful[Precision coercion suspected: fp32_err=0.004639, fp16_err=0.004635.]
+    scale_invariance: faithful[Scale invariance violated; max_err=0.001458.]
+    unit_rms: faithful[Row RMS deviates from 1.0; max deviation=0.999997.]
+dc510d61 rms (512, 512)       repro 10/10  precision_coercion=check-domain false alarm
+    precision_coercion: faithful[Precision coercion suspected: fp32_err=4.590254, fp16_err=4.597292.]
+
+28 records: 27 pure check-domain false alarms, 1 with reference-bug-caused failures, 0 mixed/other
+
+=== post-fix wrapper (identity gamma/beta) precision check on the two wrapper-only records ===
+a7e94cf9: seed0 -> PASS [Precision check passed: fp32_err=0.000000.]
+a7e94cf9: fixed-wrapper precision fails 0/10 seeds
+d8eb4716: seed0 -> PASS [Precision check passed: fp32_err=0.000012.]
+d8eb4716: fixed-wrapper precision fails 0/10 seeds

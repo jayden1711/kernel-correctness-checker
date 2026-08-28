@@ -1,0 +1,38 @@
+
+=== A_lnfix.json.gz: 854 perturbation-family records, 126 floor-bound (14.8%)
+    floor-bound by op: {'argmax': 6, 'argmin': 1, 'flash_attention': 44, 'gelu': 6, 'groupnorm': 6, 'instancenorm': 6, 'log_softmax': 6, 'rmsnorm': 15, 'softmax': 30, 'swish': 6}
+    floor-bound REF max_err: 116 records, nonzero 0
+    floor-bound MUTANT records: 7 failing (smallest err 0.006362)
+    floor-bound passing-mutant max_err: nonzero 0
+       floor |  catch   FP |  flips vs shipped | cat-1 size
+       0e+00 | 40/40    0 |                 0 |        126
+       1e-09 | 40/40    0 |                 0 |        126
+       1e-08 | 40/40    0 |                 0 |        126
+       1e-07 | 40/40    0 |                 0 |        126
+       3e-07 | 40/40    0 |                 0 |        126
+       1e-06 | 40/40    0 |                 0 |        126
+       3e-06 | 40/40    0 |                 0 |        126
+       1e-05 | 40/40    0 |                 0 |        126
+       1e-04 | 40/40    0 |                 0 |        127
+       1e-03 | 40/40    0 |                 0 |        189
+       1e-02 | 40/40    0 |                 0 |        368
+       1e-01 | 40/40    0 |                 0 |        609
+
+=== G_lnfix.json.gz: 854 perturbation-family records, 126 floor-bound (14.8%)
+    floor-bound by op: {'argmax': 6, 'argmin': 1, 'flash_attention': 44, 'gelu': 6, 'groupnorm': 6, 'instancenorm': 6, 'log_softmax': 6, 'rmsnorm': 15, 'softmax': 30, 'swish': 6}
+    floor-bound REF max_err: 116 records, nonzero 0
+    floor-bound MUTANT records: 7 failing (smallest err 0.006362)
+    floor-bound passing-mutant max_err: nonzero 0
+       floor |  catch   FP |  flips vs shipped | cat-1 size
+       0e+00 | 40/40    0 |                 0 |        126
+       1e-09 | 40/40    0 |                 0 |        126
+       1e-08 | 40/40    0 |                 0 |        126
+       1e-07 | 40/40    0 |                 0 |        126
+       3e-07 | 40/40    0 |                 0 |        126
+       1e-06 | 40/40    0 |                 0 |        126
+       3e-06 | 40/40    0 |                 0 |        126
+       1e-05 | 40/40    0 |                 0 |        126
+       1e-04 | 40/40    0 |                 0 |        127
+       1e-03 | 40/40    0 |                 0 |        189
+       1e-02 | 40/40    0 |                 0 |        368
+       1e-01 | 40/40    0 |                 0 |        609

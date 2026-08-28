@@ -1,0 +1,29 @@
+proposal idx 1 (random, 10 draw(s)):
+  recorded-world: ref_buggy weights-sum dev 0.1637 (fails>0.001: 10/10)   [recorded: Reference failed]
+  corrected-world: ref passes weights-sum 10/10 (dev 3.58e-07)
+    skip_rescaling   caught 0/10  caught-with-naive-gap 0/10
+    approx_denom     caught 10/10  caught-with-naive-gap 0/10
+    drop_last_tile   caught 0/10  caught-with-naive-gap 0/10
+    wrong_mask       caught 10/10  caught-with-naive-gap 0/10
+  => counterfactual is_hit (lower bound): 0/10
+proposal idx 6 (random, 10 draw(s)):
+  recorded-world: ref_buggy weights-sum dev 0.1897 (fails>0.001: 10/10)   [recorded: Reference failed]
+  corrected-world: ref passes weights-sum 10/10 (dev 2.15e-06)
+    skip_rescaling   caught 10/10  caught-with-naive-gap 0/10
+    approx_denom     caught 10/10  caught-with-naive-gap 0/10
+    drop_last_tile   caught 0/10  caught-with-naive-gap 0/10
+    wrong_mask       caught 10/10  caught-with-naive-gap 0/10
+  => counterfactual is_hit (lower bound): 0/10
+proposal idx 9 (deterministic, 1 draw(s)):
+  recorded-world: ref_buggy weights-sum dev 0.1874 (fails>0.001: 1/1)   [recorded: Reference failed]
+  corrected-world: ref passes weights-sum 1/1 (dev 1.67e-06)
+    skip_rescaling   caught 1/1  caught-with-naive-gap 0/1
+    approx_denom     caught 1/1  caught-with-naive-gap 0/1
+    drop_last_tile   caught 0/1  caught-with-naive-gap 0/1
+    wrong_mask       caught 1/1  caught-with-naive-gap 0/1
+  => counterfactual is_hit (lower bound): 0/1
+skip_rescaling   vs buggy ref: naive_pass=True (max_err 1.7308e-04) | vs corrected: naive_pass=False (max_err 2.8259e-03)
+approx_denom     vs buggy ref: naive_pass=False (max_err 3.0032e-02) | vs corrected: naive_pass=False (max_err 2.7033e-02)
+drop_last_tile   vs buggy ref: naive_pass=False (max_err 1.3004e-02) | vs corrected: naive_pass=False (max_err 1.6002e-02)
+wrong_mask       vs buggy ref: naive_pass=False (max_err nan) | vs corrected: naive_pass=False (max_err nan)
+recorded verdict #9: gap-confirmed catch of skip_rescaling (naive passed vs buggy ref)

@@ -1,0 +1,31 @@
+torch 2.11.0+cu128 | triton 3.6.0 | Tesla T4
+operators: 27
+resuming, already done: 0
+[   2.3s]  1/27 relu
+[   3.0s]  2/27 leaky_relu
+[   3.8s]  3/27 sigmoid
+[   4.7s]  4/27 tanh
+[   5.6s]  5/27 selu
+[   6.4s]  6/27 elu
+[   7.1s]  7/27 softplus
+[   7.8s]  8/27 hardsigmoid
+[   8.6s]  9/27 new_gelu
+[  11.4s] 10/27 cumsum
+[  14.3s] 11/27 cumsum_reverse
+[  17.2s] 12/27 cumsum_exclusive
+[  20.1s] 13/27 masked_cumsum
+[  20.7s] 14/27 matvec
+[  25.9s] 15/27 batched_matmul
+[  26.8s] 16/27 diagonal_matmul
+[  28.3s] 17/27 triangular_matmul
+[  29.1s] 18/27 mse_loss
+[  29.9s] 19/27 huber_loss
+[  30.6s] 20/27 bce_loss
+[  31.2s] 21/27 kldiv_loss
+[  31.8s] 22/27 nll_loss
+[  37.0s] 23/27 rope
+[  47.1s] 24/27 swiglu
+[  47.6s] 25/27 logsumexp
+[  48.0s] 26/27 std_reduction
+[  48.5s] 27/27 var_reduction
+DONE in 48.6s

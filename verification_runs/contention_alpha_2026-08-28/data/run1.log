@@ -1,0 +1,29 @@
+pooled n = 2765  spawn n = 1400  forkserver n = 1365
+pooled max = 51.24, second/third = 23.26/16.31
+spawn: max = 51.24  p99 = 9.77  p95 = 5.95
+forkserver: max = 15.29  p99 = 10.44  p95 = 6.74
+
+== Q1: per-arm Hill (k = 25, 50, 100, 200) ==
+  pooled     k= 25: alpha = 3.75  [2.56, 7.44]
+  pooled     k= 50: alpha = 3.16  [2.55, 4.85]
+  pooled     k=100: alpha = 3.50  [2.88, 4.39]
+  pooled     k=200: alpha = 2.87  [2.35, 3.37]
+  spawn      k= 25: alpha = 2.81  [1.87, 4.45]
+  spawn      k= 50: alpha = 3.40  [2.42, 4.76]
+  spawn      k=100: alpha = 2.69  [2.26, 3.45]
+  spawn      k=200: alpha = 3.13  [2.72, 3.73]
+  forkserver k= 25: alpha = 5.15  [3.26, 9.45]
+  forkserver k= 50: alpha = 3.64  [3.08, 4.79]
+  forkserver k=100: alpha = 3.04  [2.28, 3.88]
+  forkserver k=200: alpha = 2.55  [2.29, 2.96]
+
+== Q2: two-point alpha_hat under alpha0 nulls ==
+  observed two-point alpha_hat (n1=560) = 1.26
+  alpha0 = 2.0: alpha_hat p5/p50/p95 = 0.70/1.79/11.94   P(alpha_hat <= 1.26) = 0.296
+  alpha0 = 2.5: alpha_hat p5/p50/p95 = 0.89/2.30/17.66   P(alpha_hat <= 1.26) = 0.165
+  alpha0 = 3.0: alpha_hat p5/p50/p95 = 1.06/2.66/17.01   P(alpha_hat <= 1.26) = 0.095
+  alpha0 = 3.5: alpha_hat p5/p50/p95 = 1.24/3.11/22.70   P(alpha_hat <= 1.26) = 0.053
+
+== Q3: exceedance family discrimination (per arm, u = p95) ==
+  spawn: n_exc = 70, pareto alpha_MLE = 3.19, logL pareto = -135.4, logL lognorm = -137.2, delta = +1.8 (pareto preferred)
+  forkserver: n_exc = 69, pareto alpha_MLE = 3.87, logL pareto = -125.0, logL lognorm = -124.1, delta = -0.9 (lognormal preferred)

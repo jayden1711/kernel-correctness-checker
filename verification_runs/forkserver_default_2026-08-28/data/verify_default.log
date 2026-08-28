@@ -1,0 +1,195 @@
+execute_proposal_batch use_forkserver default = True
+
+== causal_flash_attention: 40 proposals x 2 kernels ==
+
+-- pass A1 (spawn) --
+    [spawn] d592c244  11.72s
+    [spawn] 84a7f6f7  13.68s
+    [spawn] aff0c7f8  13.07s
+    [spawn] 225493a0  13.52s
+    [spawn] 32e58b8e  13.55s
+    [spawn] 2e429b94  12.20s
+    [spawn] 08c39f46  12.80s
+    [spawn] 5040d834  13.13s
+    [spawn] dd99c73c  13.27s
+    [spawn] 75f2dba6  13.45s
+    [spawn] 95e5b2ab  13.15s
+    [spawn] 981ae6d1  12.40s
+    [spawn] 8bb756a5  12.71s
+    [spawn] 2df138b8  12.40s
+    [spawn] f1789970  12.87s
+    [spawn] 6d343df5  13.29s
+    [spawn] 9287e744  13.41s
+    [spawn] 51a0e4b1  11.73s
+    [spawn] 4f1a90aa  13.06s
+    [spawn] 25fc1d7f  12.48s
+    [spawn] d28174c8  12.71s
+    [spawn] 4aff5bf2  12.93s
+    [spawn] 5f5dfdcf  12.58s
+    [spawn] 18fd01df  12.94s
+    [spawn] 216b90d8  14.47s
+    [spawn] 2b7abcc7  12.56s
+    [spawn] cef60aa3  13.21s
+    [spawn] 9581a75d  12.75s
+    [spawn] 65c17fa2   5.76s
+    [spawn] 5fc5a3f0  12.83s
+    [spawn] 4f874a50  12.48s
+    [spawn] 2d60bbe6  12.54s
+    [spawn] 59179721  12.68s
+    [spawn] 68b8c987  12.08s
+    [spawn] 02df180b  11.89s
+    [spawn] 29796446  12.61s
+    [spawn] b77b6f89  12.47s
+    [spawn] af2dc964   5.68s
+    [spawn] 793d3f0a   9.29s
+    [spawn] 3c811b90   9.07s
+
+-- pass D (default) --
+    [default] d592c244   8.48s
+    [default] 84a7f6f7   8.21s
+    [default] aff0c7f8   8.67s
+    [default] 225493a0   8.86s
+    [default] 32e58b8e   8.57s
+    [default] 2e429b94   8.75s
+    [default] 08c39f46   8.39s
+    [default] 5040d834   8.11s
+    [default] dd99c73c   8.30s
+    [default] 75f2dba6   8.14s
+    [default] 95e5b2ab   7.38s
+    [default] 981ae6d1   8.15s
+    [default] 8bb756a5   7.11s
+    [default] 2df138b8   7.34s
+    [default] f1789970   7.36s
+    [default] 6d343df5   7.20s
+    [default] 9287e744   8.08s
+    [default] 51a0e4b1   6.64s
+    [default] 4f1a90aa   8.27s
+    [default] 25fc1d7f   8.28s
+    [default] d28174c8   7.73s
+    [default] 4aff5bf2   6.02s
+    [default] 5f5dfdcf   6.89s
+    [default] 18fd01df   6.94s
+    [default] 216b90d8   7.30s
+    [default] 2b7abcc7   7.96s
+    [default] cef60aa3   8.75s
+    [default] 9581a75d   8.38s
+    [default] 65c17fa2   1.32s
+    [default] 5fc5a3f0   7.11s
+    [default] 4f874a50   6.27s
+    [default] 2d60bbe6   7.38s
+    [default] 59179721   7.07s
+    [default] 68b8c987   7.19s
+    [default] 02df180b   8.48s
+    [default] 29796446   7.29s
+    [default] b77b6f89   6.83s
+    [default] af2dc964   1.46s
+    [default] 793d3f0a   3.44s
+    [default] 3c811b90   3.77s
+
+-- pass A2 (spawn) --
+    [spawn] d592c244  13.19s
+    [spawn] 84a7f6f7  13.24s
+    [spawn] aff0c7f8  12.90s
+    [spawn] 225493a0  13.24s
+    [spawn] 32e58b8e  11.94s
+    [spawn] 2e429b94  13.20s
+    [spawn] 08c39f46  12.23s
+    [spawn] 5040d834  13.22s
+    [spawn] dd99c73c  13.49s
+    [spawn] 75f2dba6  12.12s
+    [spawn] 95e5b2ab  13.15s
+    [spawn] 981ae6d1  12.45s
+    [spawn] 8bb756a5  13.03s
+    [spawn] 2df138b8  12.15s
+    [spawn] f1789970  12.76s
+    [spawn] 6d343df5  13.14s
+    [spawn] 9287e744  12.47s
+    [spawn] 51a0e4b1  11.96s
+    [spawn] 4f1a90aa  12.45s
+    [spawn] 25fc1d7f  12.65s
+    [spawn] d28174c8  13.38s
+    [spawn] 4aff5bf2  13.09s
+    [spawn] 5f5dfdcf  12.52s
+    [spawn] 18fd01df  12.57s
+    [spawn] 216b90d8  13.00s
+    [spawn] 2b7abcc7  12.93s
+    [spawn] cef60aa3  12.38s
+    [spawn] 9581a75d  12.98s
+    [spawn] 65c17fa2   7.53s
+    [spawn] 5fc5a3f0  12.63s
+    [spawn] 4f874a50  12.82s
+    [spawn] 2d60bbe6  12.22s
+    [spawn] 59179721  12.49s
+    [spawn] 68b8c987  11.55s
+    [spawn] 02df180b  12.69s
+    [spawn] 29796446  12.53s
+    [spawn] b77b6f89  11.51s
+    [spawn] af2dc964   5.79s
+    [spawn] 793d3f0a   9.06s
+    [spawn] 3c811b90   8.60s
+  A1  median  12.71s  {'spawn': 80}  torch_import_p50 4665.0ms  timeouts 0
+  D   median   7.38s  {'forkserver': 80}  torch_import_p50 0.4ms  timeouts 0
+  A2  median  12.60s  {'spawn': 80}  torch_import_p50 5571.2ms  timeouts 0
+  gate1 default-all-forkserver: True   gate2 drift 0.9% (<2%: True)   gate3 timeouts equal: True
+  effect: 0.58x (-42%) vs spawn mean
+
+  -- forced-timeout probe (timeout=1s) --
+     spawn      3.65s  2/2  {None: 2}
+     default    2.16s  2/2  {None: 2}
+     => IDENTICAL
+
+== flash_attention: 12 proposals x 5 kernels ==
+
+-- pass A1 (spawn) --
+    [spawn] dd66040d  14.07s
+    [spawn] acba779f  13.92s
+    [spawn] 57fe75c6  14.23s
+    [spawn] c8fb23a5  12.70s
+    [spawn] 72c2ceb4  13.35s
+    [spawn] 41856e0f  13.61s
+    [spawn] 87b18b58  13.31s
+    [spawn] 6382056f  14.01s
+    [spawn] ebf4bc5a  12.70s
+    [spawn] 9de28dc0  13.41s
+    [spawn] a8a29f78  13.14s
+    [spawn] e45ff3fb  12.60s
+
+-- pass D (default) --
+    [default] dd66040d   9.44s
+    [default] acba779f   8.43s
+    [default] 57fe75c6   9.48s
+    [default] c8fb23a5   9.64s
+    [default] 72c2ceb4   7.36s
+    [default] 41856e0f   9.50s
+    [default] 87b18b58   9.06s
+    [default] 6382056f   9.00s
+    [default] ebf4bc5a   7.11s
+    [default] 9de28dc0   7.10s
+    [default] a8a29f78   6.72s
+    [default] e45ff3fb   6.82s
+
+-- pass A2 (spawn) --
+    [spawn] dd66040d  13.91s
+    [spawn] acba779f  13.99s
+    [spawn] 57fe75c6  14.30s
+    [spawn] c8fb23a5  13.22s
+    [spawn] 72c2ceb4  12.55s
+    [spawn] 41856e0f  14.24s
+    [spawn] 87b18b58  14.30s
+    [spawn] 6382056f  14.50s
+    [spawn] ebf4bc5a  12.79s
+    [spawn] 9de28dc0  12.33s
+    [spawn] a8a29f78  12.84s
+    [spawn] e45ff3fb  12.49s
+  A1  median  13.38s  {'spawn': 60}  torch_import_p50 5712.0ms  timeouts 0
+  D   median   8.71s  {'forkserver': 60}  torch_import_p50 0.4ms  timeouts 0
+  A2  median  13.56s  {'spawn': 60}  torch_import_p50 5632.7ms  timeouts 0
+  gate1 default-all-forkserver: True   gate2 drift 1.4% (<2%: True)   gate3 timeouts equal: True
+  effect: 0.65x (-35%) vs spawn mean
+
+  -- forced-timeout probe (timeout=1s) --
+     spawn      4.60s  5/5  {None: 5}
+     default    2.49s  5/5  {None: 5}
+     => IDENTICAL
+
+wrote /content/forkserver_default.json

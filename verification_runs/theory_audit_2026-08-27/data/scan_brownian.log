@@ -1,0 +1,33 @@
+=== banked GPU measurements (y = tol / 3 sigma L_closed) ===
+cumsum             y_meas mean 3.4706 sd 0.2674 (n=6)   y_M3 mean 4.2435
+cumsum_reverse     y_meas mean 3.4922 sd 0.2062 (n=6)   y_M3 mean 4.2444
+cumsum_exclusive   y_meas mean 3.3830 sd 0.0731 (n=6)   y_M3 mean 4.2431
+masked_cumsum      y_meas mean 3.2205 sd 0.1548 (n=6)   y_M3 mean 4.0661
+
+=== exact-law (Gram-matrix) prediction, no fitted constants ===
+cumsum             y_pred 3.4476 +- 0.1689   meas/pred 1.0067   z(meas mean vs pred) +0.21
+cumsum_reverse     y_pred 3.4650 +- 0.1603   meas/pred 1.0078   z(meas mean vs pred) +0.32
+cumsum_exclusive   y_pred 3.4742 +- 0.1716   meas/pred 0.9738   z(meas mean vs pred) -3.06
+masked_cumsum      y_pred 3.3034 +- 0.1586   meas/pred 0.9749   z(meas mean vs pred) -1.31
+
+=== M3-orthogonal baseline (should reproduce banked y_M3) ===
+m3(cumsum) sim 4.2442 +- 0.1301   banked y_M3 4.2435 ratio 0.9998
+independence-vs-Brownian gap: 1.2311 (measured family M3 residual was ~1.25)
+
+=== falsification A: out-of-sample shape C=333 (non_power_of_two) ===
+measured y 3.5230   predicted 3.4373 +- 0.1576   z +0.54
+
+=== falsification B: input-invariance of y across adversarial variants ===
+cumsum primary=3.2569 alternating_signs=3.2569 large_then_tiny=3.2568 all_ones=3.2565
+cumsum_reverse primary=3.4635 alternating_signs=3.4635 large_then_tiny=3.4635 all_ones=3.4624
+cumsum_exclusive primary=3.2601 alternating_signs=3.2601 large_then_tiny=3.2600 all_ones=3.2597
+
+=== closed form (reflection principle, continuous limit) ===
+closed-form y (C -> inf) = 3.4818
+vs exact-law sim at C=512: 3.4476 (gap = discrete-walk correction)
+
+discrete-walk convergence (estimator mean vs C):
+  C=   64  y_pred 3.4211  gap to continuous +0.0607  gap*sqrt(C) +0.486
+  C=  128  y_pred 3.4357  gap to continuous +0.0461  gap*sqrt(C) +0.521
+  C=  512  y_pred 3.4534  gap to continuous +0.0284  gap*sqrt(C) +0.642
+  C= 2048  y_pred 3.4699  gap to continuous +0.0119  gap*sqrt(C) +0.537

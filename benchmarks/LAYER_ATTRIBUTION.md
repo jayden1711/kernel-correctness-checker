@@ -1,6 +1,6 @@
 # Per-operator layer attribution
 
-Source: `results.json` — the three single-layer ablations, each of which runs its whole layer unconditionally. Counts are raw mutants, not percentages.
+Source: `benchmarks/autokernel/files/results.json` — the three single-layer ablations, each of which runs its whole layer unconditionally. Counts are raw mutants, not percentages.
 
 40 mutants across 29 operators.
 

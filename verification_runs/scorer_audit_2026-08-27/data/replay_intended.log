@@ -1,0 +1,6 @@
+== adversarial_results/cfa_rerun_2026-08-20/search_history.db  run 9f8d6da9 causal_flash_attention strat=beam B=4 n=80
+   verdicts with errored mutants: 0   with caught-no-gap mutants: 80
+   steps where the consumed seed (running argmax) differs shipped vs intended: 0 / 80
+== adversarial_results/cfa_rerun_postfix_2026-08-21/search_history.db  run e999b812 causal_flash_attention strat=beam B=4 n=74
+   verdicts with errored mutants: 0   with caught-no-gap mutants: 74
+   steps where the consumed seed (running argmax) differs shipped vs intended: 0 / 74

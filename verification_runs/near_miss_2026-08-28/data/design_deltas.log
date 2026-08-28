@@ -1,0 +1,8 @@
+op               rho=tol/M (median)    CV% deltas for margins [0.5, 0.8, 1.0, 1.25, 2.0]
+layernorm                 3.471e-03    7.9 0.5:1.736e-03  0.8:2.777e-03  1.0:3.471e-03  1.25:4.339e-03  2.0:6.943e-03
+softmax                   5.176e-03   17.3 0.5:2.588e-03  0.8:4.141e-03  1.0:5.176e-03  1.25:6.471e-03  2.0:1.035e-02
+gelu                      3.584e-03    9.5 0.5:1.792e-03  0.8:2.867e-03  1.0:3.584e-03  1.25:4.480e-03  2.0:7.169e-03
+l2norm                    3.441e-03    8.6 0.5:1.721e-03  0.8:2.753e-03  1.0:3.441e-03  1.25:4.302e-03  2.0:6.883e-03
+sum_reduction             3.745e-03   16.5 0.5:1.872e-03  0.8:2.996e-03  1.0:3.745e-03  1.25:4.681e-03  2.0:7.490e-03
+
+written: /Users/jaydenvasquez/Library/CloudStorage/GoogleDrive-jaydenvasquez1711@gmail.com/My Drive/kernel-correctness-checker/verification_runs/near_miss_2026-08-28/data/design_deltas.json

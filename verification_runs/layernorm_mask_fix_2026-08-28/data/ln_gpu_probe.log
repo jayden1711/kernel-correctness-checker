@@ -1,0 +1,15 @@
+== (c) pow2 bitwise identity
+  (512, 512): torch.equal = True
+  (256, 1024): torch.equal = True
+  (1, 512): torch.equal = True
+  (2048, 128): torch.equal = True
+  (64, 128): torch.equal = True
+  (1000,333): fixed-vs-buggy max abs diff = 7.022e-02 (must be > 0: fix is live)
+  (64,127) [the post-oob non_pow2 variant width]: fixed-vs-buggy max abs diff = 5.825e-04
+
+== (b) wrong_variance_estimate mutant at (1000,333), 10 seeds
+  mutant vs FIXED ref : max_err range [7.153e-07, 9.537e-07]  (atol 0.0001; margin 105x)
+  mutant vs BUGGY ref : max_err range [2.092e-02, 4.253e-02]  (the banked 0.0249 catch lives here)
+  FIXED ref vs float64 ideal: [5.526e-07, 7.665e-07]
+
+LN-GPU-PROBE-OK

@@ -1,35 +1,35 @@
-# Dev
-venv
-.venv
-.driveignore
+# Dev environment (machine-local)
+/venv/
+/.venv/
+/.driveignore
+/.claude/
 
-# IDE-related
+# IDE
 .idea/
 .vscode/
-.vscode
 
-# Distribution / packaging
-bin/
-build/
-develop-eggs/
-dist/
-eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
+# Python packaging / build artifacts (anchored: 'bin', 'lib', 'build', 'dist',
+# 'var' are ordinary words that must not swallow a future source dir)
+/bin/
+/build/
+/develop-eggs/
+/dist/
+/eggs/
+/.eggs/
+/lib/
+/lib64/
+/parts/
+/sdist/
+/var/
+/.installed.cfg
 *.egg-info/
-.installed.cfg
 *.egg
-.eggs/
 
-# Byte-compiled / optimized / DLL files
+# Byte-compiled / optimized
 __pycache__/
 *.py[cod]
 
-# Triton cache
-~/.triton/
+# Triton JIT cache (created at any cwd)
 .triton/
 
 # Jupyter
@@ -38,15 +38,17 @@ __pycache__/
 # OS
 .DS_Store
 
-# Cloned
-TritonBench_G_repo/
-KernelBench/
+# Cloned upstream repos (root-level only)
+/TritonBench_G_repo/
+/KernelBench/
 
-# Environment
+# Secrets — deliberately unanchored: a .env at any depth must never be committed
 .env
 
-# Adversarial search outputs
-adversarial_results/
+# Adversarial search output dir (scripts/run_adversarial_search.py default)
+/adversarial_results/
+
+/search_history.db
 
 # Test artifacts
 .pytest_cache/
@@ -54,21 +56,16 @@ htmlcov/
 .coverage
 coverage.xml
 
-# Logs
-triton_kernel_logs/
+# Runtime/console logs
 *.log
-random_baseline_report.json
+!verification_runs/**/*.log
+/triton_kernel_logs/
+/random_baseline_report.json
 
-# LLM / litellm cache
+# LLM / litellm cache (created at any cwd)
 .litellm_cache/
 litellm_cache/
 
-# SQLite history DB (runtime artifact, not source)
-search_history.db
-
-#Agents
-.claude
-
-# GPU-session cache store + downloaded results (scripts/colab_bench.sh)
-.triton_cache_store/
-results_gpu/
+# GPU-session cache store + per-session downloaded results (scripts/colab_bench.sh)
+/.triton_cache_store/
+/results_gpu/

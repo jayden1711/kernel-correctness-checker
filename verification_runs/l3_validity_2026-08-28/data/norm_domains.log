@@ -1,0 +1,18 @@
+unit-norm checks: measured fail boundary vs derived (fill=randn, shape (64,128))
+  unit_l1          predicted sigma* = 9.792e-12   measured largest-fail = 1.212e-11   ratio 1.24
+  unit_l2          predicted sigma* = 1.976e-06   measured largest-fail = 2.324e-06   ratio 1.18
+  unit_frobenius   predicted sigma* = 1.105e-11   measured largest-fail = 1.095e-11   ratio 0.99
+
+positive_scale_invariance (c=4.2): measured vs derived, randn (dispersed) and one-hot-ish (peaked) fills
+  l1/randn  predicted sigma* = 2.472e-13   measured largest-fail = 2.617e-13   ratio 1.06
+  l2/randn  predicted sigma* = 3.494e-07   measured largest-fail = 1.030e-06   ratio 2.95
+  l1/peaked predicted sigma* = 3.810e-10   measured largest-fail = 3.766e-10   ratio 0.99
+  l2/peaked predicted sigma* = 1.536e-05   measured largest-fail = 1.518e-05   ratio 0.99
+
+fp32 absorption cliffs (deviation collapses to rounding above):
+  l1    below absorption (sigma=4.93e-08): max deviation from unit L1 norm: 0.000000
+  l1    above absorption (sigma=4.93e-07): max deviation from unit L1 norm: 0.000000
+  l2    below absorption (sigma=1.09e-04): max deviation from unit L2 norm: 0.000001
+  l2    above absorption (sigma=1.09e-03): max deviation from unit L2 norm: 0.000000
+  frob  below absorption (sigma=5.56e-08): Frobenius norm of output: 1.000000
+  frob  above absorption (sigma=5.56e-07): Frobenius norm of output: 1.000000

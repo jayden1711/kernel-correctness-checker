@@ -1,0 +1,20 @@
+kernel_executed_fix_2026-08-21 : flash mentions: 380 | sdpa: 76 | size 2210789
+delegation_fix_2026-08-21 : flash mentions: 380 | sdpa: 76 | size 2221353
+scope arm B causal_flash_attention wrong_causal_mask caught: True | refs FP: 0
+scope arm B flash_attention approx_denom caught: True | refs FP: 0
+scope arm B attention entries: 6
+A_no_detector.json.gz causal_flash_attention wrong_causal_mask caught: True FP: 0 | detail: [L1]nan_inf
+A_no_detector.json.gz flash_attention approx_denom caught: True FP: 0 | detail: [L2]attention_weights_sum_to_one
+A_no_detector.json.gz flash_attention drop_last_tile caught: True FP: 0 | detail: [L3]perturbation_tolerance; [L3]cross_shape; [L3]weight_magnitude; [L3]adversarial_approx_denominator; [L3]adversarial_l
+A_no_detector.json.gz flash_attention skip_rescaling caught: True FP: 0 | detail: [L3]perturbation_tolerance; [L3]cross_shape; [L3]weight_magnitude; [L3]adversarial_approx_denominator; [L3]adversarial_l
+A_no_detector.json.gz flash_attention wrong_mask caught: True FP: 0 | detail: [L1]nan_inf
+A_no_detector.json.gz scaled_dot_product_attention wrong_mask caught: True FP: 0 | detail: [L1]nan_inf
+B_detector.json.gz causal_flash_attention wrong_causal_mask caught: True FP: 0 | detail: [L1]nan_inf
+B_detector.json.gz flash_attention approx_denom caught: True FP: 0 | detail: [L2]attention_weights_sum_to_one
+B_detector.json.gz flash_attention drop_last_tile caught: True FP: 0 | detail: [L3]perturbation_tolerance; [L3]cross_shape; [L3]weight_magnitude; [L3]adversarial_approx_denominator; [L3]adversarial_l
+B_detector.json.gz flash_attention skip_rescaling caught: True FP: 0 | detail: [L3]perturbation_tolerance; [L3]cross_shape; [L3]weight_magnitude; [L3]adversarial_approx_denominator; [L3]adversarial_l
+B_detector.json.gz flash_attention wrong_mask caught: True FP: 0 | detail: [L1]nan_inf
+B_detector.json.gz scaled_dot_product_attention wrong_mask caught: True FP: 0 | detail: [L1]nan_inf
+A_baseline.json.gz attention entries 6 uncaught: [] FPs: 0
+B_no_wm_large.json.gz attention entries 6 uncaught: [] FPs: 0
+<class 'dict'> ['allclose', 'autokernel_gate', 'gpuemu (boundary_shape)', 'gpuemu (adversarial_value)', 'propilot']

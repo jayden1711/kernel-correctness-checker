@@ -1,0 +1,4 @@
+n=5: mean z = -0.070 (expected sem 0.066), sd(z) = 0.977, worst |z| = 4.17, median predicted sd = 9.09%
+   op-mean |z| worst: min_reduction -0.99, frobenius_norm +0.98, causal_flash_attention -0.89, max_pool2d +0.56
+n=20: mean z = +0.026 (expected sem 0.066), sd(z) = 0.938, worst |z| = 3.43, median predicted sd = 5.17%
+   op-mean |z| worst: gelu -1.04, frobenius_norm +0.78, avg_pool2d +0.46, avg_pool1d -0.41

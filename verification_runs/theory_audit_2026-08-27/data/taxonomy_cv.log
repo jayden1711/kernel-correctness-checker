@@ -1,0 +1,28 @@
+H3: 368 banked invocations with (s/ulp, tol) available
+  category-1 (absolute-floor) invocations flagged: 5, missed: 0
+  category-2 (fp32-floor) invocations flagged:     11, missed: 0
+  m=1 invocations: 51; flagged by criterion: 36
+    m=1 margins: rel arm min 0.0x  abs arm min 1.5x
+  other invocations flagged: 8
+    (('flash_attention', 'multi_tile_rescaling'), 0.0625, 707513.1654739345)
+    (('flash_attention', 'multi_tile_rescaling'), 0.515625, 12769286.584854128)
+    (('sigmoid', 'saturating_neg'), 0.0, 1.0)
+    (('tanh', 'near_zero'), 3591.0116344620537, 1.0)
+    (('softplus', 'saturating_pos'), 0.07996510921786369, 115.58532714843744)
+    (('softplus', 'near_zero'), 0.04508394077229363, 1.0)
+    (('new_gelu', 'near_zero'), 188.53955609183814, 1.0)
+    (('swiglu', 'gate_saturating_neg'), 11072.826599921951, 1.0)
+
+H5 banked: 368 invocations with cv; 290 in linear regime (defect<5%)
+  linear-regime cv max = 5.4963 vs ceiling 0.7555
+  linear-regime violations: 5
+   flash_attention/wrong_causal_mask cv 5.496 defect 0.0012 src attn
+   nll_loss/primary cv 0.892 defect 0.0015 src p1
+   nll_loss/primary cv 0.859 defect 0.0008 src p1
+   nll_loss/primary cv 0.833 defect 0.0017 src p1
+   nll_loss/primary cv 0.771 defect 0.0014 src p1
+  out-of-linear invocations: 78, cv>ceiling among them: 28
+
+H5 search: 4000 covariance structures, worst parent CV = 0.7842 (kind (4, np.int64(7))) vs ceiling 0.7555
+  rank-1 control (half-normal): 0.7558
+  40-sample CV of a rank-1 parent: q50 0.738 q95 0.890 P(>ceiling) 0.421

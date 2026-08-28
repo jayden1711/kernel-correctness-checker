@@ -1,0 +1,34 @@
+verdict-level results (10 seeds each):
+op/mutant                    tgt  caught    realized margin (min/med/max)  catching checks
+gelu/v050                   0.50    0/10     0.745    0.745    0.745   {}
+gelu/v080                   0.80    0/10     1.191    1.191    1.191   {}
+gelu/v100                   1.00    7/10     1.489    1.489    1.489   {'[L3]adversarial_near_global_min': 7}
+gelu/v125                   1.25   10/10     1.862    1.862    1.862   {'[L3]adversarial_near_global_min': 10}
+gelu/v200                   2.00   10/10     2.979    2.979    2.979   {'[L3]adversarial_near_global_min': 10}
+l2norm/v050                 0.50    0/10     0.475    0.491    0.512   {}
+l2norm/v080                 0.80    0/10     0.760    0.785    0.820   {}
+l2norm/v100                 1.00    2/10     0.950    0.982    1.025   {'[L3]cross_shape': 2}
+l2norm/v125                 1.25   10/10     1.187    1.227    1.281   {'[L3]cross_shape': 10}
+l2norm/v200                 2.00   10/10     1.900    1.963    2.049   {'[L3]cross_shape': 10}
+layernorm/v050              0.50    0/10     0.483    0.495    0.510   {}
+layernorm/v080              0.80    0/10     0.773    0.793    0.816   {}
+layernorm/v100              1.00    3/10     0.966    0.991    1.020   {'[L2]affine_correctness': 3}
+layernorm/v125              1.25   10/10     1.208    1.239    1.275   {'[L2]affine_correctness': 10}
+layernorm/v200              2.00   10/10     1.932    1.982    2.040   {'[L2]affine_correctness': 10}
+softmax/v050                0.50    0/10     0.507    0.507    0.507   {}
+softmax/v080                0.80    0/10     0.811    0.811    0.811   {}
+softmax/v100                1.00    0/10     1.013    1.013    1.013   {}
+softmax/v125                1.25   10/10     1.267    1.267    1.267   {'[L3]adversarial_max_in_last_tile': 10, '[L3]adversarial_extreme_range': 10}
+softmax/v200                2.00   10/10     2.027    2.027    2.027   {'[L3]adversarial_max_in_last_tile': 10, '[L3]adversarial_extreme_range': 10}
+sum_reduction/v050          0.50    0/10     0.500    0.501    0.501   {}
+sum_reduction/v080          0.80    0/10     0.800    0.801    0.802   {}
+sum_reduction/v100          1.00    9/10     1.000    1.002    1.003   {'[L3]cross_shape': 9}
+sum_reduction/v125          1.25   10/10     1.250    1.252    1.254   {'[L3]cross_shape': 10}
+sum_reduction/v200          2.00   10/10     1.999    2.003    2.006   {'[L3]cross_shape': 10}
+
+verdict response curve (pooled):
+  design margin 0.50x: verdict-caught 0/50 (0%)
+  design margin 0.80x: verdict-caught 0/50 (0%)
+  design margin 1.00x: verdict-caught 21/50 (42%)
+  design margin 1.25x: verdict-caught 50/50 (100%)
+  design margin 2.00x: verdict-caught 50/50 (100%)

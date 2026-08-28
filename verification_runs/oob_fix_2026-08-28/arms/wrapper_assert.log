@@ -1,0 +1,5 @@
+matched companions: both wrappers ran
+layernorm short gamma: ValueError as required -- layernorm: companion length mismatch -- gamma 128, beta 333, n_cols 333; a short companion would be read out of bounds (oob_adjudication_2026-08-28)
+layernorm short beta: ValueError as required -- layernorm: companion length mismatch -- gamma 333, beta 128, n_cols 333; a short companion would be read out of bounds (oob_adjudication_2026-08-28)
+rmsnorm short gamma: ValueError as required -- rmsnorm: companion length mismatch -- gamma 128, n_cols 333; a short gamma would be read out of bounds (oob_adjudication_2026-08-28)
+WRAPPER-ASSERTS-OK

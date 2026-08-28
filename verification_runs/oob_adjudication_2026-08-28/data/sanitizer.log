@@ -1,0 +1,25 @@
+compute-sanitizer --tool memcheck, Colab T4, torch 2.11.0+cu128, triton 3.6.0
+(session kccoob, 2026-08-28)
+
+repro_oob.py (control launch with len-333 companions, then the corpus
+configuration len-128 companions), cached allocator:
+  CONTROL-DONE
+  MISMATCH-DONE
+  ========= ERROR SUMMARY: 0 errors
+
+same, PYTORCH_NO_CUDA_MEMORY_CACHING=1:
+  ========= ERROR SUMMARY: 0 errors
+
+POSITIVE CONTROL (posctl.py: inline @triton.jit kernel unconditionally
+loading offsets 0..332 masked <333 from a 128-float tensor -- a certain
+out-of-bounds read), cached AND uncached:
+  POSCTL-DONE 0.0
+  ========= ERROR SUMMARY: 0 errors
+
+CONCLUSION: compute-sanitizer does not detect out-of-bounds global reads
+from Triton-JIT kernels in this environment (positive control fails), so
+its 0-error report on the repro is NON-PROBATIVE. The adjudication rests on
+the value-level poison-recovery experiment (oob_gpu.json), which is
+independent of sanitizer instrumentation. The non-faulting behaviour also
+explains why the corpus runs never crashed: the reads land in adjacent
+mapped memory of the same segment.

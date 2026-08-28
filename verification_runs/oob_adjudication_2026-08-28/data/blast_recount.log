@@ -1,0 +1,11 @@
+affected records per (round, op) summed over that round's arms:
+   ('check_timing_2026-08-25', 'layernorm') 80
+   ('check_timing_2026-08-25', 'rmsnorm') 75
+   ('gram_screen_2026-08-27', 'layernorm') 32
+   ('gram_screen_2026-08-27', 'rmsnorm') 30
+   ('n_samples_curve_2026-08-25', 'layernorm') 112
+   ('n_samples_curve_2026-08-25', 'rmsnorm') 105
+   ('scope_detect_2026-08-26', 'layernorm') 64
+   ('scope_detect_2026-08-26', 'rmsnorm') 60
+catches attributed to non_power_of_two: NONE
+per-op MIN s/ulp attained by: {('gram_screen_2026-08-27', 'layernorm'): 'perturbation_tolerance', ('gram_screen_2026-08-27', 'rmsnorm'): 'adversarial_large_variance', ('scope_detect_2026-08-26', 'layernorm'): 'perturbation_tolerance', ('scope_detect_2026-08-26', 'rmsnorm'): 'adversarial_large_variance'}

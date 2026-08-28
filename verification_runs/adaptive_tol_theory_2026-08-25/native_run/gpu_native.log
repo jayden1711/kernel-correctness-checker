@@ -1,0 +1,57 @@
+torch 2.11.0+cu128 | cuda 12.8 | Tesla T4
+triton 3.6.0
+corpus entries: 40
+resuming, already done: 0
+[  0.0s] entry  1/40 argmax
+[  0.0s] entry  2/40 argmin
+[  3.8s] entry  3/40 avg_pool1d
+[  4.7s] entry  4/40 avg_pool2d
+[  5.6s] entry  5/40 avg_pool3d
+[  6.5s] entry  6/40 batchnorm
+[  7.7s] entry  7/40 causal_flash_attention
+[  8.6s] entry  8/40 cross_entropy
+[  9.9s] entry  9/40 flash_attention
+[ 10.6s] entry 10/40 flash_attention
+[ 11.2s] entry 11/40 flash_attention
+[ 11.7s] entry 12/40 flash_attention
+[ 12.9s] entry 13/40 frobenius_norm
+[ 13.5s] entry 14/40 gelu
+[ 14.7s] entry 15/40 groupnorm
+[ 15.6s] entry 16/40 instancenorm
+[ 16.3s] entry 17/40 l1norm
+[ 16.9s] entry 18/40 l2norm
+[ 17.4s] entry 19/40 layernorm
+[ 17.9s] entry 20/40 layernorm
+[ 18.4s] entry 21/40 layernorm
+[ 19.2s] entry 22/40 log_softmax
+[ 20.1s] entry 23/40 matmul
+[ 20.6s] entry 24/40 matmul
+[ 21.3s] entry 25/40 matmul
+[ 22.0s] entry 26/40 matmul
+[ 22.9s] entry 27/40 max_pool1d
+[ 23.6s] entry 28/40 max_pool2d
+[ 24.3s] entry 29/40 max_pool3d
+[ 25.0s] entry 30/40 max_reduction
+[ 25.5s] entry 31/40 mean_reduction
+[ 26.1s] entry 32/40 min_reduction
+[ 26.8s] entry 33/40 rmsnorm
+[ 27.3s] entry 34/40 rmsnorm
+[ 27.8s] entry 35/40 rmsnorm
+[ 28.7s] entry 36/40 scaled_dot_product_attention
+[ 29.2s] entry 37/40 softmax
+[ 29.7s] entry 38/40 softmax
+[ 30.2s] entry 39/40 sum_reduction
+[ 30.7s] entry 40/40 swish
+=== attention input-conditional check (native) ===
+   causal_flash_attention         primary                      peak=0.504849 cv=0.2659 defect=0.0676%
+   causal_flash_attention         large_magnitude_qk           peak=1.000000 cv=0.7846 defect=12.1395%
+   flash_attention                primary                      peak=0.213374 cv=0.2150 defect=0.1320%
+   flash_attention                approx_denominator           peak=1.000000 cv=0.2047 defect=0.3847%
+   flash_attention                last_tile_dropped            peak=1.000000 cv=0.2832 defect=900.0000%
+   flash_attention                multi_tile_rescaling         peak=1.000000 cv=0.2999 defect=400.0872%
+   flash_attention                skip_rescaling               peak=1.000000 cv=6.2927 defect=900.0000%
+   flash_attention                wrong_causal_mask            peak=1.000000 cv=0.1520 defect=0.1114%
+   flash_attention                equal_attention_weights      peak=0.015625 cv=0.0000 defect=900.0000%
+   scaled_dot_product_attention   primary                      peak=0.314495 cv=0.1702 defect=0.1161%
+   scaled_dot_product_attention   large_magnitude_qk           peak=1.000000 cv=0.7424 defect=17.4145%
+DONE in 32.2s

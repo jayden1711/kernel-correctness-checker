@@ -1,0 +1,12 @@
+torch 2.11.0+cu128 | triton 3.6.0 | Tesla T4
+operators: 8
+resuming, already done: 0
+[   3.1s]  1/8 conv1d
+[   4.1s]  2/8 conv2d
+[   5.2s]  3/8 conv3d
+[   5.7s]  4/8 conv_transpose1d
+[   6.8s]  5/8 conv_transpose2d
+[   7.9s]  6/8 conv_transpose3d
+[   9.6s]  7/8 depthwise_conv2d
+[  10.8s]  8/8 pointwise_conv2d
+DONE in 10.8s

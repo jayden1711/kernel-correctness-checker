@@ -37,8 +37,9 @@ ROOT = os.path.dirname(HERE)
 REGISTRY = os.path.join(HERE, "autokernel", "files", "tritonbench_registry.py")
 OUT_PATH = os.path.join(HERE, "LAYER_ATTRIBUTION.md")
 
+# Root-level results.json was removed 2026-08-28: it was a stale Aug-6 dump
+# (pre-latency-percentile format) that silently won over the canonical copy.
 CANDIDATE_RESULTS = [
-    os.path.join(ROOT, "results.json"),
     os.path.join(HERE, "autokernel", "files", "results.json"),
 ]
 

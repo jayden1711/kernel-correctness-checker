@@ -1,0 +1,10 @@
+seed 0: out rel diff 1.459e-05  frac rows neg-dominant 0.43  s_min/ulp bug 0.4 true 0.5  q95 bug 8.224e-04 true 1.021e-03 (ratio 0.806)
+seed 1: out rel diff 1.265e-05  frac rows neg-dominant 0.48  s_min/ulp bug 0.4 true 0.5  q95 bug 9.434e-04 true 1.183e-03 (ratio 0.797)
+seed 2: out rel diff 1.884e-05  frac rows neg-dominant 0.34  s_min/ulp bug 0.3 true 0.5  q95 bug 8.188e-04 true 9.849e-04 (ratio 0.831)
+seed 3: out rel diff 1.846e-05  frac rows neg-dominant 0.57  s_min/ulp bug 0.4 true 0.5  q95 bug 1.310e-03 true 1.605e-03 (ratio 0.816)
+seed 4: out rel diff 1.727e-05  frac rows neg-dominant 0.57  s_min/ulp bug 0.4 true 0.5  q95 bug 1.520e-03 true 1.981e-03 (ratio 0.767)
+seed 5: out rel diff 1.481e-05  frac rows neg-dominant 0.45  s_min/ulp bug 0.4 true 0.4  q95 bug 1.606e+00 true 1.379e+00 (ratio 1.165)
+
+20 seeds: out rel diff max 2.254e-05
+s_min/ulp: buggy median 0.4  true median 0.5
+q95 ratio buggy/true: median 0.8179 range [0.7466, 1.1646]

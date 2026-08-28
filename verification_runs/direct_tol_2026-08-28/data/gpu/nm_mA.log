@@ -1,0 +1,26 @@
+layernorm/m050 done
+layernorm/m080 done
+layernorm/m100 done
+layernorm/m125 done
+layernorm/m200 done
+softmax/m050 done
+softmax/m080 done
+softmax/m100 done
+softmax/m125 done
+softmax/m200 done
+gelu/m050 done
+gelu/m080 done
+gelu/m100 done
+gelu/m125 done
+gelu/m200 done
+l2norm/m050 done
+l2norm/m080 done
+l2norm/m100 done
+l2norm/m125 done
+l2norm/m200 done
+sum_reduction/m050 done
+sum_reduction/m080 done
+sum_reduction/m100 done
+sum_reduction/m125 done
+sum_reduction/m200 done
+NEAR-MISS-GPU-OK

@@ -1,0 +1,49 @@
+==== 1. catch / FP per arm ====
+A_ver: catch 40/40 fp 0/200
+D_ver: catch 40/40 fp 0/200
+
+==== 2. verdict + attribution identity ====
+verdict diffs: 0
+failing-set diffs: 0
+
+==== 3. estimator coverage in D ====
+perturbation-routed records: 868; direct: 25 (2.9%); probe fallback: 843
+ops with any probe fallback: {'argmax': '0/12', 'argmin': '0/12', 'avg_pool1d': '1/12', 'avg_pool2d': '1/12', 'avg_pool3d': '1/12', 'batchnorm': '2/12', 'causal_flash_attention': '0/10', 'cross_entropy': '0/12', 'flash_attention': '0/154', 'frobenius_norm': '0/10', 'gelu': '2/18', 'groupnorm': '2/12', 'instancenorm': '1/12', 'l1norm': '0/10', 'l2norm': '0/10', 'layernorm': '1/96', 'log_softmax': '0/18', 'matmul': '6/154', 'max_pool1d': '1/12', 'max_pool2d': '1/12', 'max_pool3d': '1/12', 'max_reduction': '1/18', 'mean_reduction': '0/15', 'min_reduction': '1/18', 'rmsnorm': '0/90', 'scaled_dot_product_attention': '0/10', 'softmax': '0/60', 'sum_reduction': '0/15', 'swish': '3/18'}
+
+==== 4. per-check serialised timing (shares only) ====
+  A: perturbation-routed median 3.29 ms  p90 4.36 ms  total 2.74 s
+  D: perturbation-routed median 2.40 ms  p90 11.13 ms  total 3.92 s
+
+==== 5. wall clock (timing flag OFF, interleaved reps) ====
+  A: reps ['7.17', '7.49', '6.99', '7.43', '7.04']  median 7.17 s
+  D: reps ['8.30', '8.46', '8.50', '8.48', '8.34']  median 8.46 s
+  DELTA (checker wall): -1.29 s = -17.96% of A
+  rep spread: A 7.0%  D 2.3%
+
+==== 6. near-miss m-series response per arm ====
+  mA:
+    gelu           ['0/10', '0/10', '6/10', '10/10', '10/10']
+    l2norm         ['0/10', '0/10', '2/10', '10/10', '10/10']
+    layernorm      ['0/10', '0/10', '4/10', '10/10', '10/10']
+    softmax        ['0/10', '1/10', '5/10', '8/10', '10/10']
+    sum_reduction  ['0/10', '2/10', '4/10', '7/10', '10/10']
+  mD:
+    gelu           ['0/10', '0/10', '6/10', '10/10', '10/10']   prereg pred: ['0%', '1%', '48%', '100%', '100%']
+    l2norm         ['0/10', '0/10', '2/10', '10/10', '10/10']   prereg pred: ['0%', '0%', '27%', '100%', '100%']
+    layernorm      ['0/10', '0/10', '2/10', '10/10', '10/10']   prereg pred: ['0%', '0%', '31%', '100%', '100%']
+    softmax        ['0/10', '0/10', '5/10', '10/10', '10/10']   prereg pred: ['0%', '6%', '42%', '98%', '100%']
+    sum_reduction  ['0/10', '2/10', '4/10', '7/10', '10/10']   prereg pred: ['0%', '8%', '46%', '91%', '100%']
+
+==== 7. near-miss v-series response per arm ====
+  vA:
+    gelu           ['0/10', '1/10', '10/10', '10/10', '10/10']
+    l2norm         ['0/10', '0/10', '10/10', '10/10', '10/10']
+    layernorm      ['0/10', '0/10', '3/10', '10/10', '10/10']
+    softmax        ['0/10', '0/10', '0/10', '10/10', '10/10']
+    sum_reduction  ['0/10', '0/10', '0/10', '10/10', '10/10']
+  vD:
+    gelu           ['0/10', '0/10', '10/10', '10/10', '10/10']
+    l2norm         ['0/10', '0/10', '10/10', '10/10', '10/10']
+    layernorm      ['0/10', '0/10', '3/10', '10/10', '10/10']
+    softmax        ['0/10', '0/10', '0/10', '10/10', '10/10']
+    sum_reduction  ['0/10', '0/10', '0/10', '10/10', '10/10']

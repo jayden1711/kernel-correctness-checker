@@ -1,0 +1,17 @@
+top-8 stage-1 estimates: [0.7842, 0.7829, 0.7821, 0.7799, 0.7787, 0.7784, 0.778, 0.7777]
+  stage1 0.7842 kind 4 m 7 -> precise 0.75502
+  stage1 0.7829 kind 1 m 9 -> precise 0.75598
+  stage1 0.7821 kind 2 m 1 -> precise 0.75592
+  stage1 0.7799 kind 2 m 1 -> precise 0.75592
+  stage1 0.7787 kind 1 m 1 -> precise 0.75592
+  stage1 0.7784 kind 2 m 2 -> precise 0.75568
+  stage1 0.7780 kind 4 m 5 -> precise 0.75530
+  stage1 0.7777 kind 2 m 7 -> precise 0.75473
+ceiling 0.75551; worst precise = 0.75598
+
+structured families (4e6 draws):
+  rank-1 m=1                   CV = 0.75533
+  rank-1 m=5 (rows parallel)   CV = 0.75568
+  dominant + tiny corr         CV = 0.75364
+  two equal orthogonal         CV = 0.53407
+  m=8 iid                      CV = 0.29519

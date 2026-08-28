@@ -1,0 +1,16 @@
+854 invocations loaded, 787 with non-degenerate sens
+
+P1 sweep: 903 (invocation, threshold) points, n=20
+  |bracket midpoint - resampled P|: median 0.0006  p90 0.2428  max 1.0000
+  |Gumbel closed form - resampled P|: median 0.0402  p90 0.3011  max 0.9705
+  n= 5: median |mid-P| 0.0255  max 1.0000
+  n=10: median |mid-P| 0.0080  max 1.0000
+  n=20: median |mid-P| 0.0001  max 1.0000
+
+P2 split-half (params from first 20 samples, resampling from last 20):
+  321 points, n=10: median 0.1121  p90 0.4738  max 0.7986
+
+P3 corpus saturation, derived from the formula:
+  near-boundary mutant: gelu/perturbation_tolerance margin 1.46x  P(miss) <= 1.936e-03
+  detected mutant invocations: worst P(miss) bound = 1.936e-03 (1 above 1e-6)
+  live reference: frobenius_norm/adversarial_dominant_outlier margin 8.25e-04  P(FP) <= 0.000e+00

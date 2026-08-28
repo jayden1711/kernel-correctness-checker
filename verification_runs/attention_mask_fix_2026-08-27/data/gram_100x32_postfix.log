@@ -1,0 +1,12 @@
+flash_attention                s0 y buggy-run 2.1217 -> post-fix 2.2986  pred 2.3699  z -0.41
+flash_attention                s1 y buggy-run 2.0123 -> post-fix 2.2267  pred 2.2780  z -0.27
+flash_attention                s2 y buggy-run 2.1128 -> post-fix 2.3646  pred 2.3521  z +0.07
+causal_flash_attention         s0 y buggy-run 2.1860 -> post-fix 2.1860  pred 2.2164  z -0.14
+causal_flash_attention         s1 y buggy-run 2.1812 -> post-fix 2.1812  pred 2.2322  z -0.24
+causal_flash_attention         s2 y buggy-run 1.8087 -> post-fix 1.8087  pred 2.0428  z -1.08
+scaled_dot_product_attention   s0 y buggy-run 1.7009 -> post-fix 1.8204  pred 1.9708  z -0.72
+scaled_dot_product_attention   s1 y buggy-run 2.3823 -> post-fix 2.5808  pred 2.4677  z +0.64
+scaled_dot_product_attention   s2 y buggy-run 1.9218 -> post-fix 2.1165  pred 2.2679  z -0.79
+causal_flash_attention         meas/pred median: buggy-run 0.977 -> post-fix 0.977
+flash_attention                meas/pred median: buggy-run 0.895 -> post-fix 0.977
+scaled_dot_product_attention   meas/pred median: buggy-run 0.863 -> post-fix 0.933

@@ -1,0 +1,47 @@
+argmax/tiebreak done, 170 ref calls so far
+argmin/tiebreak done, 340 ref calls so far
+avg_pool1d/wrong_divisor done, 509 ref calls so far
+avg_pool2d/wrong_divisor done, 678 ref calls so far
+avg_pool3d/wrong_divisor done, 846 ref calls so far
+batchnorm/wrong_running_stats_broadcast done, 1044 ref calls so far
+causal_flash_attention/wrong_causal_mask done, 1189 ref calls so far
+cross_entropy/missing_max_subtraction done, 1398 ref calls so far
+flash_attention/approx_denom done, 1544 ref calls so far
+flash_attention/drop_last_tile done, 1848 ref calls so far
+flash_attention/skip_rescaling done, 2152 ref calls so far
+flash_attention/wrong_mask done, 2297 ref calls so far
+frobenius_norm/wrong_norm done, 2443 ref calls so far
+gelu/sigmoid_approx done, 2606 ref calls so far
+groupnorm/ignore_affine done, 2804 ref calls so far
+instancenorm/skip_eps done, 3002 ref calls so far
+l1norm/partial_reduction done, 3148 ref calls so far
+l2norm/wrong_norm done, 3294 ref calls so far
+layernorm/ignore_gamma_beta done, 3440 ref calls so far
+layernorm/skip_mean_subtract done, 3586 ref calls so far
+layernorm/wrong_variance_estimate done, 3869 ref calls so far
+log_softmax/skip_max_subtraction done, 4032 ref calls so far
+matmul/partial_k_reduct done, 4346 ref calls so far
+matmul/skip_boundary_tiles done, 4660 ref calls so far
+matmul/swapped_strides done, 4806 ref calls so far
+matmul/wrong_dtype done, 4952 ref calls so far
+max_pool1d/wrong_padding done, 5121 ref calls so far
+max_pool2d/wrong_padding done, 5290 ref calls so far
+max_pool3d/wrong_padding done, 5458 ref calls so far
+max_reduction/wrong_padding done, 5631 ref calls so far
+mean_reduction/partial_reduction done, 5777 ref calls so far
+min_reduction/wrong_padding done, 5950 ref calls so far
+rmsnorm/ignore_gamma done, 6096 ref calls so far
+rmsnorm/partial_reduction done, 6242 ref calls so far
+rmsnorm/wrong_norm done, 6388 ref calls so far
+scaled_dot_product_attention/wrong_mask done, 6533 ref calls so far
+softmax/first_tile done, 6684 ref calls so far
+softmax/wrong_reduction done, 6835 ref calls so far
+sum_reduction/partial_reduction done, 6981 ref calls so far
+swish/linear_sigmoid_approx done, 7144 ref calls so far
+
+TOTAL reference executions: 7144
+distinct fingerprints: 1469
+redundant executions (a fingerprint already seen): 5675
+reference-only time: 0.91s   probe wall: 10.9s
+
+reference executions by call site: {'_time_once': 4130, 'check_perturbation_tolerance': 940, 'check_kernel_executed': 637, 'check_determinism': 600, 'other': 503, 'check_all_tiles_visited_generic': 200, 'check_weight_magnitude': 88, 'check_output_shape': 22, 'check_backward_pass': 22, '_check_exact_match': 2}

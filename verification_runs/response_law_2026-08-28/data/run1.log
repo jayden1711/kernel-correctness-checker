@@ -1,0 +1,57 @@
+== T1/T2/T3: m-series response curves ==
+  layernorm      margin@m100: predicted p5/p50/p95 = 0.862/0.967/1.116 (CV 8.1%)   banked 10-seed min/med/max = 0.840/0.966/1.106
+      m050: predicted P =  0.0%   observed 0/10   binom tail p = 1.000 OK 
+      m080: predicted P =  0.2%   observed 0/10   binom tail p = 1.000 OK 
+      m100: predicted P = 34.1%   observed 4/10   binom tail p = 0.743 OK 
+      m125: predicted P = 99.5%   observed 10/10   binom tail p = 1.000 OK 
+      m200: predicted P = 100.0%   observed 10/10   binom tail p = 1.000 OK 
+  softmax        margin@m100: predicted p5/p50/p95 = 0.762/0.979/1.392 (CV 19.6%)   banked 10-seed min/med/max = 0.762/1.035/1.255
+      m050: predicted P =  0.1%   observed 0/10   binom tail p = 1.000 OK 
+      m080: predicted P = 10.9%   observed 1/10   binom tail p = 1.000 OK 
+      m100: predicted P = 45.2%   observed 5/10   binom tail p = 0.763 OK 
+      m125: predicted P = 90.7%   observed 8/10   binom tail p = 0.237 OK 
+      m200: predicted P = 100.0%   observed 10/10   binom tail p = 1.000 OK 
+  gelu           margin@m100: predicted p5/p50/p95 = 0.875/0.999/1.188 (CV 9.3%)   banked 10-seed min/med/max = 0.876/1.017/1.195
+      m050: predicted P =  0.0%   observed 0/10   binom tail p = 1.000 OK 
+      m080: predicted P =  1.6%   observed 0/10   binom tail p = 1.000 OK 
+      m100: predicted P = 49.1%   observed 6/10   binom tail p = 0.542 OK 
+      m125: predicted P = 99.7%   observed 10/10   binom tail p = 1.000 OK 
+      m200: predicted P = 100.0%   observed 10/10   binom tail p = 1.000 OK 
+  l2norm         margin@m100: predicted p5/p50/p95 = 0.852/0.959/1.106 (CV 8.2%)   banked 10-seed min/med/max = 0.817/0.948/1.060
+      m050: predicted P =  0.0%   observed 0/10   binom tail p = 1.000 OK 
+      m080: predicted P =  0.2%   observed 0/10   binom tail p = 1.000 OK 
+      m100: predicted P = 30.1%   observed 2/10   binom tail p = 0.733 OK 
+      m125: predicted P = 99.3%   observed 10/10   binom tail p = 1.000 OK 
+      m200: predicted P = 100.0%   observed 10/10   binom tail p = 1.000 OK 
+  sum_reduction  margin@m100: predicted p5/p50/p95 = 0.751/0.980/1.318 (CV 17.5%)   banked 10-seed min/med/max = 0.677/0.939/1.415
+      m050: predicted P =  0.0%   observed 0/10   binom tail p = 1.000 OK 
+      m080: predicted P =  8.7%   observed 2/10   binom tail p = 0.215 OK 
+      m100: predicted P = 45.1%   observed 4/10   binom tail p = 1.000 OK 
+      m125: predicted P = 88.7%   observed 7/10   binom tail p = 0.094 OK 
+      m200: predicted P = 100.0%   observed 10/10   binom tail p = 1.000 OK 
+
+  T3 pooled curve:
+      m050: predicted  0.0%   observed 0/50 =  0.0%
+      m080: predicted  4.3%   observed 3/50 =  6.0%
+      m100: predicted 40.7%   observed 21/50 = 42.0%
+      m125: predicted 95.6%   observed 45/50 = 90.0%
+      m200: predicted 100.0%   observed 50/50 = 100.0%
+
+== T4: v-series straddles (non-floor bindings only) ==
+  layernorm      v050: predicted P =  0.0%   observed 0/10
+  layernorm      v080: predicted P =  0.0%   observed 0/10
+  layernorm      v100: predicted P = 24.0%   observed 3/10
+  layernorm      v125: predicted P = 100.0%   observed 10/10
+  layernorm      v200: predicted P = 100.0%   observed 10/10
+  l2norm         v050: predicted P =  0.0%   observed 0/10
+  l2norm         v080: predicted P =  0.0%   observed 0/10
+  l2norm         v100: predicted P = 22.8%   observed 2/10
+  l2norm         v125: predicted P = 100.0%   observed 10/10
+  l2norm         v200: predicted P = 100.0%   observed 10/10
+  sum_reduction  v050: predicted P =  0.0%   observed 0/10
+  sum_reduction  v080: predicted P =  0.0%   observed 0/10
+  sum_reduction  v100: predicted P = 82.0%   observed 9/10
+  sum_reduction  v125: predicted P = 100.0%   observed 10/10
+  sum_reduction  v200: predicted P = 100.0%   observed 10/10
+
+written: /Users/jaydenvasquez/Library/CloudStorage/GoogleDrive-jaydenvasquez1711@gmail.com/My Drive/kernel-correctness-checker/verification_runs/response_law_2026-08-28/probes/../data/response_law.json

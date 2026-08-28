@@ -1,0 +1,13 @@
+paired perturbation-routed records with printed tol: 854
+excluded ops (attention/arg*): 186
+tol differs (direct TAKEN, unambiguous): 605
+tol identical at floor (ambiguous -- either path clamps): 63
+tol identical off floor (probe fallback or coincidence): 0
+non-excluded ops with off-floor identical tol: {}
+
+E/draw ratio on direct-taken records (n=605): p5/p50/p95 = 0.893/1.008/1.267  log-sd 0.229 dex-equivalent CV ~22.9%
+  extreme: ('instancenorm', 'skip_eps', 'mutant', 'adversarial_near_zero_variance')  A=1e-06  D=4e-06  ratio 4.000
+  extreme: ('groupnorm', 'ignore_affine', 'mutant', 'adversarial_near_zero_variance')  A=1e-06  D=7e-06  ratio 7.000
+  extreme: ('instancenorm', 'skip_eps', 'ref1', 'adversarial_near_zero_variance')  A=1e-06  D=7e-06  ratio 7.000
+  extreme: ('instancenorm', 'skip_eps', 'ref3', 'adversarial_near_zero_variance')  A=1e-06  D=7e-06  ratio 7.000
+  extreme: ('instancenorm', 'skip_eps', 'ref4', 'adversarial_near_zero_variance')  A=1e-06  D=7e-06  ratio 7.000

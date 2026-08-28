@@ -1,0 +1,5 @@
+trials: 240; trials with an L3 fail: 22
+total serialised check time: 6.08 s
+L1 fail-fast ceiling (post-first-fail L3 time on failing trials): 0.21 s = 3.46% of check time
+L2 precision_coercion total: 0.62 s (10.26%); fp16-arm share ~half -> ceiling ~5.13% of check time
+as corpus share (x0.163): fail-fast ~0.56%, fp16-arm ~0.83%

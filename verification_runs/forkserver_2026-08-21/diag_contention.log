@@ -1,0 +1,289 @@
+[spawn_0]  129.7s  reference failed 5/40
+    51a0e4b1 -> ['nan_inf', 'dtype_preserved']
+       nan_inf: Kernel raised an exception: at 18:16:
+    N,
+    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr
+):
+    """Same tiling / online-softmax structure as flash_attention_kernel,
+    with a co
+       dtype_preserved: Kernel raised an exception: at 18:16:
+    N,
+    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr
+):
+    """Same tiling / online-softmax structure as flash_attention_kernel,
+    with a co
+    65c17fa2 -> ['nan_inf', 'dtype_preserved']
+       nan_inf: Kernel raised an exception: too many values to unpack (expected 2)
+       dtype_preserved: Kernel raised an exception: too many values to unpack (expected 2)
+    68b8c987 -> ['nan_inf', 'dtype_preserved']
+       nan_inf: Kernel raised an exception: at 18:16:
+    N,
+    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr
+):
+    """Same tiling / online-softmax structure as flash_attention_kernel,
+    with a co
+       dtype_preserved: Kernel raised an exception: at 18:16:
+    N,
+    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr
+):
+    """Same tiling / online-softmax structure as flash_attention_kernel,
+    with a co
+    af2dc964 -> ['nan_inf', 'dtype_preserved']
+       nan_inf: Kernel raised an exception: too many values to unpack (expected 2)
+       dtype_preserved: Kernel raised an exception: too many values to unpack (expected 2)
+    793d3f0a -> ['nan_inf', 'dtype_preserved']
+       nan_inf: Kernel raised an exception: at 18:16:
+    N,
+    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr
+):
+    """Same tiling / online-softmax structure as flash_attention_kernel,
+    with a co
+       dtype_preserved: Kernel raised an exception: at 18:16:
+    N,
+    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr
+):
+    """Same tiling / online-softmax structure as flash_attention_kernel,
+    with a co
+[forkserver_1]   74.6s  reference failed 6/40
+    51a0e4b1 -> ['nan_inf', 'dtype_preserved']
+       nan_inf: Kernel raised an exception: at 18:16:
+    N,
+    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr
+):
+    """Same tiling / online-softmax structure as flash_attention_kernel,
+    with a co
+       dtype_preserved: Kernel raised an exception: at 18:16:
+    N,
+    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr
+):
+    """Same tiling / online-softmax structure as flash_attention_kernel,
+    with a co
+    4aff5bf2 -> ['kernel_executed']
+       kernel_executed: Output is bit-identical to reference AND candidate is 11.3x faster. Likely delegating to reference.
+    65c17fa2 -> ['nan_inf', 'dtype_preserved']
+       nan_inf: Kernel raised an exception: too many values to unpack (expected 2)
+       dtype_preserved: Kernel raised an exception: too many values to unpack (expected 2)
+    68b8c987 -> ['nan_inf', 'dtype_preserved']
+       nan_inf: Kernel raised an exception: at 18:16:
+    N,
+    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr
+):
+    """Same tiling / online-softmax structure as flash_attention_kernel,
+    with a co
+       dtype_preserved: Kernel raised an exception: at 18:16:
+    N,
+    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr
+):
+    """Same tiling / online-softmax structure as flash_attention_kernel,
+    with a co
+    af2dc964 -> ['nan_inf', 'dtype_preserved']
+       nan_inf: Kernel raised an exception: too many values to unpack (expected 2)
+       dtype_preserved: Kernel raised an exception: too many values to unpack (expected 2)
+    793d3f0a -> ['nan_inf', 'dtype_preserved']
+       nan_inf: Kernel raised an exception: at 18:16:
+    N,
+    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr
+):
+    """Same tiling / online-softmax structure as flash_attention_kernel,
+    with a co
+       dtype_preserved: Kernel raised an exception: at 18:16:
+    N,
+    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr
+):
+    """Same tiling / online-softmax structure as flash_attention_kernel,
+    with a co
+[spawn_2]  126.4s  reference failed 6/40
+    aff0c7f8 -> ['kernel_executed']
+       kernel_executed: Output is bit-identical to reference AND candidate is 15.3x faster. Likely delegating to reference.
+    51a0e4b1 -> ['nan_inf', 'dtype_preserved']
+       nan_inf: Kernel raised an exception: at 18:16:
+    N,
+    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr
+):
+    """Same tiling / online-softmax structure as flash_attention_kernel,
+    with a co
+       dtype_preserved: Kernel raised an exception: at 18:16:
+    N,
+    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr
+):
+    """Same tiling / online-softmax structure as flash_attention_kernel,
+    with a co
+    65c17fa2 -> ['nan_inf', 'dtype_preserved']
+       nan_inf: Kernel raised an exception: too many values to unpack (expected 2)
+       dtype_preserved: Kernel raised an exception: too many values to unpack (expected 2)
+    68b8c987 -> ['nan_inf', 'dtype_preserved']
+       nan_inf: Kernel raised an exception: at 18:16:
+    N,
+    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr
+):
+    """Same tiling / online-softmax structure as flash_attention_kernel,
+    with a co
+       dtype_preserved: Kernel raised an exception: at 18:16:
+    N,
+    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr
+):
+    """Same tiling / online-softmax structure as flash_attention_kernel,
+    with a co
+    af2dc964 -> ['nan_inf', 'dtype_preserved']
+       nan_inf: Kernel raised an exception: too many values to unpack (expected 2)
+       dtype_preserved: Kernel raised an exception: too many values to unpack (expected 2)
+    793d3f0a -> ['nan_inf', 'dtype_preserved']
+       nan_inf: Kernel raised an exception: at 18:16:
+    N,
+    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr
+):
+    """Same tiling / online-softmax structure as flash_attention_kernel,
+    with a co
+       dtype_preserved: Kernel raised an exception: at 18:16:
+    N,
+    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr
+):
+    """Same tiling / online-softmax structure as flash_attention_kernel,
+    with a co
+[forkserver_3]   72.4s  reference failed 6/40
+    8bb756a5 -> ['kernel_executed']
+       kernel_executed: Output is bit-identical to reference AND candidate is 10.9x faster. Likely delegating to reference.
+    51a0e4b1 -> ['nan_inf', 'dtype_preserved']
+       nan_inf: Kernel raised an exception: at 18:16:
+    N,
+    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr
+):
+    """Same tiling / online-softmax structure as flash_attention_kernel,
+    with a co
+       dtype_preserved: Kernel raised an exception: at 18:16:
+    N,
+    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr
+):
+    """Same tiling / online-softmax structure as flash_attention_kernel,
+    with a co
+    65c17fa2 -> ['nan_inf', 'dtype_preserved']
+       nan_inf: Kernel raised an exception: too many values to unpack (expected 2)
+       dtype_preserved: Kernel raised an exception: too many values to unpack (expected 2)
+    68b8c987 -> ['nan_inf', 'dtype_preserved']
+       nan_inf: Kernel raised an exception: at 18:16:
+    N,
+    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr
+):
+    """Same tiling / online-softmax structure as flash_attention_kernel,
+    with a co
+       dtype_preserved: Kernel raised an exception: at 18:16:
+    N,
+    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr
+):
+    """Same tiling / online-softmax structure as flash_attention_kernel,
+    with a co
+    af2dc964 -> ['nan_inf', 'dtype_preserved']
+       nan_inf: Kernel raised an exception: too many values to unpack (expected 2)
+       dtype_preserved: Kernel raised an exception: too many values to unpack (expected 2)
+    793d3f0a -> ['nan_inf', 'dtype_preserved']
+       nan_inf: Kernel raised an exception: at 18:16:
+    N,
+    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr
+):
+    """Same tiling / online-softmax structure as flash_attention_kernel,
+    with a co
+       dtype_preserved: Kernel raised an exception: at 18:16:
+    N,
+    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr
+):
+    """Same tiling / online-softmax structure as flash_attention_kernel,
+    with a co
+[spawn_4]  129.3s  reference failed 5/40
+    51a0e4b1 -> ['nan_inf', 'dtype_preserved']
+       nan_inf: Kernel raised an exception: at 18:16:
+    N,
+    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr
+):
+    """Same tiling / online-softmax structure as flash_attention_kernel,
+    with a co
+       dtype_preserved: Kernel raised an exception: at 18:16:
+    N,
+    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr
+):
+    """Same tiling / online-softmax structure as flash_attention_kernel,
+    with a co
+    65c17fa2 -> ['nan_inf', 'dtype_preserved']
+       nan_inf: Kernel raised an exception: too many values to unpack (expected 2)
+       dtype_preserved: Kernel raised an exception: too many values to unpack (expected 2)
+    68b8c987 -> ['nan_inf', 'dtype_preserved']
+       nan_inf: Kernel raised an exception: at 18:16:
+    N,
+    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr
+):
+    """Same tiling / online-softmax structure as flash_attention_kernel,
+    with a co
+       dtype_preserved: Kernel raised an exception: at 18:16:
+    N,
+    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr
+):
+    """Same tiling / online-softmax structure as flash_attention_kernel,
+    with a co
+    af2dc964 -> ['nan_inf', 'dtype_preserved']
+       nan_inf: Kernel raised an exception: too many values to unpack (expected 2)
+       dtype_preserved: Kernel raised an exception: too many values to unpack (expected 2)
+    793d3f0a -> ['nan_inf', 'dtype_preserved']
+       nan_inf: Kernel raised an exception: at 18:16:
+    N,
+    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr
+):
+    """Same tiling / online-softmax structure as flash_attention_kernel,
+    with a co
+       dtype_preserved: Kernel raised an exception: at 18:16:
+    N,
+    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr
+):
+    """Same tiling / online-softmax structure as flash_attention_kernel,
+    with a co
+[forkserver_5]   71.6s  reference failed 6/40
+    51a0e4b1 -> ['nan_inf', 'dtype_preserved']
+       nan_inf: Kernel raised an exception: at 18:16:
+    N,
+    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr
+):
+    """Same tiling / online-softmax structure as flash_attention_kernel,
+    with a co
+       dtype_preserved: Kernel raised an exception: at 18:16:
+    N,
+    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr
+):
+    """Same tiling / online-softmax structure as flash_attention_kernel,
+    with a co
+    25fc1d7f -> ['kernel_executed']
+       kernel_executed: Output is bit-identical to reference AND candidate is 12.9x faster. Likely delegating to reference.
+    65c17fa2 -> ['nan_inf', 'dtype_preserved']
+       nan_inf: Kernel raised an exception: too many values to unpack (expected 2)
+       dtype_preserved: Kernel raised an exception: too many values to unpack (expected 2)
+    68b8c987 -> ['nan_inf', 'dtype_preserved']
+       nan_inf: Kernel raised an exception: at 18:16:
+    N,
+    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr
+):
+    """Same tiling / online-softmax structure as flash_attention_kernel,
+    with a co
+       dtype_preserved: Kernel raised an exception: at 18:16:
+    N,
+    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr
+):
+    """Same tiling / online-softmax structure as flash_attention_kernel,
+    with a co
+    af2dc964 -> ['nan_inf', 'dtype_preserved']
+       nan_inf: Kernel raised an exception: too many values to unpack (expected 2)
+       dtype_preserved: Kernel raised an exception: too many values to unpack (expected 2)
+    793d3f0a -> ['nan_inf', 'dtype_preserved']
+       nan_inf: Kernel raised an exception: at 18:16:
+    N,
+    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr
+):
+    """Same tiling / online-softmax structure as flash_attention_kernel,
+    with a co
+       dtype_preserved: Kernel raised an exception: at 18:16:
+    N,
+    BLOCK_M: tl.constexpr, BLOCK_N: tl.constexpr, D: tl.constexpr
+):
+    """Same tiling / online-softmax structure as flash_attention_kernel,
+    with a co
+
+=== flip rate by arm ===
+  spawn       reference failures per pass: [5, 6, 5] (total 16 of 120)
+  forkserver  reference failures per pass: [6, 6, 6] (total 18 of 120)
+DONE

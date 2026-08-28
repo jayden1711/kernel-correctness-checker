@@ -1,0 +1,284 @@
+
+======================================================================
+causal_flash_attention: 40 proposals x 2 kernels
+======================================================================
+
+-- pass A1 (single, n=20) --
+    [single] d592c244  46.42s
+    [single] 84a7f6f7  46.89s
+    [single] aff0c7f8  47.01s
+    [single] 225493a0  47.58s
+    [single] 32e58b8e  31.68s
+    [single] 2e429b94  31.48s
+    [single] 08c39f46  30.24s
+    [single] 5040d834  31.42s
+    [single] dd99c73c  29.03s
+    [single] 75f2dba6  28.18s
+    [single] 95e5b2ab  28.01s
+    [single] 981ae6d1  28.37s
+    [single] 8bb756a5  32.27s
+    [single] 2df138b8  30.11s
+    [single] f1789970  29.86s
+    [single] 6d343df5  29.14s
+    [single] 9287e744  29.15s
+    [single] 51a0e4b1  26.24s
+    [single] 4f1a90aa  28.33s
+    [single] 25fc1d7f  26.64s
+   pass A1 total 165.4s
+
+-- pass A2 (single, n=20) --
+    [single] d592c244  27.11s
+    [single] 84a7f6f7  29.16s
+    [single] aff0c7f8  28.54s
+    [single] 225493a0  28.75s
+    [single] 32e58b8e  25.91s
+    [single] 2e429b94  28.52s
+    [single] 08c39f46  28.64s
+    [single] 5040d834  28.01s
+    [single] dd99c73c  26.98s
+    [single] 75f2dba6  28.53s
+    [single] 95e5b2ab  26.30s
+    [single] 981ae6d1  28.19s
+    [single] 8bb756a5  26.87s
+    [single] 2df138b8  26.75s
+    [single] f1789970  28.34s
+    [single] 6d343df5  29.42s
+    [single] 9287e744  26.87s
+    [single] 51a0e4b1  24.36s
+    [single] 4f1a90aa  23.75s
+    [single] 25fc1d7f  22.81s
+   pass A2 total 137.8s
+
+-- pass B1 (batched_spawn, n=40) --
+    [batched_spawn] d592c244  13.83s
+    [batched_spawn] 84a7f6f7  12.75s
+    [batched_spawn] aff0c7f8  13.97s
+    [batched_spawn] 225493a0  14.28s
+    [batched_spawn] 32e58b8e  13.96s
+    [batched_spawn] 2e429b94  13.96s
+    [batched_spawn] 08c39f46  14.09s
+    [batched_spawn] 5040d834  14.26s
+    [batched_spawn] dd99c73c  13.55s
+    [batched_spawn] 75f2dba6  13.58s
+    [batched_spawn] 95e5b2ab  14.47s
+    [batched_spawn] 981ae6d1  13.29s
+    [batched_spawn] 8bb756a5  13.17s
+    [batched_spawn] 2df138b8  14.08s
+    [batched_spawn] f1789970  13.65s
+    [batched_spawn] 6d343df5  13.32s
+    [batched_spawn] 9287e744  12.94s
+    [batched_spawn] 51a0e4b1  11.80s
+    [batched_spawn] 4f1a90aa  13.99s
+    [batched_spawn] 25fc1d7f  12.59s
+    [batched_spawn] d28174c8  13.52s
+    [batched_spawn] 4aff5bf2  13.71s
+    [batched_spawn] 5f5dfdcf  16.99s
+    [batched_spawn] 18fd01df  13.41s
+    [batched_spawn] 216b90d8  15.61s
+    [batched_spawn] 2b7abcc7  13.60s
+    [batched_spawn] cef60aa3  14.25s
+    [batched_spawn] 9581a75d  13.08s
+    [batched_spawn] 65c17fa2   7.52s
+    [batched_spawn] 5fc5a3f0  13.86s
+    [batched_spawn] 4f874a50  14.04s
+    [batched_spawn] 2d60bbe6  14.32s
+    [batched_spawn] 59179721  13.00s
+    [batched_spawn] 68b8c987  11.57s
+    [batched_spawn] 02df180b  12.69s
+    [batched_spawn] 29796446  13.94s
+    [batched_spawn] b77b6f89  12.75s
+    [batched_spawn] af2dc964   7.25s
+    [batched_spawn] 793d3f0a   7.44s
+    [batched_spawn] 3c811b90   5.87s
+   pass B1 total 132.6s
+
+-- pass C (batched_forkserver, n=40) --
+    [batched_forkserver] d592c244  10.06s
+    [batched_forkserver] 84a7f6f7   9.91s
+    [batched_forkserver] aff0c7f8   9.74s
+    [batched_forkserver] 225493a0   9.62s
+    [batched_forkserver] 32e58b8e   8.58s
+    [batched_forkserver] 2e429b94   7.19s
+    [batched_forkserver] 08c39f46   8.40s
+    [batched_forkserver] 5040d834   7.77s
+    [batched_forkserver] dd99c73c   6.56s
+    [batched_forkserver] 75f2dba6   7.07s
+    [batched_forkserver] 95e5b2ab   7.16s
+    [batched_forkserver] 981ae6d1   6.08s
+    [batched_forkserver] 8bb756a5   7.95s
+    [batched_forkserver] 2df138b8   7.96s
+    [batched_forkserver] f1789970   8.89s
+    [batched_forkserver] 6d343df5   8.62s
+    [batched_forkserver] 9287e744   7.28s
+    [batched_forkserver] 51a0e4b1   4.93s
+    [batched_forkserver] 4f1a90aa   7.84s
+    [batched_forkserver] 25fc1d7f   8.00s
+    [batched_forkserver] d28174c8   7.95s
+    [batched_forkserver] 4aff5bf2   7.65s
+    [batched_forkserver] 5f5dfdcf   7.72s
+    [batched_forkserver] 18fd01df   7.62s
+    [batched_forkserver] 216b90d8   6.63s
+    [batched_forkserver] 2b7abcc7   6.20s
+    [batched_forkserver] cef60aa3   7.70s
+    [batched_forkserver] 9581a75d   7.80s
+    [batched_forkserver] 65c17fa2   1.65s
+    [batched_forkserver] 5fc5a3f0   8.16s
+    [batched_forkserver] 4f874a50   7.71s
+    [batched_forkserver] 2d60bbe6   6.82s
+    [batched_forkserver] 59179721   6.76s
+    [batched_forkserver] 68b8c987   6.20s
+    [batched_forkserver] 02df180b   7.99s
+    [batched_forkserver] 29796446   8.19s
+    [batched_forkserver] b77b6f89   8.36s
+    [batched_forkserver] af2dc964   1.77s
+    [batched_forkserver] 793d3f0a   4.80s
+    [batched_forkserver] 3c811b90   4.95s
+   pass C total 74.2s
+
+-- pass B2 (batched_spawn, n=40) --
+    [batched_spawn] d592c244  13.25s
+    [batched_spawn] 84a7f6f7  13.33s
+    [batched_spawn] aff0c7f8  13.64s
+    [batched_spawn] 225493a0  13.65s
+    [batched_spawn] 32e58b8e  14.58s
+    [batched_spawn] 2e429b94  13.35s
+    [batched_spawn] 08c39f46  13.78s
+    [batched_spawn] 5040d834  13.91s
+    [batched_spawn] dd99c73c  13.75s
+    [batched_spawn] 75f2dba6  13.37s
+    [batched_spawn] 95e5b2ab  13.75s
+    [batched_spawn] 981ae6d1  13.60s
+    [batched_spawn] 8bb756a5  14.23s
+    [batched_spawn] 2df138b8  13.66s
+    [batched_spawn] f1789970  14.46s
+    [batched_spawn] 6d343df5  13.56s
+    [batched_spawn] 9287e744  13.70s
+    [batched_spawn] 51a0e4b1  12.22s
+    [batched_spawn] 4f1a90aa  14.05s
+    [batched_spawn] 25fc1d7f  13.77s
+    [batched_spawn] d28174c8  13.87s
+    [batched_spawn] 4aff5bf2  13.91s
+    [batched_spawn] 5f5dfdcf  15.04s
+    [batched_spawn] 18fd01df  14.55s
+    [batched_spawn] 216b90d8  13.83s
+    [batched_spawn] 2b7abcc7  14.09s
+    [batched_spawn] cef60aa3  13.80s
+    [batched_spawn] 9581a75d  13.46s
+    [batched_spawn] 65c17fa2   7.31s
+    [batched_spawn] 5fc5a3f0  12.73s
+    [batched_spawn] 4f874a50  13.60s
+    [batched_spawn] 2d60bbe6  13.85s
+    [batched_spawn] 59179721  13.51s
+    [batched_spawn] 68b8c987  12.30s
+    [batched_spawn] 02df180b  12.98s
+    [batched_spawn] 29796446  15.36s
+    [batched_spawn] b77b6f89  13.00s
+    [batched_spawn] af2dc964   7.70s
+    [batched_spawn] 793d3f0a   8.33s
+    [batched_spawn] 3c811b90   6.23s
+   pass B2 total 133.3s
+
+  --- causal_flash_attention ---
+  A1  n= 20  median   29.98s  start_method=['spawn']  exec_mode=['single']
+  A2  n= 20  median   27.56s  start_method=['spawn']  exec_mode=['single']
+  B1  n= 40  median   13.59s  start_method=['spawn']  exec_mode=['batched']
+  C   n= 40  median    7.71s  start_method=['forkserver']  exec_mode=['batched']
+  B2  n= 40  median   13.65s  start_method=['spawn']  exec_mode=['batched']
+  order drift B1 vs B2: 0.5%
+  effect C vs B2:       0.565x  (-43.5%)
+  INSTRUMENT CONTROL  A1 vs A2 (unseeded): 4 of 40 disagree
+  SEEDED FLOOR        B1 vs B2:            0 of 80 disagree
+  RESULT              C  vs B2:            2 of 80 disagree
+
+======================================================================
+flash_attention: 12 proposals x 5 kernels
+======================================================================
+
+-- pass A1 (single, n=12) --
+    [single] dd66040d  89.68s
+    [single] acba779f  89.28s
+    [single] 57fe75c6  89.01s
+    [single] c8fb23a5  87.71s
+    [single] 72c2ceb4  68.62s
+    [single] 41856e0f  72.45s
+    [single] 87b18b58  68.59s
+    [single] 6382056f  71.56s
+    [single] ebf4bc5a  71.62s
+    [single] 9de28dc0  65.71s
+    [single] a8a29f78  69.25s
+    [single] e45ff3fb  69.32s
+   pass A1 total 230.8s
+
+-- pass A2 (single, n=12) --
+    [single] dd66040d  71.21s
+    [single] acba779f  67.63s
+    [single] 57fe75c6  72.74s
+    [single] c8fb23a5  73.16s
+    [single] 72c2ceb4  69.43s
+    [single] 41856e0f  71.27s
+    [single] 87b18b58  66.60s
+    [single] 6382056f  71.55s
+    [single] ebf4bc5a  71.96s
+    [single] 9de28dc0  66.34s
+    [single] a8a29f78  68.35s
+    [single] e45ff3fb  66.45s
+   pass A2 total 211.2s
+
+-- pass B1 (batched_spawn, n=12) --
+    [batched_spawn] dd66040d  14.61s
+    [batched_spawn] acba779f  14.38s
+    [batched_spawn] 57fe75c6  15.08s
+    [batched_spawn] c8fb23a5  15.07s
+    [batched_spawn] 72c2ceb4  13.25s
+    [batched_spawn] 41856e0f  14.36s
+    [batched_spawn] 87b18b58  13.90s
+    [batched_spawn] 6382056f  13.80s
+    [batched_spawn] ebf4bc5a  14.17s
+    [batched_spawn] 9de28dc0  13.84s
+    [batched_spawn] a8a29f78  13.88s
+    [batched_spawn] e45ff3fb  13.68s
+   pass B1 total 42.8s
+
+-- pass C (batched_forkserver, n=12) --
+    [batched_forkserver] dd66040d   9.35s
+    [batched_forkserver] acba779f   8.94s
+    [batched_forkserver] 57fe75c6   9.41s
+    [batched_forkserver] c8fb23a5   9.18s
+    [batched_forkserver] 72c2ceb4   8.24s
+    [batched_forkserver] 41856e0f   8.10s
+    [batched_forkserver] 87b18b58   7.83s
+    [batched_forkserver] 6382056f   7.78s
+    [batched_forkserver] ebf4bc5a   9.22s
+    [batched_forkserver] 9de28dc0   8.81s
+    [batched_forkserver] a8a29f78   9.04s
+    [batched_forkserver] e45ff3fb   9.18s
+   pass C total 26.5s
+
+-- pass B2 (batched_spawn, n=12) --
+    [batched_spawn] dd66040d  14.07s
+    [batched_spawn] acba779f  14.23s
+    [batched_spawn] 57fe75c6  13.91s
+    [batched_spawn] c8fb23a5  14.43s
+    [batched_spawn] 72c2ceb4  14.56s
+    [batched_spawn] 41856e0f  14.00s
+    [batched_spawn] 87b18b58  14.37s
+    [batched_spawn] 6382056f  13.57s
+    [batched_spawn] ebf4bc5a  13.74s
+    [batched_spawn] 9de28dc0  14.02s
+    [batched_spawn] a8a29f78  13.89s
+    [batched_spawn] e45ff3fb  13.71s
+   pass B2 total 42.4s
+
+  --- flash_attention ---
+  A1  n= 12  median   71.59s  start_method=['spawn']  exec_mode=['single']
+  A2  n= 12  median   70.32s  start_method=['spawn']  exec_mode=['single']
+  B1  n= 12  median   14.04s  start_method=['spawn']  exec_mode=['batched']
+  C   n= 12  median    8.99s  start_method=['forkserver']  exec_mode=['batched']
+  B2  n= 12  median   14.01s  start_method=['spawn']  exec_mode=['batched']
+  order drift B1 vs B2: 0.2%
+  effect C vs B2:       0.642x  (-35.8%)
+  INSTRUMENT CONTROL  A1 vs A2 (unseeded): 0 of 60 disagree
+  SEEDED FLOOR        B1 vs B2:            0 of 60 disagree
+  RESULT              C  vs B2:            0 of 60 disagree
+
+DONE

@@ -1,0 +1,190 @@
+
+==================================================================
+causal_flash_attention: 40 proposals x 2 kernels
+==================================================================
+
+-- pass A1 (single) --
+    [single] d592c244  46.97s
+    [single] 84a7f6f7  47.76s
+    [single] aff0c7f8  45.39s
+    [single] 225493a0  47.77s
+    [single] 32e58b8e  32.33s
+    [single] 2e429b94  30.92s
+    [single] 08c39f46  29.75s
+    [single] 5040d834  30.30s
+    [single] dd99c73c  27.43s
+    [single] 75f2dba6  27.79s
+    [single] 95e5b2ab  27.84s
+    [single] 981ae6d1  28.32s
+    [single] 8bb756a5  29.47s
+    [single] 2df138b8  29.72s
+    [single] f1789970  30.15s
+    [single] 6d343df5  31.18s
+    [single] 9287e744  28.80s
+    [single] 51a0e4b1  26.50s
+    [single] 4f1a90aa  28.42s
+    [single] 25fc1d7f  27.36s
+    [single] d28174c8  27.26s
+    [single] 4aff5bf2  28.36s
+    [single] 5f5dfdcf  30.12s
+    [single] 18fd01df  27.65s
+    [single] 216b90d8  30.55s
+    [single] 2b7abcc7  27.51s
+    [single] cef60aa3  26.74s
+    [single] 9581a75d  26.55s
+    [single] 65c17fa2  15.49s
+    [single] 5fc5a3f0  28.08s
+    [single] 4f874a50  28.47s
+    [single] 2d60bbe6  26.58s
+    [single] 59179721  27.25s
+    [single] 68b8c987  25.41s
+    [single] 02df180b  28.14s
+    [single] 29796446  27.46s
+    [single] b77b6f89  26.70s
+    [single] af2dc964  15.13s
+    [single] 793d3f0a  20.22s
+    [single] 3c811b90  20.34s
+   pass A1 total 296.0s
+
+-- pass B (batched) --
+    [batched] d592c244  13.58s
+    [batched] 84a7f6f7  13.37s
+    [batched] aff0c7f8  14.03s
+    [batched] 225493a0  13.68s
+    [batched] 32e58b8e  14.02s
+    [batched] 2e429b94  13.36s
+    [batched] 08c39f46  13.13s
+    [batched] 5040d834  13.24s
+    [batched] dd99c73c  14.16s
+    [batched] 75f2dba6  12.33s
+    [batched] 95e5b2ab  13.69s
+    [batched] 981ae6d1  13.30s
+    [batched] 8bb756a5  12.57s
+    [batched] 2df138b8  12.93s
+    [batched] f1789970  13.74s
+    [batched] 6d343df5  13.73s
+    [batched] 9287e744  13.32s
+    [batched] 51a0e4b1  11.34s
+    [batched] 4f1a90aa  13.47s
+    [batched] 25fc1d7f  12.84s
+    [batched] d28174c8  13.00s
+    [batched] 4aff5bf2  13.31s
+    [batched] 5f5dfdcf  12.84s
+    [batched] 18fd01df  13.48s
+    [batched] 216b90d8  12.15s
+    [batched] 2b7abcc7  13.16s
+    [batched] cef60aa3  13.51s
+    [batched] 9581a75d  13.19s
+    [batched] 65c17fa2   5.96s
+    [batched] 5fc5a3f0  13.15s
+    [batched] 4f874a50  13.21s
+    [batched] 2d60bbe6  13.19s
+    [batched] 59179721  13.30s
+    [batched] 68b8c987  11.82s
+    [batched] 02df180b  12.82s
+    [batched] 29796446  12.96s
+    [batched] b77b6f89  12.86s
+    [batched] af2dc964   6.43s
+    [batched] 793d3f0a   6.42s
+    [batched] 3c811b90   6.63s
+   pass B total 127.6s
+
+-- pass A2 (single) --
+    [single] d592c244  29.04s
+    [single] 84a7f6f7  28.95s
+    [single] aff0c7f8  28.33s
+    [single] 225493a0  27.21s
+    [single] 32e58b8e  28.74s
+    [single] 2e429b94  26.24s
+    [single] 08c39f46  27.89s
+    [single] 5040d834  27.94s
+    [single] dd99c73c  27.72s
+    [single] 75f2dba6  27.14s
+    [single] 95e5b2ab  27.33s
+    [single] 981ae6d1  27.52s
+    [single] 8bb756a5  27.60s
+    [single] 2df138b8  27.77s
+    [single] f1789970  27.18s
+    [single] 6d343df5  27.61s
+    [single] 9287e744  27.92s
+    [single] 51a0e4b1  26.60s
+    [single] 4f1a90aa  27.50s
+    [single] 25fc1d7f  27.10s
+    [single] d28174c8  28.25s
+    [single] 4aff5bf2  27.91s
+    [single] 5f5dfdcf  28.14s
+    [single] 18fd01df  26.83s
+    [single] 216b90d8  28.39s
+    [single] 2b7abcc7  26.79s
+    [single] cef60aa3  28.13s
+    [single] 9581a75d  27.79s
+    [single] 65c17fa2  15.40s
+    [single] 5fc5a3f0  29.70s
+    [single] 4f874a50  29.11s
+    [single] 2d60bbe6  29.28s
+    [single] 59179721  27.74s
+    [single] 68b8c987  25.77s
+    [single] 02df180b  26.14s
+    [single] 29796446  27.09s
+    [single] b77b6f89  28.27s
+    [single] af2dc964  15.69s
+    [single] 793d3f0a  19.10s
+    [single] 3c811b90  18.88s
+   pass A2 total 270.0s
+  A1  per-proposal median   28.11s   spawns/proposal 2.00
+  B   per-proposal median   13.19s   spawns/proposal 1.00
+  A2  per-proposal median   27.67s   spawns/proposal 2.00
+
+==================================================================
+flash_attention: 12 proposals x 5 kernels
+==================================================================
+
+-- pass A1 (single) --
+    [single] dd66040d  86.27s
+    [single] acba779f  84.31s
+    [single] 57fe75c6  86.57s
+    [single] c8fb23a5  86.10s
+    [single] 72c2ceb4  68.20s
+    [single] 41856e0f  70.32s
+    [single] 87b18b58  67.51s
+    [single] 6382056f  71.15s
+    [single] ebf4bc5a  70.00s
+    [single] 9de28dc0  67.21s
+    [single] a8a29f78  69.10s
+    [single] e45ff3fb  67.89s
+   pass A1 total 225.6s
+
+-- pass B (batched) --
+    [batched] dd66040d  14.72s
+    [batched] acba779f  13.95s
+    [batched] 57fe75c6  14.92s
+    [batched] c8fb23a5  14.64s
+    [batched] 72c2ceb4  13.43s
+    [batched] 41856e0f  14.68s
+    [batched] 87b18b58  14.24s
+    [batched] 6382056f  14.27s
+    [batched] ebf4bc5a  13.90s
+    [batched] 9de28dc0  12.90s
+    [batched] a8a29f78  13.61s
+    [batched] e45ff3fb  13.34s
+   pass B total 42.8s
+
+-- pass A2 (single) --
+    [single] dd66040d  70.14s
+    [single] acba779f  67.52s
+    [single] 57fe75c6  71.63s
+    [single] c8fb23a5  72.20s
+    [single] 72c2ceb4  70.60s
+    [single] 41856e0f  71.04s
+    [single] 87b18b58  69.44s
+    [single] 6382056f  70.54s
+    [single] ebf4bc5a  71.00s
+    [single] 9de28dc0  67.49s
+    [single] a8a29f78  69.24s
+    [single] e45ff3fb  68.24s
+   pass A2 total 211.0s
+  A1  per-proposal median   70.16s   spawns/proposal 5.00
+  B   per-proposal median   14.09s   spawns/proposal 1.00
+  A2  per-proposal median   70.34s   spawns/proposal 5.00
+
+DONE

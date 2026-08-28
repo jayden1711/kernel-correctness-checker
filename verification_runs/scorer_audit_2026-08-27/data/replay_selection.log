@@ -1,0 +1,16 @@
+a7a6e1a3 softmax                  strat=beam     B=4 n= 22 score_mismatch=0 slot0(l3/l100/linf)=0/0/0 beamset_l3=0 beamorder_l3=0 beamset_l100=0
+0b23b48d softmax                  strat=beam     B=4 n=  6 score_mismatch=0 slot0(l3/l100/linf)=0/0/0 beamset_l3=0 beamorder_l3=0 beamset_l100=0
+43ab9fa5 softmax                  strat=beam     B=4 n=  8 score_mismatch=0 slot0(l3/l100/linf)=0/0/0 beamset_l3=0 beamorder_l3=0 beamset_l100=1
+296951b4 softmax                  strat=diverse  B=4 n= 12 score_mismatch=0 slot0(l3/l100/linf)=0/0/0 beamset_l3=0 beamorder_l3=0 beamset_l100=1
+565c7209 layernorm                strat=diverse  B=4 n= 12 score_mismatch=0 slot0(l3/l100/linf)=0/0/0 beamset_l3=2 beamorder_l3=0 beamset_l100=2
+dabfffad matmul                   strat=diverse  B=4 n=  4 score_mismatch=0 slot0(l3/l100/linf)=0/0/0 beamset_l3=0 beamorder_l3=0 beamset_l100=0
+7b0a6e8d flash_attention          strat=diverse  B=4 n= 12 score_mismatch=0 slot0(l3/l100/linf)=0/0/0 beamset_l3=0 beamorder_l3=0 beamset_l100=0
+dacb4590 rmsnorm                  strat=diverse  B=4 n=  4 score_mismatch=0 slot0(l3/l100/linf)=0/0/0 beamset_l3=0 beamorder_l3=0 beamset_l100=0
+2a8b4a76 gelu                     strat=diverse  B=6 n= 18 score_mismatch=0 slot0(l3/l100/linf)=0/0/0 beamset_l3=0 beamorder_l3=0 beamset_l100=3
+235a8899 instancenorm             strat=diverse  B=6 n= 18 score_mismatch=0 slot0(l3/l100/linf)=0/0/0 beamset_l3=0 beamorder_l3=0 beamset_l100=0
+403262a6 causal_flash_attention   strat=diverse  B=6 n=120 score_mismatch=0 slot0(l3/l100/linf)=0/0/0 beamset_l3=0 beamorder_l3=0 beamset_l100=0
+3dd36849 argmax                   strat=diverse  B=6 n= 24 score_mismatch=0 slot0(l3/l100/linf)=0/0/0 beamset_l3=0 beamorder_l3=0 beamset_l100=0
+9f8d6da9 causal_flash_attention   strat=beam     B=4 n= 80 score_mismatch=0 slot0(l3/l100/linf)=0/0/0 beamset_l3=0 beamorder_l3=0 beamset_l100=0
+e999b812 causal_flash_attention   strat=beam     B=4 n= 74 score_mismatch=0 slot0(l3/l100/linf)=0/0/0 beamset_l3=0 beamorder_l3=0 beamset_l100=0
+
+TOTALS: {'verdicts': 414, 'score_mismatch': 0, 'slot0_diff3': 0, 'slot0_diff100': 0, 'slot0_diffinf': 0, 'beamset_diff3': 2, 'beamorder_diff3': 0, 'beamset_diff100': 7}

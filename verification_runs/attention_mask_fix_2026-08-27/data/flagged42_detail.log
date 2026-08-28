@@ -1,0 +1,140 @@
+instancenorm   it0 e678721f failed=['unit_variance']
+    x: shape=[4, 8, 16, 16] fill=ones scale=5 shift=0 patches=0
+    weight: shape=[8] fill=ones scale=1 shift=0 patches=0
+    bias: shape=[8] fill=zeros scale=1 shift=0 patches=0
+instancenorm   it0 65948e8d failed=['unit_variance']
+    x: shape=[8, 16, 32] fill=ones scale=5 shift=0 patches=0
+    weight: shape=[16] fill=ones scale=1 shift=0 patches=0
+    bias: shape=[16] fill=zeros scale=1 shift=0 patches=0
+instancenorm   it0 646a25ef failed=['unit_variance']
+    x: shape=[4, 8, 16] fill=ones scale=5 shift=0 patches=0
+    weight: shape=[8] fill=ones scale=1 shift=0 patches=0
+    bias: shape=[8] fill=zeros scale=1 shift=0 patches=0
+instancenorm   it0 4dcf4ad3 failed=['unit_variance']
+    x: shape=[4, 8, 16, 16] fill=ones scale=5 shift=0 patches=0
+    weight: shape=[8] fill=ones scale=1 shift=0 patches=0
+    bias: shape=[8] fill=zeros scale=1 shift=0 patches=0
+instancenorm   it0 66a284c1 failed=['unit_variance']
+    x: shape=[4, 8, 16] fill=ones scale=5 shift=0 patches=0
+    weight: shape=[8] fill=ones scale=1 shift=0 patches=0
+    bias: shape=[8] fill=zeros scale=1 shift=0 patches=0
+instancenorm   it0 e93dfc17 failed=['unit_variance']
+    x: shape=[4, 8, 16, 16] fill=ones scale=5 shift=0 patches=0
+    weight: shape=[8] fill=ones scale=1 shift=0 patches=0
+    bias: shape=[8] fill=zeros scale=1 shift=0 patches=0
+instancenorm   it1 096858bc failed=['unit_variance']
+    x: shape=[4, 8, 16] fill=ones scale=1 shift=0 patches=0
+    weight: shape=[8] fill=ones scale=1 shift=0 patches=0
+    bias: shape=[8] fill=zeros scale=1 shift=0 patches=0
+instancenorm   it1 f6039549 failed=['unit_variance']
+    x: shape=[4, 8, 16, 16] fill=ones scale=1 shift=0 patches=0
+    weight: shape=[8] fill=ones scale=1 shift=0 patches=0
+    bias: shape=[8] fill=zeros scale=1 shift=0 patches=0
+instancenorm   it1 2dc26e8d failed=['unit_variance']
+    x: shape=[4, 8, 16] fill=ones scale=1 shift=0 patches=0
+    weight: shape=[8] fill=ones scale=1 shift=0 patches=0
+    bias: shape=[8] fill=zeros scale=1 shift=0 patches=0
+instancenorm   it1 e7a28a3a failed=['unit_variance']
+    x: shape=[4, 8, 16, 16] fill=ones scale=1 shift=0 patches=0
+    weight: shape=[8] fill=ones scale=1 shift=0 patches=0
+    bias: shape=[8] fill=zeros scale=1 shift=0 patches=0
+instancenorm   it1 e59b42a1 failed=['unit_variance']
+    x: shape=[4, 8, 16, 16] fill=ones scale=1 shift=0 patches=0
+    weight: shape=[8] fill=ones scale=1 shift=0 patches=0
+    bias: shape=[8] fill=zeros scale=1 shift=0 patches=0
+instancenorm   it1 55d57718 failed=['unit_variance']
+    x: shape=[8, 16, 32] fill=ones scale=1 shift=0 patches=0
+    weight: shape=[16] fill=ones scale=1 shift=0 patches=0
+    bias: shape=[16] fill=zeros scale=1 shift=0 patches=0
+instancenorm   it2 7bfc0f13 failed=['unit_variance', 'positive_scale_invariance']
+    x: shape=[4, 8, 16, 16] fill=randn scale=0.0001 shift=3 patches=0
+    weight: shape=[8] fill=ones scale=1 shift=0 patches=0
+    bias: shape=[8] fill=zeros scale=1 shift=0 patches=0
+instancenorm   it2 bfd36998 failed=['zero_mean', 'unit_variance', 'positive_scale_invariance']
+    x: shape=[4, 8, 16, 16] fill=randn scale=0.0001 shift=100 patches=0
+    weight: shape=[8] fill=ones scale=1 shift=0 patches=0
+    bias: shape=[8] fill=zeros scale=1 shift=0 patches=0
+instancenorm   it2 075400e4 failed=['unit_variance', 'positive_scale_invariance']
+    x: shape=[8, 16, 64] fill=randn scale=1e-06 shift=3 patches=0
+    weight: shape=[16] fill=ones scale=1 shift=0 patches=0
+    bias: shape=[16] fill=zeros scale=1 shift=0 patches=0
+layernorm      it0 2d7f4f3e failed=['zero_mean', 'unit_variance', 'scale_invariance']
+    x: shape=[512, 512] fill=randn scale=0.01 shift=1000 patches=0
+    gamma: shape=[512] fill=ones scale=1 shift=0 patches=0
+    beta: shape=[512] fill=zeros scale=1 shift=0 patches=0
+layernorm      it0 35205e68 failed=['affine_correctness', 'precision_coercion']
+    x: shape=[512, 512] fill=randn scale=1 shift=1000 patches=0
+    gamma: shape=[512] fill=ones scale=2 shift=0 patches=0
+    beta: shape=[512] fill=ones scale=3 shift=0 patches=0
+layernorm      it0 a7e94cf9 failed=['precision_coercion']
+    x: shape=[512, 512] fill=randn scale=1 shift=0 patches=0
+    gamma: shape=[512] fill=ones scale=2 shift=0 patches=0
+    beta: shape=[512] fill=ones scale=3 shift=0 patches=0
+layernorm      it0 f2fac9f6 failed=['unit_variance', 'precision_coercion']
+    x: shape=[512, 512] fill=ones scale=10 shift=0 patches=16
+    gamma: shape=[512] fill=ones scale=2 shift=0 patches=0
+    beta: shape=[512] fill=ones scale=3 shift=0 patches=0
+layernorm      it1 15b63912 failed=['zero_mean', 'unit_variance', 'scale_invariance']
+    x: shape=[512, 512] fill=randn scale=0.01 shift=100 patches=0
+    gamma: shape=[512] fill=ones scale=1 shift=0 patches=0
+    beta: shape=[512] fill=zeros scale=1 shift=0 patches=0
+layernorm      it1 3b2a37a6 failed=['unit_variance', 'scale_invariance', 'precision_coercion']
+    x: shape=[256, 512] fill=randn scale=0.1 shift=0 patches=0
+    gamma: shape=[512] fill=ones scale=2 shift=0 patches=0
+    beta: shape=[512] fill=ones scale=3 shift=0 patches=0
+layernorm      it1 d8eb4716 failed=['precision_coercion']
+    x: shape=[512, 512] fill=randn scale=1 shift=100 patches=0
+    gamma: shape=[512] fill=ones scale=2 shift=0 patches=0
+    beta: shape=[512] fill=ones scale=3 shift=0 patches=0
+layernorm      it1 16c0b6eb failed=['unit_variance']
+    x: shape=[512, 512] fill=ones scale=1 shift=0 patches=16
+    gamma: shape=[512] fill=ones scale=1 shift=0 patches=0
+    beta: shape=[512] fill=zeros scale=1 shift=0 patches=0
+layernorm      it2 a7867d2c failed=['unit_variance', 'scale_invariance', 'precision_coercion']
+    x: shape=[256, 512] fill=randn scale=0.01 shift=0 patches=0
+    gamma: shape=[512] fill=ones scale=2 shift=0 patches=0
+    beta: shape=[512] fill=ones scale=3 shift=0 patches=0
+layernorm      it2 f322abe4 failed=['unit_variance', 'affine_correctness', 'precision_coercion']
+    x: shape=[512, 333] fill=randn scale=1 shift=10 patches=0
+    gamma: shape=[333] fill=ones scale=2 shift=0 patches=0
+    beta: shape=[333] fill=ones scale=3 shift=0 patches=0
+layernorm      it2 a47a431b failed=['unit_variance']
+    x: shape=[64, 64] fill=randn scale=1 shift=0 patches=16
+    gamma: shape=[64] fill=ones scale=1 shift=0 patches=0
+    beta: shape=[64] fill=zeros scale=1 shift=0 patches=0
+matmul         it0 50fb4e31 failed=['scalar_associativity']
+    A: shape=[64, 256] fill=randn scale=1 shift=0 patches=0
+    B: shape=[256, 32] fill=randn scale=1 shift=0 patches=0
+matmul         it0 eab75b02 failed=['scalar_associativity']
+    A: shape=[65, 65] fill=randn scale=1 shift=0 patches=0
+    B: shape=[65, 65] fill=randn scale=1 shift=0 patches=0
+rmsnorm        it0 0eb28274 failed=['unit_rms', 'scale_invariance', 'precision_coercion']
+    x: shape=[512, 512] fill=randn scale=1e-08 shift=0 patches=0
+    gamma: shape=[512] fill=ones scale=1 shift=0 patches=0
+rmsnorm        it0 dc510d61 failed=['precision_coercion']
+    x: shape=[512, 512] fill=randn scale=1 shift=0 patches=0
+    gamma: shape=[512] fill=ones scale=2 shift=0 patches=0
+softmax        it0 97dbd9ca failed=['tile_coverage_softmax_positivity']
+    x: shape=[512, 2048] fill=randn scale=1 shift=0 patches=1
+softmax        it1 3df2820c failed=['tile_coverage_softmax_positivity']
+    x: shape=[512, 2048] fill=zeros scale=1 shift=0 patches=1
+softmax        it2 e251c3aa failed=['kernel_executed', 'tile_coverage_softmax_positivity']
+    x: shape=[512, 2048] fill=zeros scale=1 shift=0 patches=1
+softmax        it0 78885b66 failed=['tile_coverage_softmax_positivity']
+    x: shape=[512, 2048] fill=zeros scale=1 shift=0 patches=1
+softmax        it1 1ec72a24 failed=['tile_coverage_softmax_positivity']
+    x: shape=[512, 333] fill=zeros scale=1 shift=0 patches=1
+softmax        it0 54ba508c failed=['tile_coverage_softmax_positivity']
+    x: shape=[512, 2048] fill=randn scale=1 shift=0 patches=1
+softmax        it1 d829285b failed=['tile_coverage_softmax_positivity']
+    x: shape=[512, 2048] fill=zeros scale=1 shift=0 patches=1
+softmax        it0 56d29332 failed=['tile_coverage_softmax_positivity']
+    x: shape=[512, 2048] fill=randn scale=1 shift=0 patches=1
+softmax        it1 424b6a38 failed=['tile_coverage_softmax_positivity']
+    x: shape=[512, 777] fill=zeros scale=1 shift=0 patches=1
+softmax        it1 d0ef6e14 failed=['tile_coverage_softmax_positivity']
+    x: shape=[512, 2048] fill=zeros scale=1 shift=0 patches=1
+softmax        it1 f221994a failed=['tile_coverage_softmax_positivity']
+    x: shape=[512, 2048] fill=randn scale=1 shift=0 patches=1
+softmax        it1 4e12dbf7 failed=['tile_coverage_softmax_positivity']
+    x: shape=[512, 2048] fill=zeros scale=1 shift=0 patches=1

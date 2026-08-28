@@ -1,0 +1,15 @@
+F1 mechanism test: full-output max vs single-dominant-row ratio
+  scaled_dot_product_attention   n(sat)=27  corr(med,g_min): full=+0.030 single=+0.083  P(med>1): full=0.52 single=0.52
+  causal_flash_attention         n(sat)=33  corr(med,g_min): full=+0.374 single=+0.320  P(med>1): full=0.70 single=0.67
+
+F2 causal vs sdpa floor onset (n=200 per point):
+   kappa |  sdpa floor%  causal floor%
+      15 |         0.0%           0.0%
+      20 |         1.5%           2.0%
+      25 |         3.0%           9.5%
+      30 |        16.0%          18.0%
+      40 |        24.0%          29.5%
+      50 |        46.0%          56.5%
+  (banked at kappa=20: causal 1/5 floor-flagged, sdpa 0/5)
+
+done; data/onset_law_2.json written

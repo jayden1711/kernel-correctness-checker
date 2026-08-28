@@ -1,0 +1,52 @@
+=== F2 scale invariance (same deltas, three delta_scales) ===
+36 triples: worst y spread across delta_scales = 1.053%
+
+=== F1/F3 per-point (delta_scale=1e-3 arm) ===
+flash_attention                  64x32  s0 y 2.4288 pred 2.3897+-0.1833 z +0.21
+flash_attention                  64x32  s1 y 2.5250 pred 2.3138+-0.1904 z +1.11
+flash_attention                  64x32  s2 y 2.0168 pred 2.0587+-0.2001 z -0.21
+flash_attention                 128x64  s0 y 1.8690 pred 2.1912+-0.1872 z -1.72
+flash_attention                 128x64  s1 y 2.3190 pred 2.0392+-0.1895 z +1.48
+flash_attention                 128x64  s2 y 1.9677 pred 1.9762+-0.2253 z -0.04
+flash_attention                 100x32  s0 y 2.1217 pred 2.3699+-0.1732 z -1.43
+flash_attention                 100x32  s1 y 2.0123 pred 2.2780+-0.1879 z -1.41
+flash_attention                 100x32  s2 y 2.1128 pred 2.3521+-0.1816 z -1.32
+flash_attention                 256x16  s0 y 2.8840 pred 2.3107+-0.1998 z +2.87
+flash_attention                 256x16  s1 y 1.9765 pred 2.3150+-0.2015 z -1.68
+flash_attention                 256x16  s2 y 2.3601 pred 2.4225+-0.1685 z -0.37
+causal_flash_attention           64x32  s0 y 2.7331 pred 2.4576+-0.1698 z +1.62
+causal_flash_attention           64x32  s1 y 1.8320 pred 2.1044+-0.2015 z -1.35
+causal_flash_attention           64x32  s2 y 2.2556 pred 2.3185+-0.1943 z -0.32
+causal_flash_attention          128x64  s0 y 2.0814 pred 2.0959+-0.1903 z -0.08
+causal_flash_attention          128x64  s1 y 2.3268 pred 2.3310+-0.1864 z -0.02
+causal_flash_attention          128x64  s2 y 2.0382 pred 2.1582+-0.1752 z -0.68
+causal_flash_attention          100x32  s0 y 2.1860 pred 2.2164+-0.2203 z -0.14
+causal_flash_attention          100x32  s1 y 2.1812 pred 2.2322+-0.2089 z -0.24
+causal_flash_attention          100x32  s2 y 1.8087 pred 2.0428+-0.2171 z -1.08
+causal_flash_attention          256x16  s0 y 2.3014 pred 2.2630+-0.1825 z +0.21
+causal_flash_attention          256x16  s1 y 2.3214 pred 2.2912+-0.1819 z +0.17
+causal_flash_attention          256x16  s2 y 1.6009 pred 1.9480+-0.2256 z -1.54
+scaled_dot_product_attention     64x32  s0 y 2.3331 pred 2.1509+-0.1815 z +1.00
+scaled_dot_product_attention     64x32  s1 y 2.0524 pred 2.1257+-0.1907 z -0.38
+scaled_dot_product_attention     64x32  s2 y 2.1807 pred 2.0910+-0.2076 z +0.43
+scaled_dot_product_attention    128x64  s0 y 2.3871 pred 2.1640+-0.1765 z +1.26
+scaled_dot_product_attention    128x64  s1 y 2.2851 pred 2.2634+-0.1930 z +0.11
+scaled_dot_product_attention    128x64  s2 y 2.1326 pred 2.4109+-0.1897 z -1.47
+scaled_dot_product_attention    100x32  s0 y 1.7009 pred 1.9708+-0.2076 z -1.30
+scaled_dot_product_attention    100x32  s1 y 2.3823 pred 2.4677+-0.1779 z -0.48
+scaled_dot_product_attention    100x32  s2 y 1.9218 pred 2.2679+-0.1916 z -1.81
+scaled_dot_product_attention    256x16  s0 y 1.9525 pred 2.0784+-0.2167 z -0.58
+scaled_dot_product_attention    256x16  s1 y 2.2884 pred 2.1813+-0.2133 z +0.50
+scaled_dot_product_attention    256x16  s2 y 2.2892 pred 2.1999+-0.1825 z +0.49
+
+=== aggregates over ALL 108 measurement points ===
+n=108  meas/pred median 0.9790 [0.8213,1.2498]  mean z -0.231 (expected sd of mean ~0.17; 36 independent inputs)  worst |z| 2.89
+  causal_flash_attention         n= 36 median 0.9816 mean z -0.29 worst |z| 1.64
+  flash_attention                n= 36 median 0.9763 mean z -0.22 worst |z| 2.89
+  scaled_dot_product_attention   n= 36 median 0.9854 mean z -0.19 worst |z| 1.81
+    64x32  corpus anchor  n= 27 median 1.0164 mean z +0.23 worst |z| 1.64
+   100x32  OUT-OF-SAMPLE  n= 27 median 0.8930 mean z -1.03 worst |z| 1.81
+   128x64  OUT-OF-SAMPLE  n= 27 median 0.9957 mean z -0.13 worst |z| 1.74
+   256x16  OUT-OF-SAMPLE  n= 27 median 1.0132 mean z +0.00 worst |z| 2.89
+
+m3/gram across 36 inputs: median 1.0293 [0.9956,1.1517]

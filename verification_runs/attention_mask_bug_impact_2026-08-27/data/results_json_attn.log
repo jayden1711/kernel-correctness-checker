@@ -1,0 +1,1 @@
+<class 'dict'> ['catch_rate', 'false_positive_rate', 'mean_latency_ms', 'p50_latency_ms', 'p90_latency_ms', 'p99_latency_ms']

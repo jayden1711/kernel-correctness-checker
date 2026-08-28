@@ -12,12 +12,12 @@ machine with no GPU and no triton installed, so none of it has been
 runtime-tested. Run `python corpus_contract.py my_corpus.py` on Colab
 first and fix whatever it flags before trusting results.py.
 
-One known duplicate excluded: `TritonBench/cheating/max_reduction.py/` is
-a stray directory (dot in the name) byte-identical to
-`TritonBench/cheating/max_reduction/wrong_padding.py` -- only the latter
-is used here.
+One known duplicate, `TritonBench/cheating/max_reduction.py/` (stray
+directory with a dot in the name, byte-identical to
+`TritonBench/cheating/max_reduction/wrong_padding.py` bar a trailing
+newline), was always excluded here and was deleted from disk 2026-08-28.
 
-29 operators, 41 mutants (42 files on disk minus that duplicate).
+29 operators, 41 mutant files, one per registry entry.
 """
 
 import importlib

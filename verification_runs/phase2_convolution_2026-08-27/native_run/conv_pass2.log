@@ -1,0 +1,19 @@
+=== Q1 K-convergence ===
+  conv1d             closed 3.9382e+00  r400 1.093  r4k 1.026  r20k 1.015  [6s]
+  conv2d             closed 7.8888e+00  r400 1.108  r4k 1.039  r20k 1.019  [9s]
+  conv3d             closed 1.0650e+01  r400 1.097  r4k 1.034  r20k 1.013  [13s]
+  conv_transpose1d   closed 3.7343e+00  r400 1.103  r4k 1.026  r20k 1.011  [16s]
+  conv_transpose2d   closed 6.7831e+00  r400 1.098  r4k 1.033  r20k 1.012  [20s]
+  conv_transpose3d   closed 1.0228e+01  r400 1.062  r4k 1.021  r20k 1.012  [23s]
+  depthwise_conv2d   closed 5.0104e+00  r400 1.137  r4k 1.036  r20k 1.017  [27s]
+  pointwise_conv2d   closed 3.5303e+00  r400 1.120  r4k 1.044  r20k 1.020  [31s]
+=== Q2 adversarial regime ===
+  conv1d               done [31s]
+  conv2d               done [32s]
+  conv3d               done [32s]
+  conv_transpose1d     done [32s]
+  conv_transpose2d     done [33s]
+  conv_transpose3d     done [33s]
+  depthwise_conv2d     done [33s]
+  pointwise_conv2d     done [34s]
+PASS2 DONE 33.8s

@@ -1,0 +1,53 @@
+========================================================================
+  P1  square, tile-aligned, zeroed tail
+========================================================================
+  reference passed checker : True
+    skip_boundary     checker=False naive=True  gap=True  
+    partial_k_reduct  checker=False naive=True  gap=True  
+    swapped_strides   checker=False naive=True  gap=True  
+    wrong_dtype       checker=False naive=True  gap=True  
+  HIT: True
+  predicted credited : ['partial_k_reduct', 'skip_boundary', 'swapped_strides', 'wrong_dtype']
+  actual    credited : ['partial_k_reduct', 'skip_boundary', 'swapped_strides', 'wrong_dtype']
+  MATCH: True
+========================================================================
+  P2  M,N=100 (breaks align+strides), zeroed tail
+========================================================================
+  reference passed checker : True
+    skip_boundary     checker=False naive=True  gap=True  
+    partial_k_reduct  checker=False naive=True  gap=True  
+    swapped_strides   checker=False naive=False gap=False 
+    wrong_dtype       checker=False naive=True  gap=True  
+  HIT: True
+  predicted credited : ['partial_k_reduct']
+  actual    credited : ['partial_k_reduct', 'skip_boundary', 'wrong_dtype']
+  MATCH: False
+========================================================================
+  P3  CONTROL: same as P2, NOT zeroed
+========================================================================
+  reference passed checker : True
+    skip_boundary     checker=False naive=True  gap=True  
+    partial_k_reduct  checker=False naive=False gap=False 
+    swapped_strides   checker=False naive=False gap=False 
+    wrong_dtype       checker=False naive=True  gap=True  
+  HIT: True
+  predicted credited : ['skip_boundary', 'wrong_dtype']
+  actual    credited : ['skip_boundary', 'wrong_dtype']
+  MATCH: True
+========================================================================
+  P4  DISAMBIGUATOR: non-constant C, unaligned, zeroed tail
+========================================================================
+  reference passed checker : True
+    skip_boundary     checker=False naive=True  gap=True  
+    partial_k_reduct  checker=False naive=True  gap=True  
+    swapped_strides   checker=False naive=False gap=False 
+    wrong_dtype       checker=False naive=True  gap=True  
+  HIT: True
+  predicted credited : ['partial_k_reduct', 'wrong_dtype']
+  actual    credited : ['partial_k_reduct', 'skip_boundary', 'wrong_dtype']
+  MATCH: False
+
+========================================================================
+  VERDICT: 2 of 4 cases matched the prediction
+========================================================================
+DONE

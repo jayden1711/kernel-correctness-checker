@@ -1,0 +1,23 @@
+2 target proposals
+
+======================================================================
+proposal 2e429b94   tensors={'Q': ([64, 64], 'float32', 'arange'), 'K': ([64, 64], 'float32', 'zeros'), 'V': ([64, 64], 'float32', 'zeros')}
+======================================================================
+  [spawn      rep0] passed=True n_checks=15 failed=[]
+  [spawn      rep1] passed=True n_checks=15 failed=[]
+  [spawn      rep2] passed=True n_checks=15 failed=[]
+  [forkserver rep0] passed=True n_checks=15 failed=[]
+  [forkserver rep1] passed=True n_checks=15 failed=[]
+  [forkserver rep2] passed=True n_checks=15 failed=[]
+
+======================================================================
+proposal 981ae6d1   tensors={'Q': ([64, 64], 'float32', 'randn'), 'K': ([64, 64], 'float32', 'randn'), 'V': ([64, 64], 'float32', 'randn')}
+======================================================================
+  [spawn      rep0] passed=True n_checks=15 failed=[]
+  [spawn      rep1] passed=True n_checks=15 failed=[]
+  [spawn      rep2] passed=True n_checks=15 failed=[]
+  [forkserver rep0] passed=True n_checks=15 failed=[]
+  [forkserver rep1] passed=True n_checks=15 failed=[]
+  [forkserver rep2] passed=True n_checks=15 failed=[]
+
+DONE

@@ -1,0 +1,45 @@
+{
+  "torch": "2.11.0+cu128",
+  "cuda_available": true,
+  "device": "Tesla T4",
+  "start_methods": [
+    "fork",
+    "spawn",
+    "forkserver"
+  ],
+  "python": "3.12.13"
+}
+
+==================================================================
+  PROBE 1: real Triton kernel in a forked child
+==================================================================
+    fork 0 pid=963 ok=True max_err=1.1175870895385742e-08 
+    fork 1 pid=998 ok=True max_err=1.4901161193847656e-08 
+    fork 2 pid=1014 ok=True max_err=1.4901161193847656e-08 
+    fork 3 pid=1030 ok=True max_err=1.1175870895385742e-08 
+    fork 4 pid=1046 ok=True max_err=1.4901161193847656e-08 
+    fork 5 pid=1062 ok=True max_err=7.450580596923828e-09 
+  -> 6/6 forks ran a real Triton kernel correctly
+
+==================================================================
+  PROBE 2: 4 threads x 5 forks (watching for a HANG, not a crash)
+==================================================================
+    20/20 ok in 31.0s, 0 threads still alive, 0 errors
+
+==================================================================
+  PROBE 3: what an UNSEEDED forked child inherits
+==================================================================
+    forkserver: 1 distinct draws across 6 unseeded children
+    spawn:      3 distinct draws across 3 unseeded children
+    -> inherited-RNG hazard CONFIRMED on real torch
+
+==================================================================
+  PROBE 4: startup decomposition, spawn vs forkserver
+==================================================================
+    spawn       first: total   1975.1 ms   steady median: pre_module    67.2  torch_import  1527.3  cuda_init   240.2  total   1825.2
+    forkserver  first: total    230.1 ms   steady median: pre_module    17.1  torch_import     0.0  cuda_init   233.5  total    251.7
+
+==================================================================
+  GATE: PASS
+==================================================================
+wrote /content/verification_runs/forkserver_2026-08-21/preflight.json

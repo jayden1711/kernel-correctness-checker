@@ -1,0 +1,32 @@
+A. the 0.9 precision-coercion factor
+  4 live records (err_fp32 > atol), 48 atol-gated (factor irrelevant)
+    r = 0.58031  matmul/wrong_dtype/mutant  (pass)
+    r = 0.99839  rmsnorm/wrong_norm/mutant  (fail)
+    r = 1.00003  rmsnorm/partial_reduction/mutant  (fail)
+    r = 1.00004  matmul/swapped_strides/mutant  (fail)
+  dead zone around 0.9: (0.5803, 0.9984) -- factor can move to either edge before any check-level outcome flips
+  pc atol=1e-3 arm: nearest err_fp32 above = 0.003819 (3.8x), nearest below = 2.2e-05 (45x)
+
+B. unit-variance / unit-rms / scale-invariance margins
+  banked (print precision 1e-6):
+    groupnorm uv devs: mutant 1.4e-5, refs ~1.3e-5  vs atol 3e-2 -> margin ~2.1e3x; would ALSO pass layernorm's 1e-3 (71x)
+    instancenorm uv devs: <=1.6e-5 vs 3e-2 -> ~1.9e3x; passes 1e-3 too
+  emulated (10 seeds, corpus (64,128), gamma=1/beta=0; atol 1e-3):
+    ln uv ref              worst dev = 1.478e-05   margin to atol 1e-3 = 68x
+    ln uv wrong_var        worst dev = 1.478e-05   margin to atol 1e-3 = 68x
+    ln uv skip_mean        worst dev = 1.478e-05   margin to atol 1e-3 = 68x
+    ln uv ignore_gb        worst dev = 1.478e-05   margin to atol 1e-3 = 68x
+    ln si ref              worst dev = 2.384e-05   margin to atol 1e-3 = 42x
+    rms rms ref            worst dev = 7.331e-06   margin to atol 1e-3 = 136x
+    rms rms ignore_gamma   worst dev = 7.331e-06   margin to atol 1e-3 = 136x
+    rms si ref             worst dev = 2.432e-05   margin to atol 1e-3 = 41x
+
+C. probe-constant sweeps: 1-homogeneous mutants => inert in c
+  l1/ref                 c=1.3: 7.5e-09  c=2.9: 5.6e-09  c=3.1: 7.5e-09  c=4.2: 3.7e-09  c=10: 3.7e-09  c=100: 7.5e-09  c=1000: 3.7e-09
+  l1/partial_reduction   c=1.3: 1.1e-08  c=2.9: 7.5e-09  c=3.1: 1.5e-08  c=4.2: 7.5e-09  c=10: 1.5e-08  c=100: 1.1e-08  c=1000: 1.5e-08
+  l2/ref                 c=1.3: 3.0e-08  c=2.9: 4.5e-08  c=3.1: 3.0e-08  c=4.2: 4.5e-08  c=10: 6.0e-08  c=100: 4.5e-08  c=1000: 4.5e-08
+  l2/wrong_norm          c=1.3: 7.5e-09  c=2.9: 5.6e-09  c=3.1: 7.5e-09  c=4.2: 3.7e-09  c=10: 3.7e-09  c=100: 7.5e-09  c=1000: 3.7e-09
+  frob/ref               c=1.3: 7.5e-09  c=2.9: 3.7e-09  c=3.1: 7.5e-09  c=4.2: 7.5e-09  c=10: 3.7e-09  c=100: 3.7e-09  c=1000: 3.7e-09
+  frob/wrong_norm        c=1.3: 5.8e-11  c=2.9: 5.8e-11  c=3.1: 5.8e-11  c=4.2: 5.8e-11  c=10: 5.8e-11  c=100: 5.8e-11  c=1000: 5.8e-11
+  inst/skip_eps          c=1.3: 2.4e-07  c=2.9: 4.8e-07  c=3.1: 2.4e-07  c=4.2: 3.6e-07  c=10: 2.4e-07  c=100: 2.4e-07  c=1000: 2.4e-07
+  (atol 1e-3: every entry above is >=1e4x inside; no c in [1.3, 1e3] flips any outcome)

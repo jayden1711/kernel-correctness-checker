@@ -1,0 +1,49 @@
+causal_flash_attention         e6 inv0 sig_err 0.00e+00 Lmc/Lex 1.014  y_meas 2.2100 y_pred 2.2695+-0.2044 z -0.29  m3/gram 1.025 m3/meas 1.052
+causal_flash_attention         e6 inv1 sig_err 0.00e+00 Lmc/Lex 1.030  y_meas 1.9441 y_pred 2.0340+-0.2099 z -0.43  m3/gram 1.037 m3/meas 1.085
+causal_flash_attention         e6 inv2 sig_err 0.00e+00 Lmc/Lex 0.991  y_meas 2.2493 y_pred 2.1547+-0.1738 z +0.54  m3/gram 1.044 m3/meas 1.000
+causal_flash_attention         e6 inv3 sig_err 1.16e-07 Lmc/Lex 1.071  y_meas 2.4065 y_pred 2.6286+-0.1831 z -1.21  m3/gram 1.035 m3/meas 1.130
+causal_flash_attention         e6 inv4 sig_err 6.00e-08 Lmc/Lex 1.035  y_meas 2.4225 y_pred 2.1843+-0.1797 z +1.33  m3/gram 1.041 m3/meas 0.939
+causal_flash_attention         e6 inv5 sig_err 0.00e+00 Lmc/Lex 1.022  y_meas 2.3633 y_pred 2.3030+-0.1847 z +0.33  m3/gram 1.045 m3/meas 1.018
+flash_attention                e8 inv0 sig_err 0.00e+00 Lmc/Lex 0.953  y_meas 1.9490 y_pred 2.2347+-0.1719 z -1.66  m3/gram 1.017 m3/meas 1.166
+flash_attention                e8 inv1 sig_err 5.99e-08 Lmc/Lex 0.968  y_meas 2.0468 y_pred 2.2450+-0.1682 z -1.18  m3/gram 1.027 m3/meas 1.127
+flash_attention                e8 inv2 sig_err 1.17e-07 Lmc/Lex 0.974  y_meas 2.1599 y_pred 2.2217+-0.1815 z -0.34  m3/gram 1.032 m3/meas 1.062
+flash_attention                e8 inv3 sig_err 0.00e+00 Lmc/Lex 0.992  y_meas 1.6519 y_pred 2.0399+-0.1984 z -1.96  m3/gram 1.033 m3/meas 1.276
+flash_attention                e8 inv4 sig_err 0.00e+00 Lmc/Lex 1.051  y_meas 2.2623 y_pred 2.2763+-0.1777 z -0.08  m3/gram 1.029 m3/meas 1.036
+flash_attention                e8 inv5 sig_err 0.00e+00 Lmc/Lex 0.995  y_meas 2.0107 y_pred 2.0578+-0.1937 z -0.24  m3/gram 1.065 m3/meas 1.090
+flash_attention                e9 inv0 sig_err 0.00e+00 Lmc/Lex 0.999  y_meas 1.8693 y_pred 1.9317+-0.2209 z -0.28  m3/gram 1.068 m3/meas 1.104
+flash_attention                e9 inv1 sig_err 1.16e-07 Lmc/Lex 0.940  y_meas 2.5026 y_pred 2.3172+-0.1878 z +0.99  m3/gram 1.056 m3/meas 0.978
+flash_attention                e9 inv2 sig_err 0.00e+00 Lmc/Lex 0.971  y_meas 2.8491 y_pred 2.4905+-0.1785 z +2.01  m3/gram 1.018 m3/meas 0.890
+flash_attention                e9 inv3 sig_err 0.00e+00 Lmc/Lex 0.964  y_meas 2.0366 y_pred 2.2516+-0.1881 z -1.14  m3/gram 1.061 m3/meas 1.173
+flash_attention                e9 inv4 sig_err 0.00e+00 Lmc/Lex 1.036  y_meas 2.2842 y_pred 2.3237+-0.1791 z -0.22  m3/gram 1.015 m3/meas 1.033
+flash_attention                e9 inv5 sig_err 0.00e+00 Lmc/Lex 0.990  y_meas 1.9318 y_pred 2.0093+-0.2057 z -0.38  m3/gram 1.005 m3/meas 1.045
+flash_attention                e10 inv0 sig_err 6.00e-08 Lmc/Lex 0.992  y_meas 2.2051 y_pred 2.2476+-0.1736 z -0.24  m3/gram 1.055 m3/meas 1.075
+flash_attention                e10 inv1 sig_err 0.00e+00 Lmc/Lex 1.003  y_meas 2.4601 y_pred 2.3248+-0.1753 z +0.77  m3/gram 1.023 m3/meas 0.967
+flash_attention                e10 inv2 sig_err 0.00e+00 Lmc/Lex 1.002  y_meas 2.4180 y_pred 2.3156+-0.1712 z +0.60  m3/gram 1.051 m3/meas 1.007
+flash_attention                e10 inv3 sig_err 6.01e-08 Lmc/Lex 1.041  y_meas 2.4993 y_pred 2.2601+-0.1772 z +1.35  m3/gram 1.038 m3/meas 0.938
+flash_attention                e10 inv4 sig_err 0.00e+00 Lmc/Lex 1.051  y_meas 2.5265 y_pred 2.4873+-0.1671 z +0.24  m3/gram 1.015 m3/meas 1.000
+flash_attention                e10 inv5 sig_err 5.98e-08 Lmc/Lex 0.989  y_meas 2.3324 y_pred 1.9441+-0.2231 z +1.74  m3/gram 1.009 m3/meas 0.841
+flash_attention                e11 inv0 sig_err 0.00e+00 Lmc/Lex 1.011  y_meas 1.9171 y_pred 2.0521+-0.1851 z -0.73  m3/gram 1.024 m3/meas 1.096
+flash_attention                e11 inv1 sig_err 1.17e-07 Lmc/Lex 1.026  y_meas 2.0678 y_pred 2.0615+-0.1894 z +0.03  m3/gram 1.019 m3/meas 1.015
+flash_attention                e11 inv2 sig_err 0.00e+00 Lmc/Lex 1.025  y_meas 2.6013 y_pred 2.3266+-0.1924 z +1.43  m3/gram 1.026 m3/meas 0.917
+flash_attention                e11 inv3 sig_err 0.00e+00 Lmc/Lex 0.983  y_meas 2.3481 y_pred 2.2145+-0.1824 z +0.73  m3/gram 1.050 m3/meas 0.990
+flash_attention                e11 inv4 sig_err 1.14e-07 Lmc/Lex 0.970  y_meas 2.6681 y_pred 2.3127+-0.1894 z +1.88  m3/gram 1.044 m3/meas 0.905
+flash_attention                e11 inv5 sig_err 0.00e+00 Lmc/Lex 1.012  y_meas 2.4498 y_pred 2.2295+-0.1783 z +1.24  m3/gram 1.044 m3/meas 0.950
+scaled_dot_product_attention   e35 inv0 sig_err 0.00e+00 Lmc/Lex 1.007  y_meas 2.3083 y_pred 2.4622+-0.1831 z -0.84  m3/gram 1.012 m3/meas 1.080
+scaled_dot_product_attention   e35 inv1 sig_err 5.98e-08 Lmc/Lex 0.973  y_meas 2.3667 y_pred 2.2482+-0.2027 z +0.58  m3/gram 1.004 m3/meas 0.953
+scaled_dot_product_attention   e35 inv2 sig_err 1.16e-07 Lmc/Lex 0.953  y_meas 1.9992 y_pred 2.1484+-0.1854 z -0.80  m3/gram 1.020 m3/meas 1.096
+scaled_dot_product_attention   e35 inv3 sig_err 0.00e+00 Lmc/Lex 1.006  y_meas 1.9055 y_pred 2.1383+-0.2005 z -1.16  m3/gram 1.035 m3/meas 1.161
+scaled_dot_product_attention   e35 inv4 sig_err 0.00e+00 Lmc/Lex 1.007  y_meas 2.5316 y_pred 2.1392+-0.2330 z +1.68  m3/gram 1.033 m3/meas 0.873
+scaled_dot_product_attention   e35 inv5 sig_err 5.99e-08 Lmc/Lex 1.016  y_meas 2.3683 y_pred 2.2948+-0.1760 z +0.42  m3/gram 1.070 m3/meas 1.036
+
+=== per-op summary ===
+causal_flash_attention         n= 6 meas/pred median 1.0000 [0.9155,1.1091]  worst|z| 1.33  m3/gram median 1.039  m3/meas median 1.035
+flash_attention                n=24 meas/pred median 0.9985 [0.8098,1.1997]  worst|z| 2.01  m3/gram median 1.031  m3/meas median 1.024
+scaled_dot_product_attention   n= 6 meas/pred median 0.9848 [0.8911,1.1834]  worst|z| 1.68  m3/gram median 1.026  m3/meas median 1.058
+
+y_M3 anchor (banked gen_native vs this sim, j=0 entries):
+  causal_flash_attention         banked 2.3323 sim 2.3256 ratio 1.0029
+  flash_attention                banked 2.0922 sim 2.2720 ratio 0.9209
+  flash_attention                banked 2.0922 sim 2.0637 ratio 1.0138
+  flash_attention                banked 2.0922 sim 2.3714 ratio 0.8823
+  flash_attention                banked 2.0922 sim 2.1011 ratio 0.9958
+  scaled_dot_product_attention   banked 2.4877 sim 2.4926 ratio 0.9980

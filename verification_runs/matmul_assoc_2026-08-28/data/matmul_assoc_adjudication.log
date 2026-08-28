@@ -1,0 +1,40 @@
+== adjudication (10 seeds each; run-era check atol=1e-4)
+  50fb4e31 (64, 256)x(256, 32):
+    faithful-kernel fp32: fails 10/10, max_err [9.77e-04, 1.46e-03]  (10-15x atol)
+    torch.mm fp32       : fails 10/10, max_err [3.17e-03, 5.86e-03]
+    fp64 accum (fp32-rounded c*A input, as the check feeds kernels): fails 1/10, max_err [2.44e-04, 4.88e-04]
+    fp64 pure algebra (exact scaling): fails 0/10
+    SHIPPED loosened chk: fails 0/10
+    worst element |y|/max|y|: median 0.6090 (cancellation lives on near-zero elements)
+    -> CHECK-DOMAIN FALSE ALARM  (criterion: faithful AND independent correct fp32 both fail unanimously; the algebraic identity itself holds in fp64)
+  eab75b02 (65, 65)x(65, 65):
+    faithful-kernel fp32: fails 10/10, max_err [6.10e-04, 8.54e-04]  (6-9x atol)
+    torch.mm fp32       : fails 10/10, max_err [9.77e-04, 1.46e-03]
+    fp64 accum (fp32-rounded c*A input, as the check feeds kernels): fails 0/10, max_err [2.44e-04, 2.44e-04]
+    fp64 pure algebra (exact scaling): fails 0/10
+    SHIPPED loosened chk: fails 0/10
+    worst element |y|/max|y|: median 0.5372 (cancellation lives on near-zero elements)
+    -> CHECK-DOMAIN FALSE ALARM  (criterion: faithful AND independent correct fp32 both fail unanimously; the algebraic identity itself holds in fp64)
+
+== (65,65) hypothesis: control shapes, run-era check on the faithful kernel + kernel-vs-torch.mm divergence
+  (64, 64)x(64, 64)      pow2=True  run-era FP 10/10, max_err [6.10e-04, 9.77e-04], kernel-vs-torch.mm max diff 1.14e-05
+  (65, 65)x(65, 65)      pow2=False run-era FP 10/10, max_err [6.41e-04, 1.10e-03], kernel-vs-torch.mm max diff 9.54e-06
+  (64, 256)x(256, 32)    pow2=True  run-era FP 10/10, max_err [9.77e-04, 1.46e-03], kernel-vs-torch.mm max diff 3.81e-05
+  (128, 128)x(128, 128)  pow2=True  run-era FP 10/10, max_err [9.77e-04, 1.22e-03], kernel-vs-torch.mm max diff 2.67e-05
+  (96, 96)x(96, 96)      pow2=False run-era FP 10/10, max_err [7.78e-04, 1.22e-03], kernel-vs-torch.mm max diff 2.29e-05
+
+== validity domain: fp32 rescale-noise E vs K (median max_err over 10 seeds, unscaled units err/c)
+  K=   32: E/c = 6.10e-06  (E/c / (u*sqrt(K)) = 18.1)   SHIPPED check FP 0/10
+  K=   64: E/c = 7.32e-06  (E/c / (u*sqrt(K)) = 15.4)   SHIPPED check FP 0/10
+  K=  128: E/c = 9.77e-06  (E/c / (u*sqrt(K)) = 14.5)   SHIPPED check FP 0/10
+  K=  256: E/c = 1.46e-05  (E/c / (u*sqrt(K)) = 15.4)   SHIPPED check FP 0/10
+  K=  512: E/c = 2.44e-05  (E/c / (u*sqrt(K)) = 18.1)   SHIPPED check FP 0/10
+  K= 1024: E/c = 3.42e-05  (E/c / (u*sqrt(K)) = 17.9)   SHIPPED check FP 0/10
+  K= 2048: E/c = 6.84e-05  (E/c / (u*sqrt(K)) = 25.3)   SHIPPED check FP 0/10
+
+== shipped-check worst violation ratio max_j err_j/(2e-3 + 1e-3|y_j|) vs K (10 seeds)
+  K=  256: worst ratio = 0.254  (fires at 1.0)
+  K=  512: worst ratio = 0.368  (fires at 1.0)
+  K= 1024: worst ratio = 0.532  (fires at 1.0)
+  K= 2048: worst ratio = 0.782  (fires at 1.0)
+  K= 4096: worst ratio = 1.094  (fires at 1.0)

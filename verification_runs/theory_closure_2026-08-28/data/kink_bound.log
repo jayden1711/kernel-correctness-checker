@@ -1,0 +1,17 @@
+corpus config (p=1/2, C=128, tau=10): median log10 r = 0.1481 (ratio 1.406), 95% band [0.1143, 0.1865] (ratios [1.301, 1.536])
+banked G-arm medians [0.12764, 0.132858, 0.145486, 0.154145, 0.158634] -> 5/5 inside the simulated range [0.0988, 0.2045]
+first-order decomposition: worst relative error 4.65e-02 (over 10 invocations x 8 deltas)
+  p=0.0000  median log10 r = +0.0000  ratio  1.000  band [1.000, 1.000]  (g-1)/(p/(1-p)) = nan
+  p=0.1250  median log10 r = +0.0027  ratio  1.006  band [0.995, 1.023]  (g-1)/(p/(1-p)) = 0.043
+  p=0.2500  median log10 r = +0.0184  ratio  1.043  band [1.004, 1.084]  (g-1)/(p/(1-p)) = 0.130
+  p=0.3750  median log10 r = +0.0651  ratio  1.162  band [1.105, 1.218]  (g-1)/(p/(1-p)) = 0.269
+  p=0.5000  median log10 r = +0.1492  ratio  1.410  band [1.278, 1.582]  (g-1)/(p/(1-p)) = 0.410
+  p=0.6250  median log10 r = +0.2802  ratio  1.906  band [1.784, 2.226]  (g-1)/(p/(1-p)) = 0.544
+  p=0.7500  median log10 r = +0.4799  ratio  3.019  band [2.638, 3.774]  (g-1)/(p/(1-p)) = 0.673
+  p=0.8750  median log10 r = +0.8080  ratio  6.427  band [5.235, 8.336]  (g-1)/(p/(1-p)) = 0.775
+  p=0.9375  median log10 r = +1.0783  ratio 11.976  band [8.340, 17.637]  (g-1)/(p/(1-p)) = 0.732
+p* (median crosses the factor-2 flag line): 0.638
+p_fire (upper band crosses -- earliest plausible fire): 0.586
+scale invariance (delta_scale 1e-4/1e-3/1e-2): ['1.4197', '1.4185', '1.4069']
+tau invariance (0.1/10/1000): ['1.4185', '1.4185', '1.4185']
+wrote data/kink_bound.json

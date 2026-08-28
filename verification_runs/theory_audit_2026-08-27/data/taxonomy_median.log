@@ -1,0 +1,15 @@
+205 invocations with median-based s/ulp (12 unrecoverable)
+category-1 (abs floor)     n=  5 flagged=  5  s_med/ulp range [2.5, 6.0e+00]  tol/floor min 1.00
+category-2 (fp32 floor)    n= 10 flagged= 10  s_med/ulp range [2.0, 2.3e+01]  tol/floor min 1.43
+m=1 losses                 n= 18 flagged=  8  s_med/ulp range [12.2, 5.9e+04]  tol/floor min 9.16
+    flagged: mse_loss/primary s_med/ulp 16.0 tol/floor 24.43
+    flagged: mse_loss/primary s_med/ulp 15.1 tol/floor 23.17
+    flagged: huber_loss/primary s_med/ulp 18.8 tol/floor 12.03
+    flagged: huber_loss/primary s_med/ulp 12.2 tol/floor 9.16
+    flagged: bce_loss/primary s_med/ulp 25.4 tol/floor 36.33
+    flagged: kldiv_loss/primary s_med/ulp 21.3 tol/floor 16.52
+    flagged: kldiv_loss/primary s_med/ulp 17.8 tol/floor 14.99
+    flagged: kldiv_loss/primary s_med/ulp 13.9 tol/floor 17.67
+everything else            n=172 flagged=  2  s_med/ulp range [2.0, 1.0e+07]  tol/floor min 483.70
+    flagged: flash_attention/multi_tile_rescaling s_med/ulp 2.0 tol/floor 707513.17
+    flagged: flash_attention/multi_tile_rescaling s_med/ulp 16.5 tol/floor 12769286.58

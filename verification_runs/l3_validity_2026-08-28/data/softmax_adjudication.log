@@ -1,0 +1,16 @@
+12 positivity-failing softmax reference records
+
+97dbd9ca  [512, 2048]  randn patch    [:, -32:]=10000  faithful fails 10/10, ideal fails 10/10; unwritten cols 2016-2016; min deficit 9995 (B32=104, B64=745)  -> CHECK-DOMAIN FALSE ALARM
+3df2820c  [512, 2048]  zeros patch    [:, -32:]=10000  faithful fails 1/1, ideal fails 1/1; unwritten cols 2016-2016; min deficit 10000 (B32=104, B64=745)  -> CHECK-DOMAIN FALSE ALARM
+e251c3aa  [512, 2048]  zeros patch      [:, -1]=10000  faithful fails 1/1, ideal fails 1/1; unwritten cols 2047-2047; min deficit 10000 (B32=104, B64=745)  -> CHECK-DOMAIN FALSE ALARM
+78885b66  [512, 2048]  zeros patch    [:, -32:]=10000  faithful fails 1/1, ideal fails 1/1; unwritten cols 2016-2016; min deficit 10000 (B32=104, B64=745)  -> CHECK-DOMAIN FALSE ALARM
+1ec72a24  [512, 333]   zeros patch     [:, :32]=1000  faithful fails 1/1, ideal fails 1/1; unwritten cols 301-301; min deficit 1000 (B32=104, B64=745)  -> CHECK-DOMAIN FALSE ALARM
+54ba508c  [512, 2048]  randn patch    [:, -32:]=10000  faithful fails 10/10, ideal fails 10/10; unwritten cols 2016-2016; min deficit 9995 (B32=104, B64=745)  -> CHECK-DOMAIN FALSE ALARM
+d829285b  [512, 2048]  zeros patch   [:, 2016:]=10000  faithful fails 1/1, ideal fails 1/1; unwritten cols 2016-2016; min deficit 10000 (B32=104, B64=745)  -> CHECK-DOMAIN FALSE ALARM
+56d29332  [512, 2048]  randn patch    [:, -32:]=10000  faithful fails 10/10, ideal fails 10/10; unwritten cols 2016-2016; min deficit 9995 (B32=104, B64=745)  -> CHECK-DOMAIN FALSE ALARM
+d0ef6e14  [512, 2048]  zeros patch     [:, :32]=1000  faithful fails 1/1, ideal fails 1/1; unwritten cols 2016-2016; min deficit 1000 (B32=104, B64=745)  -> CHECK-DOMAIN FALSE ALARM
+424b6a38  [512, 777]   zeros patch     [:, :32]=10000  faithful fails 1/1, ideal fails 1/1; unwritten cols 745-745; min deficit 10000 (B32=104, B64=745)  -> CHECK-DOMAIN FALSE ALARM
+f221994a  [512, 2048]  randn patch    [:, -32:]=1000  faithful fails 10/10, ideal fails 10/10; unwritten cols 2016-2016; min deficit 995 (B32=104, B64=745)  -> CHECK-DOMAIN FALSE ALARM
+4e12dbf7  [512, 2048]  zeros patch     [:, :32]=1000  faithful fails 1/1, ideal fails 1/1; unwritten cols 2016-2016; min deficit 1000 (B32=104, B64=745)  -> CHECK-DOMAIN FALSE ALARM
+
+SUMMARY: 12/12 check-domain false alarms, 0 reference-implicated, 0 no-repro

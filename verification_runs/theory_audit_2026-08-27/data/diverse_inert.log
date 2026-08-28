@@ -1,0 +1,8 @@
+valid-only pools (score>=10): 20000/20000 identical (0 divergences)
+pools with broken proposals: 313/20000 diverge
+example: [(0, 'wrong_reduction', 12), (1, 'wrong_reduction', 6), (2, 'wrong_reduction', 12), (3, 'missing_max_shift', 6), (4, 'partial_tile', 18), (5, 'partial_tile', -5)]
+  beam: [4, 0, 2, 1]  diverse: [4, 0, 2, 3]
+uniform score 8: 0/5000 divergences (same-mode worst case)
+uniform score 9: 0/5000 divergences (same-mode worst case)
+uniform score 9.001: 0/5000 divergences (same-mode worst case)
+uniform score 10: 0/5000 divergences (same-mode worst case)

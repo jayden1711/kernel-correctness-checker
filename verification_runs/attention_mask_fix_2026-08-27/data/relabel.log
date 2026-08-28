@@ -1,0 +1,8 @@
+acba779f: BEFORE: Reference failed: ['attention_weights_sum_to_one'] | Missed: ['approx_denom', 'drop_last_tile', 'skip_rescalin
+acba779f: AFTER : REFERENCE-SUSPECT (relabelled 2026-08-27: reference kernel masking bug, fixed; corrected-world verdict = valid
+87b18b58: BEFORE: Reference failed: ['attention_weights_sum_to_one'] | Missed: ['approx_denom', 'drop_last_tile', 'skip_rescalin
+87b18b58: AFTER : REFERENCE-SUSPECT (relabelled 2026-08-27: reference kernel masking bug, fixed; corrected-world verdict = valid
+9de28dc0: BEFORE: Reference failed: ['attention_weights_sum_to_one'] | Caught (gap confirmed): ['skip_rescaling'] | Missed: ['ap
+9de28dc0: AFTER : REFERENCE-SUSPECT (relabelled 2026-08-27: reference kernel masking bug, fixed; corrected-world verdict = valid
+
+relabelled 3 verdict(s)

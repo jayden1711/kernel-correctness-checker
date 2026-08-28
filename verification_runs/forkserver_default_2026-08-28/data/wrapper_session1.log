@@ -1,0 +1,31 @@
+== [1/8] staging source ==
+== [2/8] session 'kccflip' (T4) ==
+[colab] Creating session 'kccflip'...
+[colab] Session READY.
+[colab] Uploaded '/var/folders/td/5nz7w0856f947c4rn9c935040000gn/T/tmp.5zSnBSTkWm/kcc.tgz' to '/content/kcc.tgz'
+extracted
+== [3/8] probing VM environment ==
+   cache key: 3.6.0__7.5__5373fe50b12f6a73
+== [4/8] cache MISS for this key -- running cold (will harvest) ==
+== [5/8] running benchmark (nohup + poll) ==
+launched
+   ... running (32s)
+   ... running (63s)
+   ... running (95s)
+   ... running (126s)
+   ... running (158s)
+   ... running (189s)
+   ... running (220s)
+   benchmark finished in ~252s (poll-granular)
+== [6/8] downloading results to /Users/jaydenvasquez/Library/CloudStorage/GoogleDrive-jaydenvasquez1711@gmail.com/My Drive/kernel-correctness-checker/results_gpu/kccflip_20260828_083346 ==
+[colab] Downloaded '/content/benchmarks/autokernel/files/results.md' to '/Users/jaydenvasquez/Library/CloudStorage/GoogleDrive-jaydenvasquez1711@gmail.com/My Drive/kernel-correctness-checker/results_gpu/kccflip_20260828_083346/results.md'
+[colab] Downloaded '/content/benchmarks/autokernel/files/results.json' to '/Users/jaydenvasquez/Library/CloudStorage/GoogleDrive-jaydenvasquez1711@gmail.com/My Drive/kernel-correctness-checker/results_gpu/kccflip_20260828_083346/results.json'
+[colab] Downloaded '/content/benchmarks/autokernel/files/results_raw.json' to '/Users/jaydenvasquez/Library/CloudStorage/GoogleDrive-jaydenvasquez1711@gmail.com/My Drive/kernel-correctness-checker/results_gpu/kccflip_20260828_083346/results_raw.json'
+[colab] Downloaded '/content/bench.log' to '/Users/jaydenvasquez/Library/CloudStorage/GoogleDrive-jaydenvasquez1711@gmail.com/My Drive/kernel-correctness-checker/results_gpu/kccflip_20260828_083346/bench.log'
+   REGRESSION your_checker (full): catch 1.0 fp 0.0
+== [7/8] harvesting cache into store ==
+HARVESTED bytes=21676237 key=3.6.0__7.5__5373fe50b12f6a73
+[colab] Downloaded '/content/triton_cache.tgz' to '/Users/jaydenvasquez/Library/CloudStorage/GoogleDrive-jaydenvasquez1711@gmail.com/My Drive/kernel-correctness-checker/.triton_cache_store/triton_cache_3.6.0__7.5__5373fe50b12f6a73.tgz'
+   stored: /Users/jaydenvasquez/Library/CloudStorage/GoogleDrive-jaydenvasquez1711@gmail.com/My Drive/kernel-correctness-checker/.triton_cache_store/triton_cache_3.6.0__7.5__5373fe50b12f6a73.tgz
+== [8/8] keeping session alive (-k) ==
+DONE  results: /Users/jaydenvasquez/Library/CloudStorage/GoogleDrive-jaydenvasquez1711@gmail.com/My Drive/kernel-correctness-checker/results_gpu/kccflip_20260828_083346

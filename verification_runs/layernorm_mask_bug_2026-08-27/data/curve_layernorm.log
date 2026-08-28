@@ -1,0 +1,11 @@
+ignore_gamma_beta            caught=True | [L2]affine_correctness
+    refs: FP=0, cross_shape outcomes=['pass', 'pass', 'pass', 'pass', 'pass']
+skip_mean_subtract           caught=True | [L2]zero_mean; [L2]affine_correctness; [L2]precision_coercion
+    refs: FP=0, cross_shape outcomes=['pass', 'pass', 'pass', 'pass', 'pass']
+wrong_variance_estimate      caught=True | [L3]cross_shape; [L3]adversarial_wrong_variance_trigger
+    shape=(512, 512)     pass  
+    shape=(256, 1024)    pass  
+    shape=(1, 512)       pass  
+    shape=(1000, 333)    fail  max_err=0.024921
+    shape=(2048, 128)    pass  
+    refs: FP=0, cross_shape outcomes=['pass', 'pass', 'pass', 'pass', 'pass']

@@ -1,0 +1,21 @@
+=== (a) which function did the GPU actually compute? (out_max, fp32) ===
+flash_attention                s0 gpu 0.584747  kernel-faithful 0.584747 (rel 0.00e+00)  math 0.649613 (rel 1.11e-01)
+flash_attention                s1 gpu 0.533163  kernel-faithful 0.533163 (rel 3.35e-07)  math 0.614450 (rel 1.52e-01)
+flash_attention                s2 gpu 0.579858  kernel-faithful 0.579858 (rel 0.00e+00)  math 0.672131 (rel 1.59e-01)
+causal_flash_attention         s0 gpu 2.120454  kernel-faithful 2.120454 (rel 0.00e+00)  math 2.120454 (rel 0.00e+00)
+causal_flash_attention         s1 gpu 1.959712  kernel-faithful 1.959713 (rel 6.08e-08)  math 1.959713 (rel 6.08e-08)
+causal_flash_attention         s2 gpu 2.983396  kernel-faithful 2.983396 (rel 0.00e+00)  math 2.983396 (rel 0.00e+00)
+scaled_dot_product_attention   s0 gpu 0.597075  kernel-faithful 0.597075 (rel 0.00e+00)  math 0.649260 (rel 8.74e-02)
+scaled_dot_product_attention   s1 gpu 0.634532  kernel-faithful 0.634531 (rel 3.76e-07)  math 0.715533 (rel 1.28e-01)
+scaled_dot_product_attention   s2 gpu 0.662033  kernel-faithful 0.662033 (rel 6.30e-07)  math 0.723242 (rel 9.25e-02)
+
+=== (b) Gram law re-predicted from the kernel-faithful Jacobian ===
+flash_attention                s0 y 2.2783 pred_kernel 2.2957+-0.1801 z -0.10
+flash_attention                s1 y 2.2961 pred_kernel 2.2720+-0.1965 z +0.12
+flash_attention                s2 y 2.3376 pred_kernel 2.3502+-0.1830 z -0.07
+causal_flash_attention         s0 y 2.1860 pred_kernel 2.2150+-0.2092 z -0.14
+causal_flash_attention         s1 y 2.1812 pred_kernel 2.2277+-0.2142 z -0.22
+causal_flash_attention         s2 y 1.8087 pred_kernel 2.0463+-0.2046 z -1.16
+scaled_dot_product_attention   s0 y 1.8101 pred_kernel 1.9448+-0.2377 z -0.57
+scaled_dot_product_attention   s1 y 2.5903 pred_kernel 2.4256+-0.1899 z +0.87
+scaled_dot_product_attention   s2 y 2.0730 pred_kernel 2.2106+-0.2005 z -0.69

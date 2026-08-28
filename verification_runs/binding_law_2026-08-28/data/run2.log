@@ -1,0 +1,105 @@
+== layernorm
+   zero_mean                                inert / inert  OK    (crossing above bisection range)
+   unit_variance                            pred=5.086e-04 truth=5.086e-04 ratio= 1.00 (draw spread x1.00) OK  
+   scale_invariance                         inert / inert  OK   derived inert (comparator is scaled-vs-scaled or zero)
+   affine_correctness                       pred=1.931e-05 truth=1.937e-05 ratio= 1.00 (draw spread x1.00) OK  
+   precision_coercion                       pred=2.498e-04 truth=2.494e-04 ratio= 1.00 (draw spread x1.00) OK  
+   cross_shape                              pred=1.216e-04 truth=1.217e-04 ratio= 1.00 (draw spread x1.01) OK  
+   weight_magnitude                         pred=1.216e-03 truth=1.216e-03 ratio= 1.00 (draw spread x1.02) OK  
+   perturbation_tolerance                   pred=3.401e-03 truth=3.357e-03 ratio= 1.01 (draw spread x1.24) OK  
+   adversarial_skip_mean_subtract           inert / inert  OK    (above range)
+   adversarial_zero_variance_rows           inert / inert  OK    (above range)
+   adversarial_large_variance               pred=3.719e-03 truth=3.862e-03 ratio= 0.96 (draw spread x1.11) OK  
+   adversarial_wrong_variance_trigger       pred=3.458e-03 truth=3.416e-03 ratio= 1.01 (draw spread x1.13) OK  
+   adversarial_non_power_of_two             pred=3.502e-03 truth=3.574e-03 ratio= 0.98 (draw spread x1.16) OK  
+   BINDING pred=affine_correctness truth=affine_correctness MATCH (tied set: ['affine_correctness'])
+== softmax
+   rows_sum_to_one                          pred=1.099e-04 truth=1.099e-04 ratio= 1.00 (draw spread x1.00) OK  
+   shift_invariance                         inert / inert  OK   derived inert (comparator is scaled-vs-scaled or zero)
+   monotonicity                             inert / inert  OK   derived inert (comparator is scaled-vs-scaled or zero)
+   precision_coercion                       pred=4.979e-03 truth=4.978e-03 ratio= 1.00 (draw spread x1.00) OK  
+   cross_shape                              pred=4.353e-04 truth=4.353e-04 ratio= 1.00 (draw spread x1.36) OK  
+   weight_magnitude                         pred=2.000e-03 truth=2.000e-03 ratio= 1.00 (draw spread x1.00) OK  
+   perturbation_tolerance                   pred=5.323e-03 truth=5.176e-03 ratio= 1.03 (draw spread x1.30) OK  
+   adversarial_max_in_last_tile             pred=1.000e-06 truth=1.013e-06 ratio= 0.99 (draw spread x1.00) OK  floor-bound
+   adversarial_equal_logits                 pred=1.325e-02 truth=1.316e-02 ratio= 1.01 (draw spread x1.07) OK  
+   adversarial_extreme_range                pred=1.000e-06 truth=1.013e-06 ratio= 0.99 (draw spread x1.00) OK  floor-bound
+   adversarial_non_power_of_two             pred=5.599e-03 truth=5.308e-03 ratio= 1.05 (draw spread x1.59) OK  
+   adversarial_near_zero_variance           pred=1.280e-04 truth=1.280e-04 ratio= 1.00 (draw spread x1.00) OK  floor-bound
+   BINDING pred=adversarial_max_in_last_tile truth=adversarial_max_in_last_tile MATCH (tied set: ['adversarial_max_in_last_tile', 'adversarial_extreme_range'])
+== gelu
+   zero_at_origin                           inert / inert  OK   derived inert (comparator is scaled-vs-scaled or zero)
+   monotonic_nonneg                         inert / inert  OK   derived inert (comparator is scaled-vs-scaled or zero)
+   cross_shape                              pred=1.225e-04 truth=1.226e-04 ratio= 1.00 (draw spread x1.03) OK  
+   weight_magnitude                         pred=1.000e-03 truth=1.000e-03 ratio= 1.00 (draw spread x1.00) OK  
+   perturbation_tolerance                   pred=3.572e-03 truth=3.584e-03 ratio= 1.00 (draw spread x1.08) OK  
+   adversarial_large_magnitude              pred=3.415e-03 truth=3.279e-03 ratio= 1.04 (draw spread x1.17) OK  
+   adversarial_near_global_min              pred=7.949e-06 truth=8.762e-06 ratio= 0.91 (draw spread x1.32) OK  
+   BINDING pred=adversarial_near_global_min truth=adversarial_near_global_min MATCH (tied set: ['adversarial_near_global_min'])
+== l2norm
+   unit_l2_norm                             pred=1.010e-03 truth=1.010e-03 ratio= 1.00 (draw spread x1.00) OK  
+   positive_scale_invariance                inert / inert  OK   derived inert (comparator is scaled-vs-scaled or zero)
+   cross_shape                              pred=3.412e-04 truth=3.412e-04 ratio= 1.00 (draw spread x1.07) OK  
+   weight_magnitude                         pred=5.906e-03 truth=5.906e-03 ratio= 1.00 (draw spread x1.09) OK  
+   perturbation_tolerance                   pred=3.353e-03 truth=3.362e-03 ratio= 1.00 (draw spread x1.27) OK  
+   adversarial_high_variance_row            pred=2.647e-03 truth=2.724e-03 ratio= 0.97 (draw spread x1.16) OK  
+   BINDING pred=cross_shape truth=cross_shape MATCH (tied set: ['cross_shape'])
+== sum_reduction
+   permutation_invariance                   inert / inert  OK   derived inert (comparator is scaled-vs-scaled or zero)
+   scale_linearity                          inert / inert  OK   derived inert (comparator is scaled-vs-scaled or zero)
+   cross_shape                              pred=1.012e-04 truth=1.011e-04 ratio= 1.00 (draw spread x1.00) OK  
+   weight_magnitude                         pred=1.000e-03 truth=1.000e-03 ratio= 1.00 (draw spread x1.00) OK  
+   perturbation_tolerance                   pred=3.602e-03 truth=3.372e-03 ratio= 1.07 (draw spread x1.64) OK  
+   adversarial_second_half_dominant         pred=3.749e-03 truth=3.643e-03 ratio= 1.03 (draw spread x1.63) OK  
+   adversarial_large_magnitude              pred=3.602e-03 truth=3.371e-03 ratio= 1.07 (draw spread x1.64) OK  
+   BINDING pred=cross_shape truth=cross_shape MATCH (tied set: ['cross_shape'])
+
+VALIDATE: binding match 5/5; finite-entry ratio p5/p50/p95 = 0.97/1.00/1.06  (n=34)
+
+blind predictions written BEFORE ground truth:
+  rmsnorm: binding pred = ('cross_shape', 0.0001213202489154351)
+     unit_rms                                 1.003e-03  
+     scale_invariance                         inert  derived inert (comparator is scaled-vs-scaled or zero)
+     gamma_correctness                        inert  derived inert (comparator is scaled-vs-scaled or zero)
+     precision_coercion                       1.374e-03  
+     cross_shape                              1.213e-04  
+     weight_magnitude                         1.217e-03  
+     perturbation_tolerance                   3.353e-03  
+     adversarial_large_magnitude              3.623e-03  
+     adversarial_near_zero                    8.151e-02  floor-bound
+     adversarial_non_power_of_two             3.705e-03  
+     adversarial_constant_rows                inert   (above range)
+     adversarial_large_variance               2.671e-03  
+  frobenius_norm: binding pred = ('adversarial_dominant_outlier', 0.000149382304803883)
+     unit_frobenius_norm                      9.998e-04  
+     positive_scale_invariance                inert  derived inert (comparator is scaled-vs-scaled or zero)
+     cross_shape                              4.402e-04  
+     weight_magnitude                         1.375e-02  
+     perturbation_tolerance                   3.220e-03  
+     adversarial_dominant_outlier             1.494e-04  
+
+---- BLIND SCORING ----
+== rmsnorm
+   unit_rms                                 pred=1.003e-03 truth=1.014e-03 ratio= 0.99 (draw spread x1.00) OK  
+   scale_invariance                         inert / inert  OK   derived inert (comparator is scaled-vs-scaled or zero)
+   gamma_correctness                        inert / inert  OK   derived inert (comparator is scaled-vs-scaled or zero)
+   precision_coercion                       pred=1.374e-03 truth=2.612e-03 ratio= 0.53 (draw spread x1.00) OFF 
+   cross_shape                              pred=1.213e-04 truth=1.213e-04 ratio= 1.00 (draw spread x1.01) OK  
+   weight_magnitude                         pred=1.217e-03 truth=1.217e-03 ratio= 1.00 (draw spread x1.02) OK  
+   perturbation_tolerance                   pred=3.353e-03 truth=3.362e-03 ratio= 1.00 (draw spread x1.27) OK  
+   adversarial_large_magnitude              pred=3.623e-03 truth=3.584e-03 ratio= 1.01 (draw spread x1.18) OK  
+   adversarial_near_zero                    pred=8.151e-02 truth=8.151e-02 ratio= 1.00 (draw spread x1.16) OK  floor-bound
+   adversarial_non_power_of_two             pred=3.705e-03 truth=3.692e-03 ratio= 1.00 (draw spread x1.12) OK  
+   adversarial_constant_rows                pred=inert vs truth=2.564e-01  MISMATCH   (above range)
+   adversarial_large_variance               pred=2.671e-03 truth=2.777e-03 ratio= 0.96 (draw spread x1.19) OK  
+   BINDING pred=cross_shape truth=cross_shape MATCH (tied set: ['cross_shape'])
+== frobenius_norm
+   unit_frobenius_norm                      pred=9.998e-04 truth=1.000e-03 ratio= 1.00 (draw spread x1.00) OK  
+   positive_scale_invariance                inert / inert  OK   derived inert (comparator is scaled-vs-scaled or zero)
+   cross_shape                              pred=4.402e-04 truth=4.402e-04 ratio= 1.00 (draw spread x1.13) OK  
+   weight_magnitude                         pred=1.375e-02 truth=1.375e-02 ratio= 1.00 (draw spread x1.30) OK  
+   perturbation_tolerance                   pred=3.220e-03 truth=3.243e-03 ratio= 0.99 (draw spread x1.26) OK  
+   adversarial_dominant_outlier             pred=1.494e-04 truth=1.491e-04 ratio= 1.00 (draw spread x1.04) OK  
+   BINDING pred=adversarial_dominant_outlier truth=adversarial_dominant_outlier MATCH (tied set: ['adversarial_dominant_outlier'])
+
+BLIND: binding match 2/2; ratio p50 = 1.00 (n=14)

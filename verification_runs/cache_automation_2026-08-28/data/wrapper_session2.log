@@ -1,0 +1,24 @@
+== [1/8] staging source ==
+== [2/8] session 'kccship2' (T4) ==
+[colab] Creating session 'kccship2'...
+[colab] Session READY.
+[colab] Uploaded '/var/folders/td/5nz7w0856f947c4rn9c935040000gn/T/tmp.YmtGSpqOAO/kcc.tgz' to '/content/kcc.tgz'
+extracted
+== [3/8] probing VM environment ==
+   cache key: 3.6.0__7.5__5373fe50b12f6a73
+== [4/8] cache HIT -- shipping  21M ==
+[colab] Uploaded '/Users/jaydenvasquez/Library/CloudStorage/GoogleDrive-jaydenvasquez1711@gmail.com/My Drive/kernel-correctness-checker/.triton_cache_store/triton_cache_3.6.0__7.5__5373fe50b12f6a73.tgz' to '/content/triton_cache.tgz'
+   guard: SHIPPED files=8786
+== [5/8] running benchmark (nohup + poll) ==
+launched
+   ... running (32s)
+   benchmark finished in ~79s (poll-granular)
+== [6/8] downloading results to /Users/jaydenvasquez/Library/CloudStorage/GoogleDrive-jaydenvasquez1711@gmail.com/My Drive/kernel-correctness-checker/results_gpu/kccship2_20260828_084137 ==
+[colab] Downloaded '/content/benchmarks/autokernel/files/results.md' to '/Users/jaydenvasquez/Library/CloudStorage/GoogleDrive-jaydenvasquez1711@gmail.com/My Drive/kernel-correctness-checker/results_gpu/kccship2_20260828_084137/results.md'
+[colab] Downloaded '/content/benchmarks/autokernel/files/results.json' to '/Users/jaydenvasquez/Library/CloudStorage/GoogleDrive-jaydenvasquez1711@gmail.com/My Drive/kernel-correctness-checker/results_gpu/kccship2_20260828_084137/results.json'
+[colab] Downloaded '/content/benchmarks/autokernel/files/results_raw.json' to '/Users/jaydenvasquez/Library/CloudStorage/GoogleDrive-jaydenvasquez1711@gmail.com/My Drive/kernel-correctness-checker/results_gpu/kccship2_20260828_084137/results_raw.json'
+[colab] Downloaded '/content/bench.log' to '/Users/jaydenvasquez/Library/CloudStorage/GoogleDrive-jaydenvasquez1711@gmail.com/My Drive/kernel-correctness-checker/results_gpu/kccship2_20260828_084137/bench.log'
+   REGRESSION your_checker (full): catch 1.0 fp 0.0
+== [7/8] cache was shipped -- nothing to harvest ==
+== [8/8] keeping session alive (-k) ==
+DONE  results: /Users/jaydenvasquez/Library/CloudStorage/GoogleDrive-jaydenvasquez1711@gmail.com/My Drive/kernel-correctness-checker/results_gpu/kccship2_20260828_084137

@@ -1,0 +1,15 @@
+  PASS  T1 genuine tarball -> SHIPPED
+  PASS  T1 cache present after guard
+  PASS  T2 doctored triton -> STALE, names the field
+  PASS  T2 nothing extracted
+  PASS  T3 doctored src_hash -> STALE, names the field
+  PASS  T3 nothing extracted
+  PASS  T4 no manifest -> STALE no-manifest
+  PASS  T4 nothing extracted
+  PASS  T5 fresh compile after refusal works, correct output
+  PASS  T5 the compile populated a fresh cache (cold path is alive)
+  PASS  restore: genuine tarball -> SHIPPED again
+
+ALL PASS (11 checks)
+
+RC 0

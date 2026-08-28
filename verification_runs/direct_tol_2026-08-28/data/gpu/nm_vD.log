@@ -1,0 +1,26 @@
+layernorm/v050 done
+layernorm/v080 done
+layernorm/v100 done
+layernorm/v125 done
+layernorm/v200 done
+softmax/v050 done
+softmax/v080 done
+softmax/v100 done
+softmax/v125 done
+softmax/v200 done
+gelu/v050 done
+gelu/v080 done
+gelu/v100 done
+gelu/v125 done
+gelu/v200 done
+l2norm/v050 done
+l2norm/v080 done
+l2norm/v100 done
+l2norm/v125 done
+l2norm/v200 done
+sum_reduction/v050 done
+sum_reduction/v080 done
+sum_reduction/v100 done
+sum_reduction/v125 done
+sum_reduction/v200 done
+V-SERIES-GPU-OK

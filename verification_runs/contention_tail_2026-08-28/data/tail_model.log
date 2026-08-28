@@ -1,0 +1,32 @@
+pre-fix n=2765  p50=0.91 p90=4.56 p99=10.24 max=51.24
+post-fix n=140 p50=1.00 p90=1.06 p99=1.16 max=1.22
+
+Hill tail-index (pre-fix), k = top order statistics used:
+  k=  25: alpha = 3.75
+  k=  50: alpha = 3.16
+  k= 100: alpha = 3.50
+  k= 200: alpha = 2.87
+  banked max-growth two-point estimate: alpha = 2.02 (Frechet max ~ n^(1/alpha))
+
+FP surface: empirical P(ratio >= t) and expected fires per 10k executions
+       t |  pre-fix P  per-10k | post-fix P  per-10k
+    1.15 |     0.3146   3146.5 |     0.0214    214.3
+    1.30 |     0.3045   3045.2 |     0.0000      0.0
+    1.50 |     0.2955   2954.8 |     0.0000      0.0
+    2.00 |     0.2861   2860.8 |     0.0000      0.0
+    3.00 |     0.2550   2549.7 |     0.0000      0.0
+    5.00 |     0.0770    770.3 |     0.0000      0.0
+   10.00 |     0.0123    123.0 |     0.0000      0.0
+   20.00 |     0.0007      7.2 |     0.0000      0.0
+   50.00 |     0.0004      3.6 |     0.0000      0.0
+
+pre-fix Frechet extrapolation (alpha=3.50, anchored at p99=10.24): expected max ~ x99 * (0.01 N)^(1/alpha)
+  N=   560: predicted max ~     16.8
+  N=  2765: predicted max ~     26.4
+  N= 10000: predicted max ~     38.2
+  N=100000: predicted max ~     73.7
+  (measured: 23.26 @ 560, 51.24 @ 2765)
+
+post-fix top ratios: [1.215, 1.159, 1.151, 1.149, 1.117, 1.114, 1.113, 1.098]
+  independence bound at t=1.1: per-round q~0.324 -> min-of-5 ~ q^5 = 3.57e-03 per execution
+  independence bound at t=1.2: per-round q~0.310 -> min-of-5 ~ q^5 = 2.86e-03 per execution

@@ -1,0 +1,4 @@
+adversarial_results a47a431b layernorm [[64, 64], [64], [64]] is_hit 0 hits ["ignore_gamma_beta", "wrong_variance"] | verdict mentions non_power_of_two: False | summary: Reference failed: ['unit_variance'] | Caught (gap confirmed): ['ignore_gamma_beta', 'wrong_variance'] | Missed: ['skip_m
+adversarial_results layernorm/rmsnorm proposals: 17, width<333: 1
+cfa_rerun_2026-08-20 layernorm/rmsnorm proposals: 0, width<333: 0
+cfa_rerun_postfix_2026-08-21 layernorm/rmsnorm proposals: 0, width<333: 0

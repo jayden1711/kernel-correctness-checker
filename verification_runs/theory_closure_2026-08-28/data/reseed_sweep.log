@@ -1,0 +1,115 @@
+
+=== n_samples_curve_2026-08-25/arms/CURVE_n40.json.gz  (85 classes) ===
+  fully distinct: 61   partial: 0   COLLAPSED (>=4 records, 1 draw): 24
+    COLLAPSED  argmax/perturbation_tolerance                       6 records, 1 distinct
+    COLLAPSED  flash_attention/adversarial_approx_denominator               22 records, 1 distinct
+    COLLAPSED  flash_attention/adversarial_equal_attention_weights          22 records, 1 distinct
+    COLLAPSED  flash_attention/adversarial_last_tile_dropped                22 records, 1 distinct
+    COLLAPSED  flash_attention/adversarial_multi_tile_rescaling             22 records, 1 distinct
+    COLLAPSED  flash_attention/adversarial_skip_rescaling                   22 records, 1 distinct
+    COLLAPSED  flash_attention/adversarial_wrong_causal_mask                22 records, 1 distinct
+    COLLAPSED  groupnorm/adversarial_near_zero_variance               6 records, 1 distinct
+    COLLAPSED  instancenorm/adversarial_near_zero_variance               6 records, 1 distinct
+    COLLAPSED  log_softmax/adversarial_near_zero_variance               6 records, 1 distinct
+    COLLAPSED  matmul/adversarial_extreme_dynamic_range            22 records, 1 distinct
+    COLLAPSED  matmul/adversarial_identity_weight                  22 records, 1 distinct
+    COLLAPSED  matmul/adversarial_k_dim_accumulation               22 records, 1 distinct
+    COLLAPSED  matmul/adversarial_non_aligned_shape                22 records, 1 distinct
+    COLLAPSED  matmul/adversarial_non_power_of_two                 22 records, 1 distinct
+    COLLAPSED  matmul/adversarial_swapped_strides                  22 records, 1 distinct
+    COLLAPSED  max_reduction/adversarial_all_negative_nonpow2             6 records, 1 distinct
+    COLLAPSED  min_reduction/adversarial_all_positive_nonpow2             6 records, 1 distinct
+    COLLAPSED  rmsnorm/adversarial_non_power_of_two                 15 records, 1 distinct
+    COLLAPSED  softmax/adversarial_equal_logits                     10 records, 1 distinct
+    COLLAPSED  softmax/adversarial_extreme_range                    10 records, 1 distinct
+    COLLAPSED  softmax/adversarial_max_in_last_tile                 10 records, 1 distinct
+    COLLAPSED  softmax/adversarial_near_zero_variance               10 records, 1 distinct
+    COLLAPSED  softmax/adversarial_non_power_of_two                 10 records, 1 distinct
+
+=== n_samples_curve_2026-08-25/arms/VALID_n20.json.gz  (0 classes) ===
+  fully distinct: 0   partial: 0   COLLAPSED (>=4 records, 1 draw): 0
+
+=== scope_detect_2026-08-26/arms/D_defect_n40.json.gz  (83 classes) ===
+  fully distinct: 58   partial: 2   COLLAPSED (>=4 records, 1 draw): 23
+    COLLAPSED  flash_attention/adversarial_approx_denominator               22 records, 1 distinct
+    COLLAPSED  flash_attention/adversarial_equal_attention_weights          22 records, 1 distinct
+    COLLAPSED  flash_attention/adversarial_last_tile_dropped                22 records, 1 distinct
+    COLLAPSED  flash_attention/adversarial_multi_tile_rescaling             22 records, 1 distinct
+    COLLAPSED  flash_attention/adversarial_skip_rescaling                   22 records, 1 distinct
+    COLLAPSED  flash_attention/adversarial_wrong_causal_mask                22 records, 1 distinct
+    COLLAPSED  groupnorm/adversarial_near_zero_variance               6 records, 1 distinct
+    COLLAPSED  instancenorm/adversarial_near_zero_variance               6 records, 1 distinct
+    COLLAPSED  log_softmax/adversarial_near_zero_variance               6 records, 1 distinct
+    COLLAPSED  matmul/adversarial_extreme_dynamic_range            22 records, 1 distinct
+    COLLAPSED  matmul/adversarial_identity_weight                  22 records, 1 distinct
+    COLLAPSED  matmul/adversarial_k_dim_accumulation               22 records, 1 distinct
+    COLLAPSED  matmul/adversarial_non_aligned_shape                22 records, 1 distinct
+    COLLAPSED  matmul/adversarial_non_power_of_two                 22 records, 1 distinct
+    COLLAPSED  matmul/adversarial_swapped_strides                  22 records, 1 distinct
+    COLLAPSED  max_reduction/adversarial_all_negative_nonpow2             6 records, 1 distinct
+    COLLAPSED  min_reduction/adversarial_all_positive_nonpow2             6 records, 1 distinct
+    COLLAPSED  rmsnorm/adversarial_non_power_of_two                 15 records, 1 distinct
+    COLLAPSED  softmax/adversarial_equal_logits                     10 records, 1 distinct
+    COLLAPSED  softmax/adversarial_extreme_range                    10 records, 1 distinct
+    COLLAPSED  softmax/adversarial_max_in_last_tile                 10 records, 1 distinct
+    COLLAPSED  softmax/adversarial_near_zero_variance               10 records, 1 distinct
+    COLLAPSED  softmax/adversarial_non_power_of_two                 10 records, 1 distinct
+    partial    gelu/adversarial_near_global_min                  6 records, 4 distinct
+    partial    swish/adversarial_near_global_min                  6 records, 3 distinct
+
+=== scope_detect_2026-08-26/arms/B_detector.json.gz  (83 classes) ===
+  fully distinct: 59   partial: 1   COLLAPSED (>=4 records, 1 draw): 23
+    COLLAPSED  flash_attention/adversarial_approx_denominator               22 records, 1 distinct
+    COLLAPSED  flash_attention/adversarial_equal_attention_weights          22 records, 1 distinct
+    COLLAPSED  flash_attention/adversarial_last_tile_dropped                22 records, 1 distinct
+    COLLAPSED  flash_attention/adversarial_multi_tile_rescaling             22 records, 1 distinct
+    COLLAPSED  flash_attention/adversarial_skip_rescaling                   22 records, 1 distinct
+    COLLAPSED  flash_attention/adversarial_wrong_causal_mask                22 records, 1 distinct
+    COLLAPSED  groupnorm/adversarial_near_zero_variance               6 records, 1 distinct
+    COLLAPSED  instancenorm/adversarial_near_zero_variance               6 records, 1 distinct
+    COLLAPSED  log_softmax/adversarial_near_zero_variance               6 records, 1 distinct
+    COLLAPSED  matmul/adversarial_extreme_dynamic_range            22 records, 1 distinct
+    COLLAPSED  matmul/adversarial_identity_weight                  22 records, 1 distinct
+    COLLAPSED  matmul/adversarial_k_dim_accumulation               22 records, 1 distinct
+    COLLAPSED  matmul/adversarial_non_aligned_shape                22 records, 1 distinct
+    COLLAPSED  matmul/adversarial_non_power_of_two                 22 records, 1 distinct
+    COLLAPSED  matmul/adversarial_swapped_strides                  22 records, 1 distinct
+    COLLAPSED  max_reduction/adversarial_all_negative_nonpow2             6 records, 1 distinct
+    COLLAPSED  min_reduction/adversarial_all_positive_nonpow2             6 records, 1 distinct
+    COLLAPSED  rmsnorm/adversarial_non_power_of_two                 15 records, 1 distinct
+    COLLAPSED  softmax/adversarial_equal_logits                     10 records, 1 distinct
+    COLLAPSED  softmax/adversarial_extreme_range                    10 records, 1 distinct
+    COLLAPSED  softmax/adversarial_max_in_last_tile                 10 records, 1 distinct
+    COLLAPSED  softmax/adversarial_near_zero_variance               10 records, 1 distinct
+    COLLAPSED  softmax/adversarial_non_power_of_two                 10 records, 1 distinct
+    partial    swish/adversarial_near_global_min                  6 records, 5 distinct
+
+=== gram_screen_2026-08-27/arms/G_gram.json.gz  (83 classes) ===
+  fully distinct: 58   partial: 2   COLLAPSED (>=4 records, 1 draw): 23
+    COLLAPSED  flash_attention/adversarial_approx_denominator               22 records, 1 distinct
+    COLLAPSED  flash_attention/adversarial_equal_attention_weights          22 records, 1 distinct
+    COLLAPSED  flash_attention/adversarial_last_tile_dropped                22 records, 1 distinct
+    COLLAPSED  flash_attention/adversarial_multi_tile_rescaling             22 records, 1 distinct
+    COLLAPSED  flash_attention/adversarial_skip_rescaling                   22 records, 1 distinct
+    COLLAPSED  flash_attention/adversarial_wrong_causal_mask                22 records, 1 distinct
+    COLLAPSED  groupnorm/adversarial_near_zero_variance               6 records, 1 distinct
+    COLLAPSED  instancenorm/adversarial_near_zero_variance               6 records, 1 distinct
+    COLLAPSED  log_softmax/adversarial_near_zero_variance               6 records, 1 distinct
+    COLLAPSED  matmul/adversarial_extreme_dynamic_range            22 records, 1 distinct
+    COLLAPSED  matmul/adversarial_identity_weight                  22 records, 1 distinct
+    COLLAPSED  matmul/adversarial_k_dim_accumulation               22 records, 1 distinct
+    COLLAPSED  matmul/adversarial_non_aligned_shape                22 records, 1 distinct
+    COLLAPSED  matmul/adversarial_non_power_of_two                 22 records, 1 distinct
+    COLLAPSED  matmul/adversarial_swapped_strides                  22 records, 1 distinct
+    COLLAPSED  max_reduction/adversarial_all_negative_nonpow2             6 records, 1 distinct
+    COLLAPSED  min_reduction/adversarial_all_positive_nonpow2             6 records, 1 distinct
+    COLLAPSED  rmsnorm/adversarial_non_power_of_two                 15 records, 1 distinct
+    COLLAPSED  softmax/adversarial_equal_logits                     10 records, 1 distinct
+    COLLAPSED  softmax/adversarial_extreme_range                    10 records, 1 distinct
+    COLLAPSED  softmax/adversarial_max_in_last_tile                 10 records, 1 distinct
+    COLLAPSED  softmax/adversarial_near_zero_variance               10 records, 1 distinct
+    COLLAPSED  softmax/adversarial_non_power_of_two                 10 records, 1 distinct
+    partial    gelu/adversarial_near_global_min                  6 records, 3 distinct
+    partial    swish/adversarial_near_global_min                  6 records, 2 distinct
+
+wrote data/reseed_sweep.json
